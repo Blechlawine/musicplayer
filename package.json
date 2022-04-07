@@ -1,0 +1,51 @@
+{
+    "name": "musicplayer",
+    "private": true,
+    "version": "0.0.0",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc --noEmit && vite build",
+        "preview": "vite preview",
+        "electron": "wait-on tcp:3000 && cross-env ENVIRONMENT=development electron .",
+        "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron\"",
+        "build:electron": "electron-builder",
+        "build:vue": "vue-tsc --noEmit && cross-env ENVIRONMENT=production vite build",
+        "build:app": "yarn build:vue && yarn build:electron"
+    },
+    "main": "electron/electron.js",
+    "dependencies": {
+        "vue": "^3.2.25"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.23",
+        "@vitejs/plugin-vue": "^2.3.0",
+        "concurrently": "^7.1.0",
+        "cross-env": "^7.0.3",
+        "electron": "^18.0.3",
+        "electron-builder": "^22.14.13",
+        "typescript": "^4.5.4",
+        "vite": "^2.9.0",
+        "vue-tsc": "^0.29.8",
+        "wait-on": "^6.0.1"
+    },
+    "author": "Blechlawine",
+    "build": {
+        "appId": "de.blechlawine.musicplayer",
+        "productName": "MusicPlayer",
+        "mac": {
+            "category": "public.app-category.music"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true
+        },
+        "files": [
+            "dist/**/*",
+            "electron/**/*"
+        ],
+        "directories": {
+            "buildResources": "assets",
+            "output": "dist_electron"
+        }
+    }
+}
