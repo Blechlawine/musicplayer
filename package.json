@@ -6,13 +6,14 @@
         "dev": "vite",
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
-        "electron": "wait-on tcp:3000 && cross-env ENVIRONMENT=development electron .",
+        "electron": "yarn build:typescript:electron && wait-on tcp:3000 && cross-env ENVIRONMENT=development electron .",
         "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron\"",
+        "build:typescript:electron": "tsc --build tsconfig.electron.json",
         "build:electron": "electron-builder",
         "build:vue": "vue-tsc --noEmit && cross-env ENVIRONMENT=production vite build",
         "build:app": "yarn build:vue && yarn build:electron"
     },
-    "main": "electron/electron.js",
+    "main": "electronDist/electron.js",
     "dependencies": {
         "vue": "^3.2.25"
     },
