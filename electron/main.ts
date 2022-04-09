@@ -1,5 +1,6 @@
 import { BrowserWindow } from "electron";
 import path from "path";
+import { registerIpcHandlers } from "./ipc";
 
 export default class Main {
     static mainWindow: BrowserWindow | null;
@@ -25,6 +26,7 @@ export default class Main {
             height: 600,
             webPreferences: {
                 contextIsolation: true,
+                preload: path.join(__dirname, "preload.js"),
             },
         });
 
@@ -36,6 +38,7 @@ export default class Main {
             Main.mainWindow.webContents.openDevTools();
         }
 
+        registerIpcHandlers(Main.mainWindow);
         Main.mainWindow.on("closed", Main.onClose);
     }
 
