@@ -13,7 +13,7 @@
         "build:vue": "vue-tsc --noEmit && cross-env ENVIRONMENT=production vite build",
         "build:app": "yarn build:vue && yarn build:electron"
     },
-    "main": "electronDist/electron.js",
+    "main": "electronCompiled/electron.js",
     "dependencies": {
         "vue": "^3.2.25"
     },
@@ -42,7 +42,7 @@
         },
         "files": [
             "dist/**/*",
-            "electron/**/*"
+            "electronCompiled/**/*"
         ],
         "directories": {
             "buildResources": "assets",
