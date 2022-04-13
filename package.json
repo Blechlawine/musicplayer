@@ -17,6 +17,8 @@
     "dependencies": {
         "music-metadata": "^7.12.3",
         "pinia": "^2.0.13",
+        "sequelize": "^6.19.0",
+        "sqlite3": "^5.0.2",
         "vue": "^3.2.25"
     },
     "devDependencies": {

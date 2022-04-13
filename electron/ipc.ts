@@ -1,10 +1,10 @@
 // electron context
 import { BrowserWindow, ipcMain } from "electron";
+import windowApi from "./api/window";
 
-export const registerIpcHandlers = (win: BrowserWindow | null) => {
-    ipcMain.on("closeWindow", () => {
-        if (win) {
-            win.close();
-        }
+export const registerIpcHandlers = (win: BrowserWindow) => {
+    const windowEventHandlers = windowApi(win);
+    windowEventHandlers.forEach(({ event, handler }) => {
+        ipcMain.on(event, handler);
     });
 };
