@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import { createPinia } from "pinia";
 
 declare global {
     interface Window {
@@ -9,4 +10,6 @@ declare global {
     }
 }
 
-createApp(App).mount("#app");
+const store = createPinia();
+
+createApp(App).use(store).mount("#app");
