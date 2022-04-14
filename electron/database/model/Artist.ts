@@ -2,6 +2,8 @@ import { Model, DataTypes } from "sequelize";
 import sequelize from "../database";
 
 class Artist extends Model {
+    declare id: string;
+    declare name: string;
     static Albums: any;
 }
 

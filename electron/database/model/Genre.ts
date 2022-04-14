@@ -2,6 +2,8 @@ import { Model, DataTypes } from "sequelize";
 import sequelize from "../database";
 
 class Genre extends Model {
+    declare id: string;
+    declare name: string;
     static Tracks: any;
 }
 

@@ -2,6 +2,7 @@ import { Model, DataTypes } from "sequelize";
 import sequelize from "../database";
 
 class PlaylistTrack extends Model {
+    declare index: number;
     static Playlist: any;
     static Track: any;
 }

@@ -2,6 +2,17 @@ import { Model, DataTypes } from "sequelize";
 import sequelize from "../database";
 
 class Track extends Model {
+    declare id: string;
+    declare title: string;
+    declare path: string;
+    declare timesPlayed: number;
+    declare duration: number;
+    declare seconds: number;
+    declare minutes: number;
+    declare hours: number;
+    declare favourite: boolean;
+    declare trackNumber: number;
+    declare discNumber: number;
     static LibraryPath: any;
     static Album: any;
     static Genre: any;

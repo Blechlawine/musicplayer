@@ -2,6 +2,9 @@ import { Model, DataTypes } from "sequelize";
 import sequelize from "../database";
 
 class LibraryPath extends Model {
+    declare id: string;
+    declare name: string;
+    declare path: string;
     static Tracks: any;
 }
 
