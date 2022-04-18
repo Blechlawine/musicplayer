@@ -1,11 +1,15 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { createPinia } from "pinia";
+import { LibraryPath } from "../shared/types/database";
 
 declare global {
     interface Window {
         api: {
             closeWindow: () => void;
+            scanLibrary: () => string[];
+            addLibraryPath: ({}: { path: string; name: string }) => Promise<LibraryPath>;
+            getLibraryPaths: () => Promise<LibraryPath[]>;
         };
     }
 }

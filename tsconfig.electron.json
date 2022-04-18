@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "useDefineForClassFields": true,
         "module": "CommonJs",
         "moduleResolution": "node",

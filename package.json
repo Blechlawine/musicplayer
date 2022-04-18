@@ -13,7 +13,7 @@
         "build:vue": "vue-tsc --noEmit && cross-env ENVIRONMENT=production vite build",
         "build:app": "yarn build:vue && yarn build:electron"
     },
-    "main": "electronCompiled/electron.js",
+    "main": "electronCompiled/electron/electron.js",
     "dependencies": {
         "music-metadata": "^7.12.3",
         "pinia": "^2.0.13",

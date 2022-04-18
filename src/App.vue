@@ -1,21 +1,35 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from "./components/HelloWorld.vue";
+import LibraryPath from "./components/settings/Librarypath.vue";
+import useLibary from "./stores/libraryStore";
+import { onMounted, ref } from "vue";
+
+const LibraryStore = useLibary();
+
+const path = ref('');
+const name = ref('');
+
+onMounted(() => {
+    LibraryStore.getLibraryPaths();
+});
+
+const addLibraryPath = () => {
+    LibraryStore.addLibraryPath(path.value, name.value);
+    name.value = '';
+    path.value = '';
+};
+
+const scanLibrary = () => {
+    window.api.scanLibrary();
+};
 </script>
 
 <template>
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+    <div>
+        <h1>Hallo</h1>
+        <LibraryPath v-for="path in LibraryStore.libraryPaths" :LibraryPath="path" :key="path.id"></LibraryPath>
+        <input type="text" v-model="path" id="">
+        <input type="text" v-model="name" id="">
+        <button @click="addLibraryPath">Add</button><br>
+        <button @click="scanLibrary">Scan Library</button>
+    </div>
 </template>
-
-<style>
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
-</style>

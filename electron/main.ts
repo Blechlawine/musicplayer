@@ -37,6 +37,7 @@ export default class Main {
         );
 
         if (isDev) {
+            Main.mainWindow.webContents.setDevToolsWebContents(new Main.BrowserWindow().webContents);
             Main.mainWindow.webContents.openDevTools();
         }
 
