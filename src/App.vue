@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LibraryPath from "./components/settings/Librarypath.vue";
 import useLibary from "./stores/libraryStore";
-import { onMounted, ref } from "vue";
+import { onMounted, Ref, ref } from "vue";
 
 const LibraryStore = useLibary();
 
@@ -18,8 +18,10 @@ const addLibraryPath = () => {
     path.value = '';
 };
 
-const scanLibrary = () => {
-    window.api.scanLibrary();
+let tracks: Ref<string[]> = ref([]);
+
+const scanLibrary = async () => {
+    tracks.value = await window.api.scanLibrary();
 };
 </script>
 
@@ -31,5 +33,6 @@ const scanLibrary = () => {
         <input type="text" v-model="name" id="">
         <button @click="addLibraryPath">Add</button><br>
         <button @click="scanLibrary">Scan Library</button>
+        <audio controls v-for="track in tracks" :src="track" :key="track"></audio>
     </div>
 </template>

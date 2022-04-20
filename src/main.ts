@@ -7,7 +7,7 @@ declare global {
     interface Window {
         api: {
             closeWindow: () => void;
-            scanLibrary: () => string[];
+            scanLibrary: () => Promise<string[]>;
             addLibraryPath: ({}: { path: string; name: string }) => Promise<LibraryPath>;
             getLibraryPaths: () => Promise<LibraryPath[]>;
         };

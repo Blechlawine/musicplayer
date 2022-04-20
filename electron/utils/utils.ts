@@ -8,22 +8,22 @@ export const splitTime = (secondsIn: number): [number, number, number] => {
     return [hours, minutes, seconds];
 };
 
-export const walk = (path: string, callback: (path: string, dirent: fs.Stats) => void) => {
+export function* walkIterator(path: string | string[]): Generator<string, void, void> {
     // walk directory tree starting from path
-    let walkStack = [path];
+    let walkStack = Array.isArray(path) ? path : [path];
     while (walkStack.length) {
         const dirPath = walkStack.pop();
         if (dirPath) {
             let files = fs.readdirSync(dirPath);
-            files.forEach((file) => {
+            for (const file of files) {
                 let filePath = p.join(dirPath, file);
                 let stat = fs.statSync(filePath);
                 if (stat.isDirectory()) {
                     walkStack.push(filePath);
                 } else {
-                    callback(filePath, stat);
+                    yield filePath;
                 }
-            });
+            }
         }
     }
-};
+}

@@ -29,6 +29,7 @@ export default class Main {
             webPreferences: {
                 contextIsolation: true,
                 preload: path.join(__dirname, "preload.js"),
+                webSecurity: false, // Enables reading local files in the web context
             },
         });
 
