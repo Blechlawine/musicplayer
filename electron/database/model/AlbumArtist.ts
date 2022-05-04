@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import Album from "./Album";
 import Artist from "./Artist";
 
@@ -12,6 +12,11 @@ class AlbumArtist extends BaseEntity {
 
     @ManyToOne(() => Artist, (artist) => artist.artistAlbums)
     artist: Artist;
+
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
 
 export default AlbumArtist;

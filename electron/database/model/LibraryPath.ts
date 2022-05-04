@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import Track from "./Track";
 
 @Entity()
@@ -14,6 +14,11 @@ class LibraryPath extends BaseEntity {
 
     @OneToMany(() => Track, (track) => track.libraryPath)
     tracks: Track[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
 
 export default LibraryPath;

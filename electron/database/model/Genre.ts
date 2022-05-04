@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import Track from "./Track";
 
 @Entity()
@@ -9,8 +9,13 @@ class Genre extends BaseEntity {
     @Column({ type: "text" })
     name: string;
 
-    @OneToMany(() => Track, (track) => track.genre)
+    @ManyToMany(() => Track, (track) => track.genres)
     tracks: Track[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
 
 export default Genre;

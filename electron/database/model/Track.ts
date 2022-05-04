@@ -1,4 +1,15 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, ManyToMany } from "typeorm";
+import {
+    BaseEntity,
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    OneToOne,
+    ManyToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+    JoinTable,
+} from "typeorm";
 import LibraryPath from "./LibraryPath";
 import PlaylistTrack from "./PlaylistTrack";
 import Artist from "./Artist";
@@ -8,35 +19,38 @@ import Genre from "./Genre";
 @Entity()
 class Track extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
-    id: string;
+    id!: string;
 
-    @Column({ type: "text" })
-    title: string;
+    @Column({ type: "text", default: "" })
+    title?: string;
 
     @Column({ type: "text", unique: true })
-    path: string;
+    path!: string;
 
     @Column({ type: "int", default: 0 })
-    timesPlayed: number;
+    timesPlayed!: number;
 
-    @Column({ type: "decimal" })
-    duration: number;
+    @Column({ type: "decimal", nullable: true })
+    duration?: number;
 
     @Column({ type: "int" })
-    seconds: number;
+    seconds!: number;
     @Column({ type: "int" })
-    minutes: number;
+    minutes!: number;
     @Column({ type: "int" })
-    hours: number;
+    hours!: number;
 
     @Column({ type: "boolean", default: false })
-    favourite: boolean;
+    favourite!: boolean;
 
-    @Column({ type: "int" })
-    trackNumber: number;
+    @Column({ type: "int", nullable: true })
+    trackNumber: number | null;
 
-    @Column({type: "int"})
-    diskNumber: number;
+    @Column({ type: "int", nullable: true })
+    diskNumber: number | null;
+
+    @Column({ type: "boolean", default: true })
+    exists!: boolean;
 
     @ManyToOne(() => LibraryPath, (libraryPath) => libraryPath.tracks)
     libraryPath: LibraryPath;
@@ -48,10 +62,17 @@ class Track extends BaseEntity {
     album: Album;
 
     @ManyToMany(() => Artist, (artist) => artist.tracks)
+    @JoinTable()
     artists: Artist[];
 
-    @ManyToOne(() => Genre, (genre) => genre.tracks)
-    genre: Genre;
+    @ManyToMany(() => Genre, (genre) => genre.tracks)
+    @JoinTable()
+    genres: Genre[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
 
 export default Track;

@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import PlaylistTrack from "./PlaylistTrack";
 
 @Entity()
@@ -11,6 +11,11 @@ class Playlist extends BaseEntity {
 
     @OneToMany(() => PlaylistTrack, (playlistTrack) => playlistTrack.playlist)
     playlistTracks: PlaylistTrack[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
 
 export default Playlist;

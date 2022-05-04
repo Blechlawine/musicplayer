@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import AlbumArtist from "./AlbumArtist";
 import Track from "./Track";
 
@@ -15,6 +15,11 @@ class Album extends BaseEntity {
 
     @OneToMany(() => Track, (track) => track.album)
     tracks: Track[];
+
+    @CreateDateColumn()
+    createdAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
 
 export default Album;

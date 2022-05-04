@@ -2,7 +2,6 @@ import { BrowserWindow } from "electron";
 import path from "path";
 import datasource from "./database/database";
 import { registerIpcHandlers } from "./ipc";
-import "./database/model"; // Just for initializing the models in sequelize
 
 export default class Main {
     static mainWindow: BrowserWindow | null;
