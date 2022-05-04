@@ -1,17 +1,17 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../database";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import Album from "./Album";
+import Artist from "./Artist";
 
-class AlbumArtist extends Model {
-    static Albums: any;
-    static Artists: any;
+@Entity()
+class AlbumArtist extends BaseEntity {
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @ManyToOne(() => Album, (album) => album.albumArtists)
+    album: Album;
+
+    @ManyToOne(() => Artist, (artist) => artist.artistAlbums)
+    artist: Artist;
 }
-
-AlbumArtist.init(
-    {},
-    {
-        sequelize,
-        modelName: "albumArtist",
-    }
-);
 
 export default AlbumArtist;

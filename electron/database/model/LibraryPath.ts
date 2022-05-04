@@ -1,34 +1,19 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../database";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import Track from "./Track";
 
-class LibraryPath extends Model {
-    declare id: string;
-    declare name: string;
-    declare path: string;
-    static Tracks: any;
+@Entity()
+class LibraryPath extends BaseEntity {
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @Column({ type: "text" })
+    path: string;
+
+    @Column({ type: "text" })
+    name: string;
+
+    @OneToMany(() => Track, (track) => track.libraryPath)
+    tracks: Track[];
 }
-
-LibraryPath.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            unique: true,
-            defaultValue: DataTypes.UUIDV4,
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        path: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize,
-        modelName: "libraryPath",
-    }
-);
 
 export default LibraryPath;

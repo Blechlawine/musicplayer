@@ -1,6 +1,6 @@
 import { BrowserWindow } from "electron";
 import path from "path";
-import sequelize from "./database/database";
+import datasource from "./database/database";
 import { registerIpcHandlers } from "./ipc";
 import "./database/model"; // Just for initializing the models in sequelize
 
@@ -43,7 +43,7 @@ export default class Main {
         }
 
         
-        await sequelize.sync();
+        await datasource.initialize();
         registerIpcHandlers(Main.mainWindow);
         Main.mainWindow.on("closed", Main.onClose);
     }

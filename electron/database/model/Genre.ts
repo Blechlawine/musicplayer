@@ -1,29 +1,16 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../database";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import Track from "./Track";
 
-class Genre extends Model {
-    declare id: string;
-    declare name: string;
-    static Tracks: any;
+@Entity()
+class Genre extends BaseEntity {
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @Column({ type: "text" })
+    name: string;
+
+    @OneToMany(() => Track, (track) => track.genre)
+    tracks: Track[];
 }
-
-Genre.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            unique: true,
-            defaultValue: DataTypes.UUIDV4,
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize,
-        modelName: "genre",
-    }
-);
 
 export default Genre;

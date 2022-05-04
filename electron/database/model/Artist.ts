@@ -1,29 +1,20 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../database";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from "typeorm";
+import AlbumArtist from "./AlbumArtist";
+import Track from "./Track";
 
-class Artist extends Model {
-    declare id: string;
-    declare name: string;
-    static Albums: any;
+@Entity()
+class Artist extends BaseEntity {
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @Column({ type: "text" })
+    name: string;
+
+    @OneToMany(() => AlbumArtist, (albumArtist) => albumArtist.artist)
+    artistAlbums: AlbumArtist[];
+
+    @ManyToMany(() => Track, (track) => track.artists)
+    tracks: Track[];
 }
-
-Artist.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            unique: true,
-            defaultValue: DataTypes.UUIDV4,
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize,
-        modelName: "artist",
-    }
-);
 
 export default Artist;

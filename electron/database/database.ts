@@ -1,13 +1,30 @@
-import { Sequelize } from "sequelize";
+import { DataSource } from "typeorm";
 import { app } from "electron";
 import path from "path";
+import LibraryPath from "./model/LibraryPath";
+import Track from "./model/Track";
+import Album from "./model/Album";
+import Artist from "./model/Artist";
+import AlbumArtist from "./model/AlbumArtist";
+import Genre from "./model/Genre";
+import Playlist from "./model/Playlist";
+import PlaylistTrack from "./model/PlaylistTrack";
 
-const sequelize = new Sequelize("database", "username", "password", {
-    dialect: "sqlite",
-    storage: path.join(app.getPath("userData"), "database.sqlite"),
-    query: {
-        raw: true,
-    }
+const datasource = new DataSource({
+    type: "sqlite",
+    database: path.join(app.getPath("userData"), "database.sqlite"),
+    synchronize: true,
+    logging: true,
+    entities: [
+        LibraryPath,
+        Track,
+        Album,
+        Artist,
+        AlbumArtist,
+        Genre,
+        Playlist,
+        PlaylistTrack
+    ],
 });
 
-export default sequelize;
+export default datasource;

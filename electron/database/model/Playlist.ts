@@ -1,30 +1,16 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../database";
+import { BaseEntity, Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import PlaylistTrack from "./PlaylistTrack";
 
-class Playlist extends Model {
-    declare id: string;
-    declare title: string;
-    static Tracks: any;
-    static PlaylistTracks: any;
+@Entity()
+class Playlist extends BaseEntity {
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @Column({ type: "text" })
+    title: string;
+
+    @OneToMany(() => PlaylistTrack, (playlistTrack) => playlistTrack.playlist)
+    playlistTracks: PlaylistTrack[];
 }
-
-Playlist.init(
-    {
-        id: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            unique: true,
-            defaultValue: DataTypes.UUIDV4,
-        },
-        title: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize,
-        modelName: "playlist",
-    }
-);
 
 export default Playlist;

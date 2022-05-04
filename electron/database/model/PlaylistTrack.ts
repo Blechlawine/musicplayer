@@ -1,23 +1,21 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../database";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinColumn } from "typeorm";
+import Track from "./Track";
+import Playlist from "./Playlist";
 
-class PlaylistTrack extends Model {
-    declare index: number;
-    static Playlist: any;
-    static Track: any;
+@Entity()
+class PlaylistTrack extends BaseEntity {
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @Column({type: "int"})
+    index: number;
+
+    @OneToOne(() => Track, track => track.playlistTrack)
+    @JoinColumn()
+    track: Track;
+
+    @ManyToOne(() => Playlist, playlist => playlist.playlistTracks)
+    playlist: Playlist[];
 }
-
-PlaylistTrack.init(
-    {
-        index: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize,
-        modelName: "playlistTrack",
-    }
-);
 
 export default PlaylistTrack;

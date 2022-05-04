@@ -8,6 +8,8 @@
         "sourceMap": false,
         "esModuleInterop": true,
         "outDir": "./electronCompiled",
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
     },
     "include": ["electron/**/*.ts"]
 }
