@@ -38,38 +38,57 @@ export default () => [
                     let metaArtists = meta.common.artists;
                     let metaAlbum = meta.common.album;
                     let metaGenres = meta.common.genre;
+                    let artists: Artist[];
                     if (metaArtists === undefined) {
                         track.artists = [];
-                    } else if (metaArtists?.length > 0) {
-                        const artists = metaArtists.map(async (artistName) => {
-                            let artist = await Artist.findOne({ where: { name: artistName } });
-                            if (!artist) {
-                                artist = Artist.create({
-                                    name: artistName,
-                                });
-                            }
-                            await artist.save();
-                            return artist;
-                        });
-                        track.artists = await Promise.all(artists);
+                        artists = [];
+                    } else {
+                        artists = await Promise.all(
+                            metaArtists.map(async (artistName) => {
+                                let artist =
+                                    (await Artist.findOne({ where: { name: artistName } })) ??
+                                    Artist.create({
+                                        name: artistName,
+                                        albums: [],
+                                    });
+                                await artist.save();
+                                return artist;
+                            })
+                        );
+                        track.artists = artists;
                     }
                     if (metaGenres === undefined) {
                         track.genres = [];
                     } else if (metaGenres.length > 0) {
                         const genres = metaGenres.map(async (genreName) => {
-                            let genre = await Genre.findOne({ where: { name: genreName } });
-                            if (!genre) {
-                                genre = Genre.create({
+                            let genre =
+                                (await Genre.findOne({ where: { name: genreName } })) ??
+                                Genre.create({
                                     name: genreName,
                                 });
-                            }
                             await genre.save();
                             return genre;
                         });
                         track.genres = await Promise.all(genres);
                     }
                     if (metaAlbum) {
-                        // TODO: read albumartists and create album for those artists
+                        let album =
+                            (await Album.findOne({ where: { title: metaAlbum } })) ??
+                            Album.create({
+                                title: metaAlbum,
+                            });
+                        track.album = album;
+                        album.artists = [];
+                        await album.save();
+                        artists.forEach(async (artist) => {
+                            if (!album.artists.includes(artist)) {
+                                album.artists.push(artist);
+                            }
+                            await artist.save();
+                        });
+                        await album.save();
+                        // TODO: Read albumartists from metadata and add them to the album
+                        // TODO: check if album with this name and this artist already exists, so 2 artists could have an album with the same name, but not the same album
                     }
                     await track.save();
                 } else {

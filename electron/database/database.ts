@@ -5,7 +5,6 @@ import LibraryPath from "./model/LibraryPath";
 import Track from "./model/Track";
 import Album from "./model/Album";
 import Artist from "./model/Artist";
-import AlbumArtist from "./model/AlbumArtist";
 import Genre from "./model/Genre";
 import Playlist from "./model/Playlist";
 import PlaylistTrack from "./model/PlaylistTrack";
@@ -20,7 +19,6 @@ const datasource = new DataSource({
         Track,
         Album,
         Artist,
-        AlbumArtist,
         Genre,
         Playlist,
         PlaylistTrack

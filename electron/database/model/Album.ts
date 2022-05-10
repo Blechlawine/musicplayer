@@ -1,5 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import AlbumArtist from "./AlbumArtist";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import Artist from "./Artist";
 import Track from "./Track";
 
 @Entity()
@@ -10,8 +10,8 @@ class Album extends BaseEntity {
     @Column({ type: "text" })
     title: string;
 
-    @OneToMany(() => AlbumArtist, (albumArtist) => albumArtist.album)
-    albumArtists: AlbumArtist[];
+    @ManyToMany(() => Artist, (artist) => artist.albums)
+    artists: Artist[];
 
     @OneToMany(() => Track, (track) => track.album)
     tracks: Track[];
