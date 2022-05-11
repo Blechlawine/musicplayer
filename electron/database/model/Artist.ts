@@ -1,4 +1,13 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, UpdateDateColumn, JoinTable } from "typeorm";
+import {
+    BaseEntity,
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+    JoinTable,
+} from "typeorm";
 import Album from "./Album";
 import Track from "./Track";
 

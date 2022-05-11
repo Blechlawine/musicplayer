@@ -3,22 +3,29 @@ import Track from "../database/model/Track";
 import Artist from "../database/model/Artist";
 import Genre from "../database/model/Genre";
 import Album from "../database/model/Album";
-import database from "../database/database";
+import dataSource from "../database/database";
 import mm from "music-metadata";
 import { walkIterator } from "../utils/utils";
 import { splitTime } from "../utils/utils";
+import { Not, IsNull } from "typeorm";
 
 export default () => [
     {
         event: "scanLibrary",
         handler: async (): Promise<string[]> => {
             console.log("Reloading music library...");
+            await dataSource
+                .getRepository(Track)
+                .createQueryBuilder()
+                .update({
+                    exists: false,
+                })
+                .execute();
             const libraryPaths = await LibraryPath.find();
             let trackPaths: string[] = [];
             const pathIterator = walkIterator(libraryPaths.map((lp: LibraryPath) => lp.path));
             for (const path of pathIterator) {
                 const trackExists = await Track.findOne({ where: { path } });
-                console.log(trackExists);
                 const meta = await mm.parseFile(path);
                 const time = splitTime(meta.format.duration ?? 0);
                 if (!trackExists) {
@@ -87,20 +94,72 @@ export default () => [
                             await artist.save();
                         });
                         await album.save();
-                        // TODO: Read albumartists from metadata and add them to the album
-                        // TODO: check if album with this name and this artist already exists, so 2 artists could have an album with the same name, but not the same album
                     }
                     await track.save();
                 } else {
-                    // trackExists.title = meta.common.title;
-                    // trackExists.duration = meta.format.duration ?? 0;
-                    // trackExists.seconds = time[2];
-                    // trackExists.minutes = time[1];
-                    // trackExists.hours = time[0];
-                    // trackExists.trackNumber = meta.common.track.no;
-                    // trackExists.diskNumber = meta.common.disk.no;
-                    // trackExists.exists = true;
-                    // trackExists.save();
+                    trackExists.title = meta.common.title;
+                    trackExists.duration = meta.format.duration ?? 0;
+                    trackExists.seconds = time[2];
+                    trackExists.minutes = time[1];
+                    trackExists.hours = time[0];
+                    trackExists.trackNumber = meta.common.track.no;
+                    trackExists.diskNumber = meta.common.disk.no;
+                    trackExists.exists = true;
+                    trackExists.save();
+                    let metaArtists = meta.common.artists;
+                    let metaAlbum = meta.common.album;
+                    let metaGenres = meta.common.genre;
+                    let artists: Artist[];
+                    if (metaArtists === undefined) {
+                        trackExists.artists = [];
+                        artists = [];
+                    } else {
+                        artists = await Promise.all(
+                            metaArtists.map(async (artistName) => {
+                                let artist =
+                                    (await Artist.findOne({ where: { name: artistName } })) ??
+                                    Artist.create({
+                                        name: artistName,
+                                        albums: [],
+                                    });
+                                await artist.save();
+                                return artist;
+                            })
+                        );
+                        trackExists.artists = artists;
+                    }
+                    if (metaGenres === undefined) {
+                        trackExists.genres = [];
+                    } else if (metaGenres.length > 0) {
+                        const genres = metaGenres.map(async (genreName) => {
+                            let genre =
+                                (await Genre.findOne({ where: { name: genreName } })) ??
+                                Genre.create({
+                                    name: genreName,
+                                });
+                            await genre.save();
+                            return genre;
+                        });
+                        trackExists.genres = await Promise.all(genres);
+                    }
+                    if (metaAlbum) {
+                        let album =
+                            (await Album.findOne({ where: { title: metaAlbum } })) ??
+                            Album.create({
+                                title: metaAlbum,
+                            });
+                        trackExists.album = album;
+                        album.artists = [];
+                        await album.save();
+                        artists.forEach(async (artist) => {
+                            if (!album.artists.includes(artist)) {
+                                album.artists.push(artist);
+                            }
+                            await artist.save();
+                        });
+                        await album.save();
+                    }
+                    await trackExists.save();
                 }
                 trackPaths.push(path);
             }
