@@ -94,6 +94,7 @@ export default () => [
                 await track.save();
                 trackPaths.push(path);
             }
+            // TODO: remove albums and artists without tracks from the database
             console.log("Scanning done.");
             return trackPaths;
         },
