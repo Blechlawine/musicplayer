@@ -14,4 +14,7 @@ contextBridge.exposeInMainWorld("api", {
     scanLibrary: () => {
         return ipcRenderer.invoke("scanLibrary");
     },
+    getTracks: () => {
+        return ipcRenderer.invoke("getTracks");
+    },
 });
