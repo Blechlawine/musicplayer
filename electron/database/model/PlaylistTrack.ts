@@ -1,4 +1,13 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import {
+    BaseEntity,
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    JoinColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from "typeorm";
 import Track from "./Track";
 import Playlist from "./Playlist";
 
@@ -10,7 +19,9 @@ class PlaylistTrack extends BaseEntity {
     @Column({ type: "int" })
     index: number;
 
-    @OneToOne(() => Track, (track) => track.playlistTrack)
+    @ManyToOne(() => Track, (track) => track.playlistTrack, {
+        eager: true,
+    })
     @JoinColumn()
     track: Track;
 

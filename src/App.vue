@@ -41,7 +41,7 @@ const fetchTracks = async () => {
         <button @click="addLibraryPath">Add</button><br />
         <button @click="scanLibrary">Scan Library</button>
         <div class="track" v-for="track in tracks" :key="track.id">
-            <p>{{ track.title }}</p>
+            <p>{{ track.title }} - {{ track.artists.map((a) => a.name).join(", ") }}</p>
             <audio controls :src="track.path"></audio>
         </div>
     </div>

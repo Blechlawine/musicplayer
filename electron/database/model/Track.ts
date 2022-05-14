@@ -4,7 +4,7 @@ import {
     PrimaryGeneratedColumn,
     Column,
     ManyToOne,
-    OneToOne,
+    OneToMany,
     ManyToMany,
     CreateDateColumn,
     UpdateDateColumn,
@@ -52,20 +52,28 @@ class Track extends BaseEntity {
     @Column({ type: "boolean", default: true })
     exists!: boolean;
 
-    @ManyToOne(() => LibraryPath, (libraryPath) => libraryPath.tracks)
+    @ManyToOne(() => LibraryPath, (libraryPath) => libraryPath.tracks, {
+        eager: true,
+    })
     libraryPath: LibraryPath;
 
-    @OneToOne(() => PlaylistTrack, (playlistTrack) => playlistTrack.track)
+    @OneToMany(() => PlaylistTrack, (playlistTrack) => playlistTrack.track)
     playlistTrack: PlaylistTrack;
 
-    @ManyToOne(() => Album, (album) => album.tracks)
+    @ManyToOne(() => Album, (album) => album.tracks, {
+        eager: true,
+    })
     album: Album;
 
-    @ManyToMany(() => Artist, (artist) => artist.tracks)
+    @ManyToMany(() => Artist, (artist) => artist.tracks, {
+        eager: true,
+    })
     @JoinTable()
     artists: Artist[];
 
-    @ManyToMany(() => Genre, (genre) => genre.tracks)
+    @ManyToMany(() => Genre, (genre) => genre.tracks, {
+        eager: true,
+    })
     @JoinTable()
     genres: Genre[];
 
