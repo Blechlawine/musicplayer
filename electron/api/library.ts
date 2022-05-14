@@ -7,7 +7,53 @@ import dataSource from "../database/database";
 import mm from "music-metadata";
 import { walkIterator } from "../utils/utils";
 import { splitTime } from "../utils/utils";
-import { Not, IsNull } from "typeorm";
+
+async function saveArtists(metaArtists: string[]): Promise<Artist[]> {
+    const artists = await Promise.all(
+        metaArtists.map(async (artistName) => {
+            let artist =
+                (await Artist.findOne({ where: { name: artistName } })) ??
+                Artist.create({
+                    name: artistName,
+                    albums: [],
+                });
+            await artist.save();
+            return artist;
+        })
+    );
+    return artists;
+}
+
+async function saveGenres(metaGenres: string[]): Promise<Genre[]> {
+    const genres = metaGenres.map(async (genreName) => {
+        let genre =
+            (await Genre.findOne({ where: { name: genreName } })) ??
+            Genre.create({
+                name: genreName,
+            });
+        await genre.save();
+        return genre;
+    });
+    return await Promise.all(genres);
+}
+
+async function saveAlbumWithArtists(artists: Artist[], metaAlbum: string): Promise<Album> {
+    let album =
+        (await Album.findOne({ where: { title: metaAlbum } })) ??
+        Album.create({
+            title: metaAlbum,
+        });
+    album.artists = [];
+    await album.save();
+    artists.forEach(async (artist) => {
+        if (!album.artists.includes(artist)) {
+            album.artists.push(artist);
+        }
+        await artist.save();
+    });
+    await album.save();
+    return album;
+}
 
 export default () => [
     {
@@ -43,53 +89,18 @@ export default () => [
                 let metaGenres = meta.common.genre;
                 let artists: Artist[];
                 if (metaArtists === undefined) {
-                    track.artists = [];
                     artists = [];
                 } else {
-                    artists = await Promise.all(
-                        metaArtists.map(async (artistName) => {
-                            let artist =
-                                (await Artist.findOne({ where: { name: artistName } })) ??
-                                Artist.create({
-                                    name: artistName,
-                                    albums: [],
-                                });
-                            await artist.save();
-                            return artist;
-                        })
-                    );
-                    track.artists = artists;
+                    artists = await saveArtists(metaArtists);
                 }
+                track.artists = artists;
                 if (metaGenres === undefined) {
                     track.genres = [];
                 } else if (metaGenres.length > 0) {
-                    const genres = metaGenres.map(async (genreName) => {
-                        let genre =
-                            (await Genre.findOne({ where: { name: genreName } })) ??
-                            Genre.create({
-                                name: genreName,
-                            });
-                        await genre.save();
-                        return genre;
-                    });
-                    track.genres = await Promise.all(genres);
+                    track.genres = await saveGenres(metaGenres);
                 }
                 if (metaAlbum) {
-                    let album =
-                        (await Album.findOne({ where: { title: metaAlbum } })) ??
-                        Album.create({
-                            title: metaAlbum,
-                        });
-                    track.album = album;
-                    album.artists = [];
-                    await album.save();
-                    artists.forEach(async (artist) => {
-                        if (!album.artists.includes(artist)) {
-                            album.artists.push(artist);
-                        }
-                        await artist.save();
-                    });
-                    await album.save();
+                    track.album = await saveAlbumWithArtists(artists, metaAlbum);
                 }
                 await track.save();
                 trackPaths.push(path);
