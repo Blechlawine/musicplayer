@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { createPinia } from "pinia";
 import { LibraryPath, Track } from "./types/database";
+import "./styles/index.css";
 
 declare global {
     interface Window {
