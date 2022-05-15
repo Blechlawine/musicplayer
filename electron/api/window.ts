@@ -7,6 +7,22 @@ export default (win: BrowserWindow) => [
             if (win) {
                 win.close();
             }
-        }
-    }
-]
+        },
+    },
+    {
+        event: "minimizeWindow",
+        handler: () => {
+            if (win) {
+                win.minimize();
+            }
+        },
+    },
+    {
+        event: "maximizeWindow",
+        handler: () => {
+            if (win) {
+                win.maximize();
+            }
+        },
+    },
+];

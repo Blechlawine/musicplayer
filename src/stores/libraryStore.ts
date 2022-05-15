@@ -1,5 +1,5 @@
 import { defineStore, StoreDefinition } from "pinia";
-import { LibraryPath } from "../../shared/types/database";
+import { LibraryPath } from "../types/database";
 
 type LibraryState = {
     libraryPaths: Array<LibraryPath>;

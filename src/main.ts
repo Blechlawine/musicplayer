@@ -8,6 +8,8 @@ declare global {
     interface Window {
         api: {
             closeWindow: () => void;
+            minimizeWindow: () => void;
+            maximizeWindow: () => void;
             scanLibrary: () => Promise<void>;
             addLibraryPath: ({}: { path: string; name: string }) => Promise<LibraryPath>;
             getLibraryPaths: () => Promise<LibraryPath[]>;

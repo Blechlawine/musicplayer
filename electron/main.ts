@@ -25,6 +25,8 @@ export default class Main {
         Main.mainWindow = new Main.BrowserWindow({
             width: 800,
             height: 600,
+            frame: false,
+            backgroundColor: "#121418",
             webPreferences: {
                 contextIsolation: true,
                 preload: path.join(__dirname, "preload.js"),
