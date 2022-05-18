@@ -9,7 +9,7 @@ import { formatTime } from "../utils/utils";
 
 const playerStore = usePlayer();
 
-const cover = ref("");
+const cover = ref("/album.svg");
 const audioElement = ref(null);
 const playPosition = ref(0);
 const displayArtists = computed(() => playerStore.currentTrack?.artists?.map((a: Artist) => a.name).join(", "));
