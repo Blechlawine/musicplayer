@@ -23,4 +23,7 @@ contextBridge.exposeInMainWorld("api", {
     getTracks: () => {
         return ipcRenderer.invoke("getTracks");
     },
+    readMetadata: (path: string) => {
+        return ipcRenderer.invoke("readMetadata", path);
+    },
 });

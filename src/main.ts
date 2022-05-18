@@ -3,6 +3,7 @@ import App from "./App.vue";
 import { createPinia } from "pinia";
 import { LibraryPath, Track } from "./types/database";
 import "./styles/index.css";
+import { IAudioMetadata } from "music-metadata";
 
 declare global {
     interface Window {
@@ -14,6 +15,7 @@ declare global {
             addLibraryPath: ({}: { path: string; name: string }) => Promise<LibraryPath>;
             getLibraryPaths: () => Promise<LibraryPath[]>;
             getTracks: () => Promise<Track[]>;
+            readMetadata: (path: string) => Promise<IAudioMetadata>;
         };
     }
 }
