@@ -131,4 +131,16 @@ export default () => [
             return await Track.find();
         },
     },
+    {
+        event: "saveFavouriteForTrack",
+        handler: async (event: any, trackId: string, favourite: boolean): Promise<Track | null> => {
+            const trackInDatabase = await Track.findOne({ where: { id: trackId } });
+            if (trackInDatabase) {
+                trackInDatabase.favourite = favourite;
+                return await trackInDatabase.save();
+            } else {
+                return null;
+            }
+        },
+    },
 ];

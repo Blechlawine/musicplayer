@@ -57,7 +57,11 @@ const usePlayer: StoreDefinition = defineStore("player", {
             } else {
                 this.pause();
             }
-        }
+        },
+        switchFavourite(track: Track) {
+            track.favourite = !track.favourite;
+            window.api.saveFavouriteForTrack(track.id, track.favourite);
+        },
     },
 });
 

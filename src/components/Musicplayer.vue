@@ -87,6 +87,9 @@ const switchRepeat = () => {
 const switchShuffle = () => {
     playerStore.shuffle = !playerStore.shuffle;
 };
+const switchFavourite = () => {
+    playerStore.switchFavourite(playerStore.currentTrack);
+};
 </script>
 
 <template>
@@ -135,12 +138,15 @@ const switchShuffle = () => {
         <IconButton size="small" @click="switchShuffle">
             {{ playerStore.shuffle ? "shuffle_on" : "shuffle" }}
         </IconButton>
+        <IconButton size="small" @click="switchFavourite">
+            {{ playerStore.currentTrack?.favourite ? "favorite" : "favorite_border" }}
+        </IconButton>
     </div>
 </template>
 
 <style lang="sass">
 .musicplayer
-    grid-template-columns: var(--sideBarWidth) min-content max-content 1fr max-content min-content min-content
+    grid-template-columns: var(--sideBarWidth) min-content max-content 1fr max-content min-content min-content min-content
 
 .stats
     grid-template-areas: "cover title" "cover artists"
