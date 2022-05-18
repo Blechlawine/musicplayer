@@ -21,6 +21,15 @@ const trackLength = computed(() =>
         playerStore.currentTrack.seconds || 0
     )
 );
+const repeatIcon = computed(() => {
+    if (playerStore.repeat === 0) {
+        return "repeat";
+    } else if (playerStore.repeat === 1) {
+        return "repeat_one_on";
+    } else if (playerStore.repeat === 2) {
+        return "repeat_on";
+    }
+});
 
 onMounted(() => {
     playerStore.audioElement = audioElement.value;
@@ -69,6 +78,12 @@ const checkPausedStatus = () => {
         playerStore.pause();
     }
 };
+const switchRepeat = () => {
+    playerStore.repeat--;
+    if (playerStore.repeat < 0) {
+        playerStore.repeat = 2;
+    }
+};
 </script>
 
 <template>
@@ -113,12 +128,13 @@ const checkPausedStatus = () => {
             ></Slider>
         </div>
         <p class="trackLength">{{ trackLength }}</p>
+        <IconButton size="small" @click="switchRepeat">{{ repeatIcon }}</IconButton>
     </div>
 </template>
 
 <style lang="sass">
 .musicplayer
-    grid-template-columns: var(--sideBarWidth) min-content max-content 1fr max-content
+    grid-template-columns: var(--sideBarWidth) min-content max-content 1fr max-content min-content
 
 .stats
     grid-template-areas: "cover title" "cover artists"
