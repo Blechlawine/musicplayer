@@ -9,6 +9,7 @@ type State = {
     currentTrackIndex: number;
     audioElement?: HTMLAudioElement;
     repeat: 0 | 1 | 2;
+    shuffle: boolean;
 };
 
 const usePlayer: StoreDefinition = defineStore("player", {
@@ -19,6 +20,7 @@ const usePlayer: StoreDefinition = defineStore("player", {
         currentTrackIndex: -1,
         audioElement: undefined,
         repeat: 0,
+        shuffle: false,
     }),
     getters: {
         currentTrack: (state: State): Track | {} => state.queue[state.currentTrackIndex] || {},
