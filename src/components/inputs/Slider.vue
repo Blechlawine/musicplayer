@@ -14,6 +14,11 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    handleSize: {
+        type: String,
+        default: "large",
+        validator: (value: string) => ["small", "large"].includes(value),
+    },
 });
 
 const emit = defineEmits(["update:value", "onChangeEnd"]);
@@ -26,6 +31,10 @@ const sliderRef: Ref<HTMLDivElement | null> = ref(null);
 
 const handleStyles = computed(() => ({
     "margin-left": `${handlePosition.value}px`,
+    width: props.handleSize === "small" ? "18px" : "1.5rem", // 1.5rem == 24px
+    height: props.handleSize === "small" ? "18px" : "1.5rem", // 1.5rem == 24px
+    top: props.handleSize === "small" ? "-5px" : "-8px",
+    left: props.handleSize === "small" ? "-9px" : "-12px",
 }));
 const sliderFillStyles = computed(() => ({
     width: `${handlePosition.value}px`,
@@ -72,15 +81,11 @@ const scale = (valueIn: number, inMin: number, inMax: number, outMin: number, ou
     <div class="slider h-2 m-3 relative rounded-full bg-overlay" ref="sliderRef" @mousedown="handleMouseDown">
         <div class="sliderfill bg-accent rounded-full h-full" :style="sliderFillStyles"></div>
         <div class="sliderfill bg-accent rounded-full h-full absolute blur-lg top-0" :style="sliderFillStyles"></div>
-        <div class="handle absolute rounded-full border-4 border-white bg-bg w-6 h-6" :style="handleStyles"></div>
+        <div class="handle absolute rounded-full border-4 border-white bg-bg" :style="handleStyles"></div>
     </div>
 </template>
 
 <style lang="sass">
 .slider
     width: calc(100% - 24px)
-
-    .handle
-        top: -8px
-        left: -10px
 </style>

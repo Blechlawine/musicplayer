@@ -148,6 +148,7 @@ const toggleQueue = () => {
                     :value="playerStore.volume"
                     :min="0"
                     :max="1"
+                    handleSize="small"
                     @update:value="(value) => playerStore.setVolume(value)"
                 ></Slider>
             </div>
