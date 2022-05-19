@@ -19,6 +19,10 @@ const props = defineProps({
         default: "large",
         validator: (value: string) => ["small", "large"].includes(value),
     },
+    alwaysShowHandle: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const emit = defineEmits(["update:value", "onChangeEnd"]);
@@ -36,8 +40,30 @@ const handleStyles = computed(() => ({
     top: props.handleSize === "small" ? "-5px" : "-8px",
     left: props.handleSize === "small" ? "-9px" : "-12px",
 }));
+const handleClasses = computed(() => ({
+    "opacity-0": !props.alwaysShowHandle,
+    handle: true,
+    absolute: true,
+    "rounded-full": true,
+    "border-4": true,
+    "border-white": true,
+    "hover:border-accent": true,
+    "bg-bg": true,
+    "transition-opacity": true,
+}));
+const sliderClasses = computed(() => ({
+    slider: true,
+    "h-2": true,
+    "m-3": true,
+    relative: true,
+    "rounded-full": true,
+    "bg-divider": !props.alwaysShowHandle,
+    "bg-white": props.alwaysShowHandle,
+    "hover:bg-white": !props.alwaysShowHandle,
+    "transition-colors": true,
+}));
 const sliderFillStyles = computed(() => ({
-    width: `${handlePosition.value}px`,
+    width: `${handlePosition.value || 0}px`,
 }));
 const handlePosition = computed(() => scale(props.value, props.min, props.max, minX.value, maxX.value));
 
@@ -78,14 +104,17 @@ const scale = (valueIn: number, inMin: number, inMax: number, outMin: number, ou
 };
 </script>
 <template>
-    <div class="slider h-2 m-3 relative rounded-full bg-overlay" ref="sliderRef" @mousedown="handleMouseDown">
+    <div :class="sliderClasses" ref="sliderRef" @mousedown="handleMouseDown">
         <div class="sliderfill bg-accent rounded-full h-full" :style="sliderFillStyles"></div>
         <div class="sliderfill bg-accent rounded-full h-full absolute blur-lg top-0" :style="sliderFillStyles"></div>
-        <div class="handle absolute rounded-full border-4 border-white bg-bg" :style="handleStyles"></div>
+        <div :class="handleClasses" :style="handleStyles"></div>
     </div>
 </template>
 
 <style lang="sass">
 .slider
     width: calc(100% - 24px)
+
+    &:hover > .handle
+        opacity: 1
 </style>
