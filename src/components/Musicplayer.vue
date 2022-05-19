@@ -12,6 +12,7 @@ const playerStore = usePlayer();
 const cover = ref("/album.svg");
 const audioElement = ref(null);
 const playPosition = ref(0);
+const queueOpen = ref(false); // TODO: move this into a store, to save it in settings
 const displayArtists = computed(() => playerStore.currentTrack?.artists?.map((a: Artist) => a.name).join(", "));
 const currentTime = computed(() => formatTime(...splitTime(playPosition.value)));
 const trackLength = computed(() =>
@@ -90,6 +91,9 @@ const switchShuffle = () => {
 const switchFavourite = () => {
     playerStore.switchFavourite(playerStore.currentTrack);
 };
+const toggleQueue = () => {
+    queueOpen.value = !queueOpen.value;
+};
 </script>
 
 <template>
@@ -137,14 +141,14 @@ const switchFavourite = () => {
         </div>
         <p class="trackLength">{{ trackLength }}</p>
         <div class="dividerVert"></div>
-        <div class="volumeWrapper flex items-center flex-row">
+        <div class="volumeWrapper flex items-center flex-row max-w-[180px] min-w-[100px] w-full">
             <span class="material-icons">volume_up</span>
-            <div class="volume w-[100px]">
+            <div class="volume w-full">
                 <Slider
                     :value="playerStore.volume"
                     :min="0"
                     :max="1"
-                    @update:value="(value) => (playerStore.setVolume(value))"
+                    @update:value="(value) => playerStore.setVolume(value)"
                 ></Slider>
             </div>
         </div>
@@ -155,6 +159,13 @@ const switchFavourite = () => {
         <IconButton size="small" @click="switchFavourite">
             {{ playerStore.currentTrack?.favourite ? "favorite" : "favorite_border" }}
         </IconButton>
+        <IconButton size="small" @click="toggleQueue">queue_music</IconButton>
+        <div
+            v-if="queueOpen"
+            class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-2xl"
+        >
+            <!-- TODO: List of tracks in queue -->
+        </div>
     </div>
 </template>
 
