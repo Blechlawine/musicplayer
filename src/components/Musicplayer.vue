@@ -94,7 +94,7 @@ const switchFavourite = () => {
 
 <template>
     <div
-        class="musicplayer grid items-center p-3 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-2xl fixed select-none border-t-2 border-divider"
+        class="musicplayer flex items-center p-3 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-2xl fixed select-none border-t-2 border-divider"
     >
         <div class="hidden">
             <audio
@@ -107,15 +107,17 @@ const switchFavourite = () => {
                 @pause="checkPausedStatus"
             ></audio>
         </div>
-        <div class="stats grid gap-x-3 w-full">
+        <div class="stats flex gap-x-3 w-[var(--sideBarWidth)] items-center">
             <div class="cover w-14 h-14 rounded-md object-cover relative">
                 <img class="w-14 h-14 rounded-md blur-lg absolute left-0 top-0" :src="cover" />
                 <img class="w-14 h-14 rounded-md absolute left-0 top-0" :src="cover" />
             </div>
-            <p class="title font-medium text-sm text-ellipsis whitespace-nowrap overflow-x-hidden w-full">
-                {{ playerStore.currentTrack.title }}
-            </p>
-            <p class="artists text-xs">{{ displayArtists }}</p>
+            <div class="statsText">
+                <p class="title font-medium text-sm text-ellipsis whitespace-nowrap overflow-x-hidden w-full">
+                    {{ playerStore.currentTrack.title }}
+                </p>
+                <p class="artists text-xs w-full max-w-[200px]">{{ displayArtists }}</p>
+            </div>
         </div>
         <div class="controls flex flex-row gap-1 items-center">
             <IconButton size="medium">skip_previous</IconButton>
@@ -134,6 +136,18 @@ const switchFavourite = () => {
             ></Slider>
         </div>
         <p class="trackLength">{{ trackLength }}</p>
+        <div class="dividerVert"></div>
+        <div class="volumeWrapper flex items-center flex-row">
+            <span class="material-icons">volume_up</span>
+            <div class="volume w-[100px]">
+                <Slider
+                    :value="playerStore.volume"
+                    :min="0"
+                    :max="1"
+                    @update:value="(value) => (playerStore.setVolume(value))"
+                ></Slider>
+            </div>
+        </div>
         <IconButton size="small" @click="switchRepeat">{{ repeatIcon }}</IconButton>
         <IconButton size="small" @click="switchShuffle">
             {{ playerStore.shuffle ? "shuffle_on" : "shuffle" }}
@@ -146,7 +160,7 @@ const switchFavourite = () => {
 
 <style lang="sass">
 .musicplayer
-    grid-template-columns: var(--sideBarWidth) min-content max-content 1fr max-content min-content min-content min-content
+    grid-template-columns: var(--sideBarWidth) min-content max-content 1fr max-content 2px max-content min-content min-content min-content min-content
 
 .stats
     grid-template-areas: "cover title" "cover artists"
@@ -161,4 +175,7 @@ const switchFavourite = () => {
 
     .artists
         grid-area: artists
+
+    .statsText
+        width: calc(var(--sideBarWidth) - 3.5rem - 0.75rem)
 </style>

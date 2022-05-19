@@ -24,4 +24,11 @@ body {
         -webkit-app-region: no-drag;
         app-region: no-drag;
     }
+
+    .dividerVert {
+        width: 2px;
+        padding: 1px;
+        border-radius: 1px;
+        @apply bg-divider h-full;
+    }
 }
