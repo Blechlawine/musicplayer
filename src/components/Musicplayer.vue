@@ -2,6 +2,7 @@
 import usePlayer from "../stores/playerStore";
 import IconButton from "./buttons/IconButton.vue";
 import Slider from "./inputs/Slider.vue";
+import TrackListCompact from "./lists/TrackListCompact.vue";
 import { ref, onMounted, watch, computed, nextTick } from "vue";
 import { Artist, Track } from "../types/database";
 import { splitTime } from "../../electron/utils/utils";
@@ -164,9 +165,9 @@ const toggleQueue = () => {
         <IconButton size="small" @click="toggleQueue">queue_music</IconButton>
         <div
             v-if="queueOpen"
-            class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-2xl"
+            class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-2xl max-h-[80vh] w-[300px]"
         >
-            <!-- TODO: List of tracks in queue -->
+            <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
         </div>
     </div>
 </template>
