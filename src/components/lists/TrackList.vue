@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { reactive, onMounted, PropType, ref, nextTick, Ref, computed } from "vue";
 import { Track } from "../../types/database";
-import { TrackListColumn as Column } from "../../types/ui";
+import { ContextMenuEntry, TrackListColumn as Column } from "../../types/ui";
 import TrackListItem from "./items/TrackListItem.vue";
 import usePlayer from "../../stores/playerStore";
+import useContextMenu from "../../stores/contextMenuStore";
 
 const playerStore = usePlayer();
+const contextMenu = useContextMenu();
+const contextMenuContent = ref([]) as Ref<ContextMenuEntry[]>;
 
 const props = defineProps({
     tracks: {
@@ -56,6 +59,16 @@ const columns = reactive([
 onMounted(() => {
     const sortedColumn = columns.find((c) => c.sorted != 0) ?? columns[0];
     sortTracks(sortedColumn, sortedColumn?.sorted === 1);
+    contextMenuContent.value = [
+        {
+            label: "Play selected tracks",
+            action: () => playTracks(selection.value),
+        },
+        {
+            label: "Favourite",
+            action: () => favouriteTracks(selection.value),
+        }
+    ]
 });
 
 const sortTracks = (column: Column, ascending: boolean) => {
@@ -133,6 +146,21 @@ const playTracks = (tracks: Track[]) => {
         playerStore.play();
     });
 };
+
+const favouriteTracks = (tracks: Track[]) => {
+    console.log("Favourite tracks", tracks);
+    tracks.forEach((track) => {
+        playerStore.switchFavourite(track);
+    });
+};
+
+const openTrackContextMenu = (track: Track) => {
+    if (selection.value.length === 0) {
+        selection.value.push(track);
+    }
+    currentTrackIndex.value = selection.value.indexOf(track);
+    contextMenu.open(contextMenuContent.value);
+};
 </script>
 
 <template>
@@ -162,6 +190,7 @@ const playTracks = (tracks: Track[]) => {
                 @doubleClick="playTrack"
                 @shiftClick="shiftClickTrack"
                 @ctrlClick="ctrlClickTrack"
+                @contextMenu="openTrackContextMenu"
             >
             </TrackListItem>
         </div>

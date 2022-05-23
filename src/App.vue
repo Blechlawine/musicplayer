@@ -7,9 +7,12 @@ import { Track } from "./types/database";
 import WindowHeader from "./components/window/WindowHeader.vue";
 import Musicplayer from "./components/Musicplayer.vue";
 import TrackList from "./components/lists/TrackList.vue";
+import ContextMenu from "./components/window/ContextMenu.vue";
+import useContextMenu from "./stores/contextMenuStore";
 
 const LibraryStore = useLibary();
 const PlayerStore = usePlayer();
+const contextMenu = useContextMenu();
 
 const path = ref("");
 const name = ref("");
@@ -46,6 +49,7 @@ const playTrack = async (track: Track) => {
 
 <template>
     <div class="app text-white bg-bg h-full relative">
+        <ContextMenu class="absolute" @close="e => contextMenu.isOpen = false"></ContextMenu>
         <WindowHeader class="windowHeader"></WindowHeader>
         <div class="routerView overflow-y-auto">
             <LibraryPath v-for="path in LibraryStore.libraryPaths" :LibraryPath="path" :key="path.id"></LibraryPath>
@@ -53,9 +57,6 @@ const playTrack = async (track: Track) => {
             <input type="text" v-model="name" id="" />
             <button @click="addLibraryPath">Add</button><br />
             <button @click="scanLibrary">Scan Library</button>
-            <!-- <div class="track px-4 py-2 hover:bg-divider cursor-pointer" v-for="track in tracks" :key="track.id" @click="() => playTrack(track)">
-                <p>{{ track.title }} - {{ track.artists.map((a) => a.name).join(", ") }}</p>
-            </div> -->
             <TrackList :tracks="tracks"></TrackList>
         </div>
         <Musicplayer class="musicplayer"></Musicplayer>

@@ -6,3 +6,8 @@ export type TrackListColumn = {
     sorted: -1 | 0 | 1;
     field: (track: Track) => string | number;
 };
+
+export type ContextMenuEntry = {
+    label: string;
+    action: () => void;
+};

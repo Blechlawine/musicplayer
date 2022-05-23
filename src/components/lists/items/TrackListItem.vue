@@ -5,7 +5,7 @@ import { TrackListColumn as Column } from "../../../types/ui";
 import usePlayer from "../../../stores/playerStore";
 import { formatTime } from "../../../utils/utils";
 
-const emit = defineEmits(["click", "shiftClick", "doubleClick", "ctrlClick"]);
+const emit = defineEmits(["click", "shiftClick", "doubleClick", "ctrlClick", "contextMenu"]);
 
 const playerStore = usePlayer();
 
@@ -54,6 +54,7 @@ const listItemStyles = computed(() => ({
         @click.shift.exact="(e) => emit('shiftClick', props.track)"
         @click.ctrl.exact="(e) => emit('ctrlClick', props.track)"
         @dblclick.prevent="(e) => emit('doubleClick', props.track)"
+        @contextmenu="(e) => emit('contextMenu', props.track)"
     >
         <p class="track">{{ props.track.trackNumber }}</p>
         <p class="title">
