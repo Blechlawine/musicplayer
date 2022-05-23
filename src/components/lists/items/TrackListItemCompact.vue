@@ -19,7 +19,7 @@ const props = defineProps({
     },
 });
 
-const playing = computed(() => playerStore.playing && isCurrentTrack);
+const playing = computed(() => playerStore.playing && isCurrentTrack.value);
 const time = computed(() => formatTime(props.track.hours, props.track.minutes, props.track.seconds));
 const isCurrentTrack = computed(() => playerStore.currentTrack.path === props.track.path);
 const selectedClasses = computed(() => ({
@@ -32,7 +32,7 @@ const selectedClasses = computed(() => ({
     <div
         class="listItem grid items-start relative gap-x-0 gap-y-2 w-full cursor-pointer px-3 py-2 border-b border-bg hover:rounded-lg hover:bg-highlight"
         :class="selectedClasses"
-        @click.prevent="(e) => emit('click', props.track)"
+        @click.prevent.exact="(e) => emit('click', props.track)"
         @click.shift.exact="(e) => emit('shiftClick', props.track)"
         @click.ctrl.exact="(e) => emit('ctrlClick', props.track)"
         @dblclick.prevent="(e) => emit('doubleClick', props.track)"
@@ -50,23 +50,23 @@ const selectedClasses = computed(() => ({
     </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 
-    .listItem
-        grid-template-columns: 1fr 24px min-content
-        grid-template-rows: 2fr 1fr
-        grid-template-areas: "title playingIcon duration" "artistsAndAlbum artistsAndAlbum artistsAndAlbum"
+.listItem
+    grid-template-columns: 1fr 24px min-content
+    grid-template-rows: 2fr 1fr
+    grid-template-areas: "title playingIcon duration" "artistsAndAlbum artistsAndAlbum artistsAndAlbum"
 
-        .title
-            grid-area: title
+    .title
+        grid-area: title
 
-        .duration
-            grid-area: duration
+    .duration
+        grid-area: duration
 
-        .artistsAndAlbum
-            grid-area: artistsAndAlbum
+    .artistsAndAlbum
+        grid-area: artistsAndAlbum
 
-        .playingIcon
-            font-size: 1rem
-            grid-area: playingIcon
+    .playingIcon
+        font-size: 1rem
+        grid-area: playingIcon
 </style>

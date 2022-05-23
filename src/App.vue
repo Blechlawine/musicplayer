@@ -6,6 +6,7 @@ import { onMounted, Ref, ref, nextTick } from "vue";
 import { Track } from "./types/database";
 import WindowHeader from "./components/window/WindowHeader.vue";
 import Musicplayer from "./components/Musicplayer.vue";
+import TrackList from "./components/lists/TrackList.vue";
 
 const LibraryStore = useLibary();
 const PlayerStore = usePlayer();
@@ -52,9 +53,10 @@ const playTrack = async (track: Track) => {
             <input type="text" v-model="name" id="" />
             <button @click="addLibraryPath">Add</button><br />
             <button @click="scanLibrary">Scan Library</button>
-            <div class="track px-4 py-2 hover:bg-divider cursor-pointer" v-for="track in tracks" :key="track.id" @click="() => playTrack(track)">
+            <!-- <div class="track px-4 py-2 hover:bg-divider cursor-pointer" v-for="track in tracks" :key="track.id" @click="() => playTrack(track)">
                 <p>{{ track.title }} - {{ track.artists.map((a) => a.name).join(", ") }}</p>
-            </div>
+            </div> -->
+            <TrackList :tracks="tracks"></TrackList>
         </div>
         <Musicplayer class="musicplayer"></Musicplayer>
     </div>

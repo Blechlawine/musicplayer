@@ -46,7 +46,7 @@ const playTrack = (track: Track) => {
         selection.value.push(track);
     }
     currentTrackIndex.value = (props.selectable ? selection.value.indexOf(track) : props.tracks.indexOf(track)) || 0;
-    playTracks((props.selectable ? selection.value : props.tracks));
+    playTracks(props.selectable ? selection.value : props.tracks);
 };
 
 const shiftClickTrack = (track: Track) => {
