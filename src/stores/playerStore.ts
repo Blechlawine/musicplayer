@@ -41,10 +41,14 @@ const usePlayer: StoreDefinition = defineStore("player", {
             }
         },
         nextTrack() {
-            if (this.currentTrackIndex < this.queue.length - 1) {
-                this.currentTrackIndex++;
+            if (!this.shuffle) {
+                if (this.currentTrackIndex < this.queue.length - 1) {
+                    this.currentTrackIndex++;
+                } else {
+                    this.currentTrackIndex = 0;
+                }
             } else {
-                this.currentTrackIndex = 0;
+                this.currentTrackIndex = Math.floor(Math.random() * this.queue.length);
             }
         },
         previousTrack() {
