@@ -165,7 +165,7 @@ const openTrackContextMenu = (track: Track) => {
 
 <template>
     <div class="listWrapper w-full select-none">
-        <div class="listHeader grid sticky top-0 bg-bg z-10 gap-2 px-3" :style="listItemStyles">
+        <div class="listHeader grid sticky top-0 bg-bg gap-2 px-3" :style="listItemStyles">
             <div
                 class="columnHeader py-1 grid cursor-pointer border-r border-divider w-full"
                 v-for="col in columns"
@@ -197,4 +197,7 @@ const openTrackContextMenu = (track: Track) => {
     </div>
 </template>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+.listHeader
+    z-index: 1    
+</style>

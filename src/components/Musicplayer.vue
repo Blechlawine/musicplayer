@@ -165,7 +165,7 @@ const toggleQueue = () => {
         <IconButton size="small" @click="toggleQueue">queue_music</IconButton>
         <div
             v-if="queueOpen"
-            class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-2xl max-h-[80vh] w-[300px]"
+            class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-2xl w-[300px] z-10 overflow-auto"
         >
             <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
         </div>
@@ -175,6 +175,7 @@ const toggleQueue = () => {
 <style lang="sass">
 .musicplayer
     grid-template-columns: var(--sideBarWidth) min-content max-content 1fr max-content 2px max-content min-content min-content min-content min-content
+    z-index: 10
 
 .stats
     grid-template-areas: "cover title" "cover artists"
@@ -192,4 +193,7 @@ const toggleQueue = () => {
 
     .statsText
         width: calc(var(--sideBarWidth) - 3.5rem - 0.75rem)
+
+.queue
+    max-height: calc(100vh - 200px)
 </style>
