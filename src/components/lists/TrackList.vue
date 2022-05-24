@@ -199,5 +199,7 @@ const openTrackContextMenu = (track: Track) => {
 
 <style lang="sass" scoped>
 .listHeader
-    z-index: 1    
+    z-index: 1
+    .columnHeader
+        grid-template-columns: 1fr 1.5rem
 </style>
