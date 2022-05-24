@@ -11,3 +11,15 @@ export type ContextMenuEntry = {
     label: string;
     action: () => void;
 };
+
+export type SidebarSection = {
+    title: string;
+    open: boolean;
+    entries: SidebarLink[];
+};
+
+export type SidebarLink = {
+    label: string;
+    icon: string;
+    link: string;
+};
