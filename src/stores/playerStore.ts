@@ -47,6 +47,13 @@ const usePlayer: StoreDefinition = defineStore("player", {
                 this.currentTrackIndex = 0;
             }
         },
+        previousTrack() {
+            if (this.currentTrackIndex > 0) {
+                this.currentTrackIndex--;
+            } else {
+                this.currentTrackIndex = this.queue.length - 1;
+            }
+        },
         onPlayBackEnded() {
             if (this.repeat === 2 || this.currentTrackIndex < this.queue.length - 1) {
                 this.nextTrack();

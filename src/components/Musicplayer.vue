@@ -95,6 +95,19 @@ const switchFavourite = () => {
 const toggleQueue = () => {
     queueOpen.value = !queueOpen.value;
 };
+
+const next = () => {
+    playerStore.nextTrack();
+    nextTick(playerStore.play);
+};
+const previous = () => {
+    if (playPosition.value < 1) { // TODO: make this a setting
+        playerStore.previousTrack();
+        nextTick(playerStore.play);
+    } else {
+        updatePlayerTime(0);
+    }
+};
 </script>
 
 <template>
@@ -125,11 +138,11 @@ const toggleQueue = () => {
             </div>
         </div>
         <div class="controls flex flex-row gap-1 items-center">
-            <IconButton size="medium">skip_previous</IconButton>
+            <IconButton size="medium" @click="previous">skip_previous</IconButton>
             <IconButton size="large" @click="playOrPause">{{
                 playerStore.playing ? "pause" : "play_arrow"
             }}</IconButton>
-            <IconButton size="medium">skip_next</IconButton>
+            <IconButton size="medium" @click="next">skip_next</IconButton>
         </div>
         <p class="currentTime">{{ currentTime }}</p>
         <div class="playerProgress w-full">
