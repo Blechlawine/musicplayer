@@ -112,7 +112,7 @@ const previous = () => {
 
 <template>
     <div
-        class="musicplayer flex items-center p-3 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-2xl fixed select-none border-t-2 border-divider"
+        class="musicplayer flex items-center p-3 pr-6 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-2xl fixed select-none border-t-2 border-divider"
     >
         <div class="hidden">
             <audio
