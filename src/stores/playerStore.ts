@@ -25,7 +25,7 @@ interface IActions {
     setVolume(volume: number): void;
 }
 
-const usePlayer: StoreDefinition = defineStore<"player", IState, TGetters, IActions>("player", {
+const usePlayer = defineStore<"player", IState, TGetters, IActions>("player", {
     state: () => ({
         queue: [],
         volume: 1,
