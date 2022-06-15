@@ -78,7 +78,7 @@ const playTrack = async (track: Track) => {
                 </div>
             </div>
         </Sidebar>
-        <div class="routerView overflow-y-auto">
+        <div class="routerView overflow-y-auto pb-20">
             <LibraryPath v-for="path in LibraryStore.libraryPaths" :LibraryPath="path" :key="path.id"></LibraryPath>
             <input type="text" v-model="path" id="" />
             <input type="text" v-model="name" id="" />
@@ -86,7 +86,7 @@ const playTrack = async (track: Track) => {
             <button @click="scanLibrary">Scan Library</button>
             <TrackList :tracks="tracks"></TrackList>
         </div>
-        <Musicplayer class="musicplayer"></Musicplayer>
+        <Musicplayer></Musicplayer>
     </div>
 </template>
 
@@ -100,8 +100,8 @@ const playTrack = async (track: Track) => {
     --sideBarWidth: 300px
     display: grid
     grid-template-columns: var(--sideBarWidth) 1fr
-    grid-template-rows: 52px 1fr 80px
-    grid-template-areas: "windowHeader windowHeader" "sidebar routerview" "musicplayer musicplayer"
+    grid-template-rows: 52px 1fr
+    grid-template-areas: "windowHeader windowHeader" "sidebar routerview"
     gap: 0
 
     .windowHeader
@@ -109,10 +109,10 @@ const playTrack = async (track: Track) => {
 
     .routerView
         grid-area: routerview
-        height: calc(100vh - 52px - 80px)
+        height: calc(100vh - 52px)
 
-    .musicplayer
-        grid-area: musicplayer
+        &::-webkit-scrollbar-track
+            @apply mb-20
 
     .sidebar
         grid-area: sidebar

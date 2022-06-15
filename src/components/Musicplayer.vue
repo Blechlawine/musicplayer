@@ -101,7 +101,8 @@ const next = () => {
     nextTick(playerStore.play);
 };
 const previous = () => {
-    if (playPosition.value < 1) { // TODO: make this a setting
+    if (playPosition.value < 1) {
+        // TODO: make this a setting
         playerStore.previousTrack();
         nextTick(playerStore.play);
     } else {
@@ -112,7 +113,7 @@ const previous = () => {
 
 <template>
     <div
-        class="musicplayer flex items-center p-3 pr-6 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-2xl fixed select-none border-t-2 border-divider"
+        class="musicplayer flex items-center p-3 pr-6 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-xl fixed select-none border-t-2 border-divider"
     >
         <div class="hidden">
             <audio
@@ -176,12 +177,12 @@ const previous = () => {
             {{ playerStore.currentTrack?.favourite ? "favorite" : "favorite_border" }}
         </IconButton>
         <IconButton size="small" @click="toggleQueue">queue_music</IconButton>
-        <div
-            v-if="queueOpen"
-            class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-2xl w-[300px] z-10 overflow-auto"
-        >
-            <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
-        </div>
+    </div>
+    <div
+        v-if="queueOpen"
+        class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-xl w-[300px] z-10"
+    >
+        <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
     </div>
 </template>
 
