@@ -1,7 +1,7 @@
 import { defineStore, StoreDefinition } from "pinia";
 import { ContextMenuEntry } from "../types/ui";
 
-type State = {
+interface IState {
     content: Array<ContextMenuEntry>;
     isOpen: boolean;
     pos: {
@@ -10,8 +10,14 @@ type State = {
     };
 };
 
-const useContextMenu: StoreDefinition = defineStore("contextMenu", {
-    state: (): State => ({
+type TGetters = {};
+
+interface IActions {
+    open(_content: ContextMenuEntry[]): void;
+}
+
+const useContextMenu = defineStore<"contextMenu", IState, TGetters, IActions>("contextMenu", {
+    state: () => ({
         content: [],
         isOpen: false,
         pos: {
@@ -20,7 +26,7 @@ const useContextMenu: StoreDefinition = defineStore("contextMenu", {
         },
     }),
     actions: {
-        open(_content: ContextMenuEntry[]) {
+        open(_content) {
             this.content = _content;
             this.isOpen = true;
         },

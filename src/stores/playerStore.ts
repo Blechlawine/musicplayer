@@ -2,7 +2,7 @@ import { defineStore, StoreDefinition } from "pinia";
 import { Track } from "../types/database";
 import { nextTick } from "vue";
 
-type State = {
+interface IState {
     queue: Array<Track>;
     volume: number;
     playing: boolean;
@@ -12,8 +12,21 @@ type State = {
     shuffle: boolean;
 };
 
-const usePlayer: StoreDefinition = defineStore("player", {
-    state: (): State => ({
+type TGetters = {
+    currentTrack: (state: IState) => Track | undefined;
+}
+
+interface IActions {
+    play(): void;
+    pause(): void;
+    nextTrack(): void;
+    previousTrack(): void;
+    onPlayBackEnded(): void;
+    setVolume(volume: number): void;
+}
+
+const usePlayer: StoreDefinition = defineStore<"player", IState, TGetters, IActions>("player", {
+    state: () => ({
         queue: [],
         volume: 1,
         playing: false,
@@ -23,7 +36,7 @@ const usePlayer: StoreDefinition = defineStore("player", {
         shuffle: false,
     }),
     getters: {
-        currentTrack: (state: State): Track | {} => state.queue[state.currentTrackIndex] || {},
+        currentTrack: (state) => state.queue[state.currentTrackIndex] || {},
     },
     actions: {
         play() {
@@ -69,7 +82,7 @@ const usePlayer: StoreDefinition = defineStore("player", {
                 this.pause();
             }
         },
-        setVolume(volume: number) {
+        setVolume(volume) {
             this.volume = volume;
             if (this.audioElement) {
                 this.audioElement.volume = volume;

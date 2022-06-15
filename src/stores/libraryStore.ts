@@ -1,17 +1,24 @@
 import { defineStore, StoreDefinition } from "pinia";
 import { LibraryPath } from "../types/database";
 
-type LibraryState = {
+interface IState {
     libraryPaths: Array<LibraryPath>;
 };
 
+type TGetters = {};
+
+interface IActions {
+    addLibraryPath(path: string, name: string): void;
+    getLibraryPaths(): void;
+}
+
 // This store manages scanning, loading and saving of the music library.
-const useLibary: StoreDefinition = defineStore("library", {
-    state: (): LibraryState => ({
+const useLibary = defineStore<"library", IState, TGetters, IActions>("library", {
+    state: () => ({
         libraryPaths: [],
     }),
     actions: {
-        async addLibraryPath(path: string, name: string) {
+        async addLibraryPath(path, name) {
             await window.api.addLibraryPath({ path, name });
             this.libraryPaths = await window.api.getLibraryPaths();
         },
