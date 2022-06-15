@@ -31,4 +31,20 @@ body {
         border-radius: 1px;
         @apply bg-divider h-full;
     }
+    
+    ::-webkit-scrollbar {
+        @apply w-3;
+    }
+    
+    ::-webkit-scrollbar-track {
+        @apply bg-overlay rounded-full;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        @apply bg-divider rounded-full;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-accent rounded-full;
+    }
 }
