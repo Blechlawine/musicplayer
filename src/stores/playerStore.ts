@@ -7,7 +7,7 @@ interface IState {
     volume: number;
     playing: boolean;
     currentTrackIndex: number;
-    audioElement?: HTMLAudioElement;
+    audioElement: HTMLAudioElement | null;
     repeat: 0 | 1 | 2;
     shuffle: boolean;
 };
@@ -31,7 +31,7 @@ const usePlayer = defineStore<"player", IState, TGetters, IActions>("player", {
         volume: 1,
         playing: false,
         currentTrackIndex: -1,
-        audioElement: undefined,
+        audioElement: null,
         repeat: 0,
         shuffle: false,
     }),

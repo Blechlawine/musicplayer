@@ -20,9 +20,9 @@ const displayArtists = computed(() => playerStore.currentTrack?.artists?.map((a:
 const currentTime = computed(() => formatTime(...splitTime(playPosition.value)));
 const trackLength = computed(() =>
     formatTime(
-        playerStore.currentTrack.hours || 0,
-        playerStore.currentTrack.minutes || 0,
-        playerStore.currentTrack.seconds || 0
+        playerStore.currentTrack?.hours || 0,
+        playerStore.currentTrack?.minutes || 0,
+        playerStore.currentTrack?.seconds || 0
     )
 );
 const repeatIcon = computed(() => {
@@ -40,7 +40,7 @@ onMounted(() => {
 });
 
 watch(
-    () => playerStore.currentTrack,
+    () => playerStore.currentTrack!,
     async (track: Track) => {
         if (track) {
             const metadata = await window.api.readMetadata(track.path);
@@ -66,19 +66,19 @@ const onPlaybackEnded = () => {
     playerStore.onPlayBackEnded();
 };
 const updatePlayPosition = () => {
-    playPosition.value = playerStore.audioElement.currentTime;
+    playPosition.value = playerStore.audioElement!.currentTime;
 };
 const updatePlayerTime = (value: number) => {
     playPosition.value = value;
-    playerStore.audioElement.currentTime = value;
+    playerStore.audioElement!.currentTime = value;
 };
 const checkPlayingStatus = () => {
-    if (!playerStore.isPlaying) {
+    if (!playerStore.playing) {
         playerStore.play();
     }
 };
 const checkPausedStatus = () => {
-    if (playerStore.isPlaying) {
+    if (playerStore.playing) {
         playerStore.pause();
     }
 };
@@ -92,7 +92,9 @@ const switchShuffle = () => {
     playerStore.shuffle = !playerStore.shuffle;
 };
 const switchFavourite = () => {
-    TrackStore.switchFavourite(playerStore.currentTrack.id);
+    if (playerStore.currentTrack) {
+        TrackStore.switchFavourite(playerStore.currentTrack.id);
+    }
 };
 const toggleQueue = () => {
     queueOpen.value = !queueOpen.value;
@@ -115,14 +117,11 @@ const previous = () => {
 
 <template>
     <div
-        class="musicplayer fixed flex items-center
-        p-3 pr-6 gap-3 bottom-0 
-        w-full h-20
-        bg-overlay backdrop-blur-xl select-none border-t-2 border-divider"
+        class="musicplayer fixed flex items-center p-3 pr-6 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-xl select-none border-t-2 border-divider"
     >
         <div class="hidden">
             <audio
-                :src="playerStore.currentTrack.path"
+                :src="playerStore.currentTrack?.path || ''"
                 preload="auto"
                 ref="audioElement"
                 @ended="onPlaybackEnded"
@@ -138,7 +137,7 @@ const previous = () => {
             </div>
             <div class="statsText">
                 <p class="title font-medium text-sm text-ellipsis whitespace-nowrap overflow-x-hidden w-full">
-                    {{ playerStore.currentTrack.title }}
+                    {{ playerStore.currentTrack?.title || "" }}
                 </p>
                 <p class="artists text-xs w-full max-w-[200px]">{{ displayArtists }}</p>
             </div>
@@ -155,7 +154,7 @@ const previous = () => {
             <Slider
                 :value="playPosition"
                 :min="0"
-                :max="playerStore.currentTrack.duration"
+                :max="playerStore.currentTrack?.duration || 0"
                 @update:value="updatePlayerTime"
             ></Slider>
         </div>
@@ -185,9 +184,7 @@ const previous = () => {
     </div>
     <div
         v-if="queueOpen"
-        class="queue absolute right-3 bottom-3 mb-20 p-3
-            bg-overlay border-divider border-2 rounded-lg backdrop-blur-xl
-            w-[300px] z-10 overflow-y-auto select-none"
+        class="queue absolute right-3 bottom-3 mb-20 p-3 bg-overlay border-divider border-2 rounded-lg backdrop-blur-xl w-[300px] z-10 overflow-y-auto select-none"
     >
         <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
     </div>
