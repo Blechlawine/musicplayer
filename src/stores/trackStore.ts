@@ -5,7 +5,7 @@ interface IState {
     tracks: Array<Track>;
 }
 
-type IGetters = {}
+type TGetters = {}
 
 interface IActions {
     fetchAllTracks: () => Promise<void>;
@@ -13,7 +13,7 @@ interface IActions {
     switchFavourite: (trackId: string) => void;
 }
 
-const useTracks = defineStore<"tracks", IState, IGetters, IActions>("tracks", {
+const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
     state: () => ({
         tracks: [],
     }),
