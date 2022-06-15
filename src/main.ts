@@ -4,6 +4,8 @@ import { createPinia } from "pinia";
 import { LibraryPath, Track } from "./types/database";
 import "./styles/index.css";
 import { IAudioMetadata } from "music-metadata";
+import routes from "./router/index";
+import { createRouter, createWebHistory } from "vue-router";
 
 declare global {
     interface Window {
@@ -23,4 +25,9 @@ declare global {
 
 const store = createPinia();
 
-createApp(App).use(store).mount("#app");
+const router = createRouter({
+    routes,
+    history: createWebHistory(),
+});
+
+createApp(App).use(store).use(router).mount("#app");

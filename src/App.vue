@@ -1,26 +1,14 @@
 <script setup lang="ts">
-import LibraryPath from "./components/settings/Librarypath.vue";
-import useLibary from "./stores/libraryStore";
-import usePlayer from "./stores/playerStore";
-import { onMounted, Ref, ref, nextTick, reactive } from "vue";
-import { Track } from "./types/database";
+import { reactive } from "vue";
 import WindowHeader from "./components/window/WindowHeader.vue";
 import Musicplayer from "./components/Musicplayer.vue";
-import TrackList from "./components/lists/TrackList.vue";
 import ContextMenu from "./components/window/ContextMenu.vue";
 import useContextMenu from "./stores/contextMenuStore";
 import Sidebar from "./components/Sidebar.vue";
 import { SidebarSection } from "./types/ui";
 import IconButton from "./components/buttons/IconButton.vue";
 
-const LibraryStore = useLibary();
-const PlayerStore = usePlayer();
 const contextMenu = useContextMenu();
-
-const path = ref("");
-const name = ref("");
-
-let tracks: Ref<Track[]> = ref([]);
 
 const sidebarSections: SidebarSection[] = reactive([ // TODO: turn into store
     {
@@ -29,33 +17,6 @@ const sidebarSections: SidebarSection[] = reactive([ // TODO: turn into store
         entries: [{ label: "Home", icon: "home", link: "" }],
     },
 ]) as SidebarSection[];
-
-onMounted(async () => {
-    LibraryStore.getLibraryPaths();
-    fetchTracks();
-});
-
-const addLibraryPath = () => {
-    LibraryStore.addLibraryPath(path.value, name.value);
-    name.value = "";
-    path.value = "";
-};
-
-const scanLibrary = async () => {
-    await window.api.scanLibrary();
-    fetchTracks();
-};
-
-const fetchTracks = async () => {
-    tracks.value = await window.api.getTracks();
-};
-
-const playTrack = async (track: Track) => {
-    PlayerStore.queue = [track];
-    PlayerStore.currentTrackIndex = 0;
-    await nextTick();
-    PlayerStore.play();
-};
 </script>
 
 <template>
@@ -78,14 +39,7 @@ const playTrack = async (track: Track) => {
                 </div>
             </div>
         </Sidebar>
-        <div class="routerView overflow-y-auto pb-20">
-            <LibraryPath v-for="path in LibraryStore.libraryPaths" :LibraryPath="path" :key="path.id"></LibraryPath>
-            <input type="text" v-model="path" id="" />
-            <input type="text" v-model="name" id="" />
-            <button @click="addLibraryPath">Add</button>
-            <button @click="scanLibrary">Scan Library</button>
-            <TrackList :tracks="tracks"></TrackList>
-        </div>
+        <router-view class="routerView overflow-y-auto pb-20"></router-view>
         <Musicplayer></Musicplayer>
     </div>
 </template>
