@@ -180,7 +180,7 @@ const previous = () => {
     </div>
     <div
         v-if="queueOpen"
-        class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-xl w-[300px] z-10"
+        class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-xl w-[300px] z-10 overflow-y-auto"
     >
         <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
     </div>
