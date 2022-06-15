@@ -113,7 +113,10 @@ const previous = () => {
 
 <template>
     <div
-        class="musicplayer flex items-center p-3 pr-6 gap-3 bottom-0 w-full h-20 bg-overlay backdrop-blur-xl fixed select-none border-t-2 border-divider"
+        class="musicplayer fixed flex items-center
+        p-3 pr-6 gap-3 bottom-0 
+        w-full h-20
+        bg-overlay backdrop-blur-xl select-none border-t-2 border-divider"
     >
         <div class="hidden">
             <audio
@@ -180,7 +183,9 @@ const previous = () => {
     </div>
     <div
         v-if="queueOpen"
-        class="queue absolute right-3 bottom-3 mb-20 bg-overlay p-3 rounded-lg border-divider border-2 backdrop-blur-xl w-[300px] z-10 overflow-y-auto"
+        class="queue absolute right-3 bottom-3 mb-20 p-3
+            bg-overlay border-divider border-2 rounded-lg backdrop-blur-xl
+            w-[300px] z-10 overflow-y-auto select-none"
     >
         <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
     </div>
