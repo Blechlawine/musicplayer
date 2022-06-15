@@ -179,7 +179,7 @@ const previous = () => {
         <IconButton size="small" @click="switchFavourite">
             {{ playerStore.currentTrack?.favourite ? "favorite" : "favorite_border" }}
         </IconButton>
-        <IconButton size="small" @click="toggleQueue">queue_music</IconButton>
+        <IconButton size="small" :highlight="queueOpen" @click="toggleQueue">queue_music</IconButton>
     </div>
     <div
         v-if="queueOpen"

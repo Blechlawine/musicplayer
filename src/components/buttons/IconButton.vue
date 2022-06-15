@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { computed, defineEmits } from "vue";
+import { computed, defineEmits, PropType } from "vue";
 
 const emit = defineEmits(["click"]);
 
 const props = defineProps({
     size: {
-        type: String,
+        type: String as PropType<"small" | "medium" | "large">,
         default: "small",
         validator: (value: string) => ["small", "medium", "large"].includes(value),
+    },
+    highlight: {
+        type: Boolean,
+        default: false,
     },
 });
 
@@ -35,15 +39,21 @@ const iconStyles = computed(() => ({
     ...buttonStyles.value,
     "font-size": props.size === "small" ? "24px" : props.size === "medium" ? "36px" : "48px",
 }));
+
+const computedClasses = computed(() => ({
+    "bg-white": props.highlight,
+    "text-bg": props.highlight,
+    "fill-bg": props.highlight,
+}));
 </script>
 
 <template>
     <div
-        class="iconButton region-no-drag rounded cursor-pointer"
+        class="iconButton region-no-drag rounded cursor-pointer hover:bg-highlight"
         :style="buttonStyles"
         @click.prevent="(e) => emit('click', e)"
     >
-        <span class="material-icons" :style="iconStyles">
+        <span class="material-icons rounded-sm" :class="computedClasses" :style="iconStyles">
             <slot></slot>
         </span>
     </div>
