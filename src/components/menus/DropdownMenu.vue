@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, PropType, computed } from "vue";
+import { PropType, computed } from "vue";
 
 const emit = defineEmits(["close"]);
 

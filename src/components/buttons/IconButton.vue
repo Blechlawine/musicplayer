@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineEmits, PropType } from "vue";
+import { computed, PropType } from "vue";
 
 const emit = defineEmits(["click"]);
 

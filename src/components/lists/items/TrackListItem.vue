@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, PropType, computed } from "vue";
+import { PropType, computed } from "vue";
 import { Track } from "../../../types/database";
 import { TrackListColumn as Column } from "../../../types/ui";
 import usePlayer from "../../../stores/playerStore";
