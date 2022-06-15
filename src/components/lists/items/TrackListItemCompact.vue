@@ -21,17 +21,20 @@ const props = defineProps({
 
 const playing = computed(() => playerStore.playing && isCurrentTrack.value);
 const time = computed(() => formatTime(props.track.hours, props.track.minutes, props.track.seconds));
-const isCurrentTrack = computed(() => playerStore.currentTrack.path === props.track.path);
+const isCurrentTrack = computed(() => playerStore.currentTrack?.path === props.track.path);
 const selectedClasses = computed(() => ({
     "rounded-lg": props.selected,
     "bg-highlight": props.selected,
+}));
+const listItemClasses = computed(() => ({
+    "text-accent": isCurrentTrack.value,
 }));
 </script>
 
 <template>
     <div
         class="listItem grid items-start relative gap-x-0 gap-y-2 w-full cursor-pointer px-3 py-2 border-b border-bg hover:rounded-lg hover:bg-highlight"
-        :class="selectedClasses"
+        :class="[selectedClasses, listItemClasses]"
         @click.prevent.exact="(e) => emit('click', props.track)"
         @click.shift.exact="(e) => emit('shiftClick', props.track)"
         @click.ctrl.exact="(e) => emit('ctrlClick', props.track)"
