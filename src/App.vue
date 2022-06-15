@@ -5,18 +5,20 @@ import Musicplayer from "./components/Musicplayer.vue";
 import ContextMenu from "./components/window/ContextMenu.vue";
 import useContextMenu from "./stores/contextMenuStore";
 import Sidebar from "./components/Sidebar.vue";
-import { SidebarSection } from "./types/ui";
+import SidebarLink from "./components/SidebarLink.vue";
+import { SidebarSection as SidebarSectionType } from "./types/ui";
 import IconButton from "./components/buttons/IconButton.vue";
 
 const contextMenu = useContextMenu();
 
-const sidebarSections: SidebarSection[] = reactive([ // TODO: turn into store
+const sidebarSections: SidebarSectionType[] = reactive([
+    // TODO: turn into store
     {
         title: "Recommended",
         open: true,
-        entries: [{ label: "Home", icon: "home", link: "" }],
+        entries: [{ label: "Home", icon: "home", link: "/" }],
     },
-]) as SidebarSection[];
+]) as SidebarSectionType[];
 </script>
 
 <template>
@@ -32,10 +34,7 @@ const sidebarSections: SidebarSection[] = reactive([ // TODO: turn into store
                     </IconButton>
                 </div>
                 <div v-if="section.open" class="entries">
-                    <div class="entry flex flex-row gap-4 p-3 rounded-md hover:bg-highlight" v-for="entry in section.entries" :key="entry.label">
-                        <span class="material-icons">{{ entry.icon }}</span>
-                        <div class="label">{{ entry.label }}</div>
-                    </div>
+                    <SidebarLink :entry="entry" v-for="entry in section.entries" :key="entry.label"></SidebarLink>
                 </div>
             </div>
         </Sidebar>
