@@ -69,10 +69,6 @@ const usePlayer: StoreDefinition = defineStore("player", {
                 this.pause();
             }
         },
-        switchFavourite(track: Track) {
-            track.favourite = !track.favourite;
-            window.api.saveFavouriteForTrack(track.id, track.favourite);
-        },
         setVolume(volume: number) {
             this.volume = volume;
             if (this.audioElement) {

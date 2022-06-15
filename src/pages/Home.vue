@@ -4,10 +4,10 @@ import LibraryPath from "../components/settings/Librarypath.vue";
 import useLibary from "../stores/libraryStore";
 import TrackList from "../components/lists/TrackList.vue";
 import { Track } from "../types/database";
+import useTracks from "../stores/trackStore";
 
 const LibraryStore = useLibary();
-
-let tracks: Ref<Track[]> = ref([]);
+const TrackStore = useTracks();
 
 const path = ref("");
 const name = ref("");
@@ -20,17 +20,13 @@ const addLibraryPath = () => {
 
 const scanLibrary = async () => {
     await window.api.scanLibrary();
-    fetchTracks();
+    TrackStore.fetchAllTracks();
 };
 
 onMounted(async () => {
     LibraryStore.getLibraryPaths();
-    fetchTracks();
+    TrackStore.fetchAllTracks();
 });
-
-const fetchTracks = async () => {
-    tracks.value = await window.api.getTracks();
-};
 </script>
 
 <template>
@@ -40,6 +36,6 @@ const fetchTracks = async () => {
         <input type="text" v-model="name" id="" />
         <button @click="addLibraryPath">Add</button>
         <button @click="scanLibrary">Scan Library</button>
-        <TrackList :tracks="tracks"></TrackList>
+        <TrackList :tracks="TrackStore.tracks"></TrackList>
     </div>
 </template>

@@ -20,8 +20,12 @@ const computedClasses = computed(() => ({
 </script>
 
 <template>
-    <div class="entry flex flex-row gap-4 p-3 rounded-md hover:bg-highlight" :class="computedClasses">
+    <router-link
+        :to="props.entry.link"
+        class="entry flex flex-row gap-4 p-3 rounded-md hover:bg-highlight"
+        :class="computedClasses"
+    >
         <span class="material-icons">{{ props.entry.icon }}</span>
         <div class="label">{{ props.entry.label }}</div>
-    </div>
+    </router-link>
 </template>

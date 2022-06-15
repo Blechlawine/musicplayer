@@ -5,9 +5,11 @@ import { ContextMenuEntry, TrackListColumn as Column } from "../../types/ui";
 import TrackListItem from "./items/TrackListItem.vue";
 import usePlayer from "../../stores/playerStore";
 import useContextMenu from "../../stores/contextMenuStore";
+import useTracks from "../../stores/trackStore";
 
 const playerStore = usePlayer();
 const contextMenu = useContextMenu();
+const TrackStore = useTracks();
 const contextMenuContent = ref([]) as Ref<ContextMenuEntry[]>;
 
 const props = defineProps({
@@ -150,7 +152,7 @@ const playTracks = (tracks: Track[]) => {
 const favouriteTracks = (tracks: Track[]) => {
     console.log("Favourite tracks", tracks);
     tracks.forEach((track) => {
-        playerStore.switchFavourite(track);
+        TrackStore.switchFavourite(track.id);
     });
 };
 

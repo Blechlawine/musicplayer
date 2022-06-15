@@ -24,6 +24,9 @@ contextBridge.exposeInMainWorld("api", {
     getTracks: () => {
         return ipcRenderer.invoke("getTracks");
     },
+    getFavourites: () => {
+        return ipcRenderer.invoke("getFavourites");
+    },
     readMetadata: (path: string) => {
         return ipcRenderer.invoke("readMetadata", path);
     },

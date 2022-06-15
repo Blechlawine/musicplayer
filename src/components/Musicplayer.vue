@@ -7,8 +7,10 @@ import { ref, onMounted, watch, computed, nextTick } from "vue";
 import { Artist, Track } from "../types/database";
 import { splitTime } from "../../electron/utils/utils";
 import { formatTime } from "../utils/utils";
+import useTracks from "../stores/trackStore";
 
 const playerStore = usePlayer();
+const TrackStore = useTracks();
 
 const cover = ref("/album.svg");
 const audioElement = ref(null);
@@ -90,7 +92,7 @@ const switchShuffle = () => {
     playerStore.shuffle = !playerStore.shuffle;
 };
 const switchFavourite = () => {
-    playerStore.switchFavourite(playerStore.currentTrack);
+    TrackStore.switchFavourite(playerStore.currentTrack.id);
 };
 const toggleQueue = () => {
     queueOpen.value = !queueOpen.value;

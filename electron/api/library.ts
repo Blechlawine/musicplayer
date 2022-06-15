@@ -132,6 +132,12 @@ export default () => [
         },
     },
     {
+        event: "getFavourites",
+        handler: async (): Promise<Track[]> => {
+            return await Track.find({ where: { favourite: true } });
+        },
+    },
+    {
         event: "saveFavouriteForTrack",
         handler: async (event: any, trackId: string, favourite: boolean): Promise<Track | null> => {
             const trackInDatabase = await Track.findOne({ where: { id: trackId } });

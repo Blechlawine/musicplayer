@@ -16,7 +16,14 @@ const sidebarSections: SidebarSectionType[] = reactive([
     {
         title: "Recommended",
         open: true,
-        entries: [{ label: "Home", icon: "home", link: "/" }],
+        entries: [
+            { label: "Home", icon: "home", link: "/" },
+            {
+                label: "Favourites",
+                icon: "favorite",
+                link: "/favourites",
+            },
+        ],
     },
 ]) as SidebarSectionType[];
 </script>
