@@ -49,7 +49,6 @@ const sidebarSections: SidebarSectionType[] = reactive([
 
     .routerView
         grid-area: routerview
-        height: calc(100vh - 52px)
 
         &::-webkit-scrollbar-track
             @apply mb-20

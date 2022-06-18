@@ -11,7 +11,7 @@ const contextMenu = useContextMenu();
     <div class="app text-white bg-bg h-full relative">
         <ContextMenu class="absolute" @close="(e) => (contextMenu.isOpen = false)"></ContextMenu>
         <WindowHeader class="windowHeader"></WindowHeader>
-        <router-view class="overflow-hidden"></router-view>
+        <router-view></router-view>
         <Musicplayer></Musicplayer>
     </div>
 </template>
@@ -24,5 +24,18 @@ const contextMenu = useContextMenu();
 
 .app
     --sideBarWidth: 300px
-    
+    --windowHeaderHeight: 52px
+
+    display: grid
+    grid-template-columns: 1fr
+    grid-template-rows: var(--windowHeaderHeight) 1fr
+    grid-template-areas: "windowHeader" "routerview"
+    gap: 0
+
+    .windowHeader
+        grid-area: windowHeader
+
+    .routerView
+        grid-area: routerview
+        height: calc(100vh - var(--windowHeaderHeight))
 </style>
