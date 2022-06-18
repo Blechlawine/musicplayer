@@ -12,7 +12,7 @@ const props = defineProps({
     },
 });
 
-const active = computed(() => router.currentRoute.value.name === props.entry.link);
+const active = computed(() => router.currentRoute.value.path === props.entry.link);
 
 const computedClasses = computed(() => ({
     "text-accent": active.value,
