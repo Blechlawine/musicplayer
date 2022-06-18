@@ -25,6 +25,10 @@ body {
         app-region: no-drag;
     }
 
+    .headline,.heading {
+        @apply text-xl font-medium;
+    }
+
     .dividerVert {
         width: 2px;
         padding: 1px;
