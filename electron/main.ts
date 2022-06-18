@@ -71,7 +71,6 @@ export default class Main {
         windowSettings = await Main.loadLastWindowSettings().catch((err) => {
             console.error(err);
         });
-        console.log(windowSettings);
         const isDev = process.env.ENVIRONMENT == "development" ? true : false;
 
         Main.mainWindow = new Main.BrowserWindow({
