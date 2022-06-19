@@ -36,6 +36,11 @@ const routes = [
                 path: "/settings/library",
                 name: "library",
                 component: () => import("../pages/settings/Library.vue"),
+            },
+            {
+                path: "/settings/window",
+                name: "window",
+                component: () => import("../pages/settings/Window.vue"),
             }
         ]
     },

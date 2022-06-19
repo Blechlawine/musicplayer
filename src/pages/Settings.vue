@@ -7,7 +7,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue";
 import Sidebar from "../components/Sidebar.vue";
 import SidebarLink from "../components/SidebarLink.vue";
 import useSidebar from "../stores/sideBarStore";

@@ -19,6 +19,11 @@ const useSidebar = defineStore<"sidebar", IState, TGetters, IActions>("sidebar",
                 link: "/settings/library",
             },
             {
+                label: "Window",
+                icon: "window",
+                link: "/settings/window",
+            },
+            {
                 label: "Exit Settings",
                 icon: "exit_to_app",
                 link: "/",
