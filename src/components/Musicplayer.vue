@@ -73,14 +73,10 @@ const updatePlayerTime = (value: number) => {
     playerStore.audioElement!.currentTime = value;
 };
 const checkPlayingStatus = () => {
-    if (!playerStore.playing) {
-        playerStore.play();
-    }
+    playerStore.play();
 };
 const checkPausedStatus = () => {
-    if (playerStore.playing) {
-        playerStore.pause();
-    }
+    playerStore.pause();
 };
 const switchRepeat = () => {
     playerStore.repeat--;
