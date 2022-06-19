@@ -1,7 +1,7 @@
 <template>
     <div class="home w-full h-full relative">
         <Sidebar class="sidebar">
-            <div class="sidebarSection flex flex-col gap-3" v-for="section in sidebarSections" :key="section.title">
+            <div class="sidebarSection flex flex-col gap-3" v-for="section in SidebarStore.main" :key="section.title">
                 <div class="sidebarSectionHeader w-full flex flex-row justify-between pl-3 h-6">
                     <div class="title">{{ section.title }}</div>
                     <IconButton class="toggle" @click="(e) => (section.open = !section.open)">
@@ -17,27 +17,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { reactive } from 'vue';
 import Sidebar from "../components/Sidebar.vue";
 import SidebarLink from "../components/SidebarLink.vue";
-import { SidebarSection as SidebarSectionType } from "../types/ui";
+import useSidebar from "../stores/sideBarStore";
 import IconButton from "../components/buttons/IconButton.vue";
 
-const sidebarSections: SidebarSectionType[] = reactive([
-    // TODO: turn into store
-    {
-        title: "Recommended",
-        open: true,
-        entries: [
-            { label: "Home", icon: "home", link: "/landing" },
-            {
-                label: "Favourites",
-                icon: "favorite",
-                link: "/favourites",
-            },
-        ],
-    },
-]) as SidebarSectionType[];
+const SidebarStore = useSidebar();
 </script>
 <style lang="sass" scoped>
 .home
