@@ -21,6 +21,9 @@ declare global {
             readMetadata: (path: string) => Promise<IAudioMetadata>;
             saveFavouriteForTrack: (trackId: string, favourite: boolean) => Promise<Track | null>;
         };
+        events: {
+            subscribe: (event: string, handler: (...args: any[]) => void) => void;
+        };
     }
 }
 

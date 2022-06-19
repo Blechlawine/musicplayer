@@ -1,6 +1,5 @@
 // Render context
 import { contextBridge, ipcRenderer } from "electron";
-import Track from "./database/model/Track";
 
 contextBridge.exposeInMainWorld("api", {
     closeWindow: () => {
@@ -32,5 +31,11 @@ contextBridge.exposeInMainWorld("api", {
     },
     saveFavouriteForTrack: (trackId: string, favourite: boolean) => {
         return ipcRenderer.invoke("saveFavouriteForTrack", trackId, favourite);
+    },
+});
+
+contextBridge.exposeInMainWorld("events", {
+    subscribe(event: string, handler: (...args: any[]) => void) {
+        ipcRenderer.on(event, handler);
     },
 });

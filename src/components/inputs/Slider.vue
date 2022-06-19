@@ -69,7 +69,9 @@ const handlePosition = computed(() => scale(props.value, props.min, props.max, m
 
 onMounted(() => {
     window.addEventListener("resize", resize);
-    nextTick(resize);
+    nextTick(() => {
+        resize();
+    });
 });
 onUnmounted(() => {
     window.removeEventListener("resize", resize);

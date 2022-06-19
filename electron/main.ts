@@ -85,35 +85,39 @@ export default class Main {
             },
         });
 
-        if (windowSettings.maximized) {
-            Main.mainWindow.maximize();
-        } else if (windowSettings.minimized) {
-            Main.mainWindow.minimize();
-        }
-
         const win = Main.mainWindow;
         win.on("resize", () => {
             windowSettings.width = win.getBounds().width;
             windowSettings.height = win.getBounds().height;
+            Main.mainWindow?.webContents.send("windowResize", windowSettings.width, windowSettings.height);
         });
 
         win.on("maximize", () => {
             windowSettings.maximized = true;
             windowSettings.minimized = false;
+            Main.mainWindow?.webContents.send("windowMaximize");
         });
 
         win.on("unmaximize", () => {
             windowSettings.maximized = false;
+            Main.mainWindow?.webContents.send("windowUnmaximize");
         });
 
         win.on("minimize", () => {
             windowSettings.minimized = true;
             windowSettings.maximized = false;
+            Main.mainWindow?.webContents.send("windowMinimize");
         });
 
         win.on("close", async () => {
             await Main.saveWindowSettings();
         });
+
+        if (windowSettings.maximized) {
+            Main.mainWindow.maximize();
+        } else if (windowSettings.minimized) {
+            Main.mainWindow.minimize();
+        }
 
         Main.mainWindow.loadURL(
             isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../dist/index.html")}`
