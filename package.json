@@ -16,6 +16,7 @@
     "main": "electronCompiled/electron.js",
     "dependencies": {
         "autoprefixer": "^10.4.7",
+        "electron-window-state": "^5.0.3",
         "music-metadata": "^7.12.3",
         "pinia": "^2.0.13",
         "postcss": "^8.4.13",
