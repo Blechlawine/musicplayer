@@ -1,10 +1,10 @@
-export type LibraryPath = {
+interface ILibraryPath {
     id: string;
     name: string;
     path: string;
-};
+}
 
-export type Track = {
+interface ITrack {
     id: string;
     title: string;
     path: string;
@@ -16,35 +16,35 @@ export type Track = {
     favourite: boolean;
     trackNumber: number | null;
     diskNumber: number | null;
-    libraryPath: LibraryPath;
-    artists: Artist[];
-    album: Album | null;
-    genres: Genre[];
+    libraryPath: ILibraryPath;
+    artists: IArtist[];
+    album: IAlbum | null;
+    genres: IGenre[];
     createdAt: Date;
     updatedAt: Date;
-};
+}
 
-export type Artist = {
+interface IArtist {
     id: string;
     name: string;
-    tracks: Track[];
+    tracks: ITrack[];
     createdAt: Date;
     updatedAt: Date;
-};
+}
 
-export type Album = {
+interface IAlbum {
     id: string;
     title: string;
-    artists: Artist[];
-    tracks: Track[];
+    artists: IArtist[];
+    tracks: ITrack[];
     createdAt: Date;
     updatedAt: Date;
-};
+}
 
-export type Genre = {
+interface IGenre {
     id: string;
     name: string;
-    tracks: Track[];
+    tracks: ITrack[];
     createdAt: Date;
     updatedAt: Date;
-};
+}

@@ -1,8 +1,7 @@
-import { defineStore, StoreDefinition } from "pinia";
-import { ContextMenuEntry } from "../types/ui";
+import { defineStore } from "pinia";
 
 interface IState {
-    content: Array<ContextMenuEntry>;
+    content: Array<IContextMenuEntry>;
     isOpen: boolean;
     pos: {
         x: number;
@@ -13,7 +12,7 @@ interface IState {
 type TGetters = {};
 
 interface IActions {
-    open(_content: ContextMenuEntry[]): void;
+    open(_content: IContextMenuEntry[]): void;
 }
 
 const useContextMenu = defineStore<"contextMenu", IState, TGetters, IActions>("contextMenu", {

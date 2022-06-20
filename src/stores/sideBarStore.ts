@@ -1,9 +1,8 @@
 import { defineStore } from "pinia";
-import { SidebarLink, SidebarSection } from "../types/ui";
 
 interface IState {
-    settings: Array<SidebarLink>;
-    main: Array<SidebarSection>;
+    settings: Array<ISidebarLink>;
+    main: Array<ISidebarSection>;
 }
 
 type TGetters = {};
