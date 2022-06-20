@@ -8,11 +8,11 @@ interface IState {
 type TGetters = {
     getTrackById: (state: IState) => (id: string | undefined) => Track | undefined;
     getTracksByIds: (state: IState) => (ids: string[]) => Track[];
+    favourites: (state: IState) => Track[];
 };
 
 interface IActions {
     fetchAllTracks: () => Promise<void>;
-    fetchFavourites: () => Promise<void>;
     switchFavourite: (trackId: string) => void;
 }
 
@@ -31,13 +31,13 @@ const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
         getTracksByIds: (state) => (ids) => {
             return state.tracks.filter((track) => ids.includes(track.id));
         },
+        favourites: (state) => {
+            return state.tracks.filter((track) => track.favourite);
+        },
     },
     actions: {
         async fetchAllTracks() {
             this.tracks = await window.api.getTracks();
-        },
-        async fetchFavourites() {
-            this.tracks = await window.api.getFavourites();
         },
         switchFavourite(trackId) {
             let track = this.tracks.find((track) => track.id === trackId);

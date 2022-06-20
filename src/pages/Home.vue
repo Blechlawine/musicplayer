@@ -17,12 +17,19 @@
     </div>
 </template>
 <script setup lang="ts">
+import { onMounted } from "vue";
 import Sidebar from "../components/Sidebar.vue";
 import SidebarLink from "../components/SidebarLink.vue";
 import useSidebar from "../stores/sideBarStore";
+import useTracks from "../stores/trackStore";
 import IconButton from "../components/buttons/IconButton.vue";
 
 const SidebarStore = useSidebar();
+const TrackStore = useTracks();
+
+onMounted(() => {
+    TrackStore.fetchAllTracks();
+});
 </script>
 <style lang="sass" scoped>
 .home
@@ -40,5 +47,4 @@ const SidebarStore = useSidebar();
 
     .sidebar
         grid-area: sidebar
-    
 </style>
