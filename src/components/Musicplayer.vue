@@ -16,13 +16,15 @@ const cover = ref("/album.svg");
 const audioElement = ref(null);
 const playPosition = ref(0);
 const queueOpen = ref(false); // TODO: move this into a store, to save it in settings
-const displayArtists = computed(() => playerStore.currentTrack?.artists?.map((a: Artist) => a.name).join(", "));
+const currentTrack = computed(() => TrackStore.getTrackById(playerStore.currentTrackId));
+const queue = computed(() => TrackStore.getTracksByIds(playerStore.queue));
+const displayArtists = computed(() => currentTrack.value?.artists?.map((a: Artist) => a.name).join(", "));
 const currentTime = computed(() => formatTime(...splitTime(playPosition.value)));
 const trackLength = computed(() =>
     formatTime(
-        playerStore.currentTrack?.hours || 0,
-        playerStore.currentTrack?.minutes || 0,
-        playerStore.currentTrack?.seconds || 0
+        currentTrack.value?.hours || 0,
+        currentTrack.value?.minutes || 0,
+        currentTrack.value?.seconds || 0
     )
 );
 const repeatIcon = computed(() => {
@@ -40,7 +42,7 @@ onMounted(() => {
 });
 
 watch(
-    () => playerStore.currentTrack!,
+    () => currentTrack.value!,
     async (track: Track) => {
         if (track) {
             const metadata = await window.api.readMetadata(track.path);
@@ -88,8 +90,8 @@ const switchShuffle = () => {
     playerStore.shuffle = !playerStore.shuffle;
 };
 const switchFavourite = () => {
-    if (playerStore.currentTrack) {
-        TrackStore.switchFavourite(playerStore.currentTrack.id);
+    if (playerStore.currentTrackId) {
+        TrackStore.switchFavourite(playerStore.currentTrackId);
     }
 };
 const toggleQueue = () => {
@@ -117,7 +119,7 @@ const previous = () => {
     >
         <div class="hidden">
             <audio
-                :src="playerStore.currentTrack?.path || ''"
+                :src="currentTrack?.path || ''"
                 preload="auto"
                 ref="audioElement"
                 @ended="onPlaybackEnded"
@@ -133,7 +135,7 @@ const previous = () => {
             </div>
             <div class="statsText">
                 <p class="title font-medium text-sm text-ellipsis whitespace-nowrap overflow-x-hidden w-full">
-                    {{ playerStore.currentTrack?.title || "" }}
+                    {{ currentTrack?.title || "" }}
                 </p>
                 <p class="artists text-xs w-full max-w-[200px]">{{ displayArtists }}</p>
             </div>
@@ -150,7 +152,7 @@ const previous = () => {
             <Slider
                 :value="playPosition"
                 :min="0"
-                :max="playerStore.currentTrack?.duration || 0"
+                :max="currentTrack?.duration || 0"
                 @update:value="updatePlayerTime"
             ></Slider>
         </div>
@@ -174,7 +176,7 @@ const previous = () => {
             {{ playerStore.shuffle ? "shuffle_on" : "shuffle" }}
         </IconButton>
         <IconButton size="small" @click="switchFavourite">
-            {{ playerStore.currentTrack?.favourite ? "favorite" : "favorite_border" }}
+            {{ currentTrack?.favourite ? "favorite" : "favorite_border" }}
         </IconButton>
         <IconButton size="small" :highlight="queueOpen" @click="toggleQueue">queue_music</IconButton>
     </div>
@@ -182,7 +184,7 @@ const previous = () => {
         v-if="queueOpen"
         class="queue absolute right-3 bottom-3 mb-20 p-3 bg-overlay border-divider border-2 rounded-lg backdrop-blur-xl w-[300px] z-10 overflow-y-auto select-none"
     >
-        <TrackListCompact :tracks="playerStore.queue" :selectable="false" />
+        <TrackListCompact :tracks="queue" :selectable="false" />
     </div>
 </template>
 

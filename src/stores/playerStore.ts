@@ -3,7 +3,7 @@ import { Track } from "../types/database";
 import { nextTick } from "vue";
 
 interface IState {
-    queue: Array<Track>;
+    queue: Array<string>;
     volume: number;
     playing: boolean;
     currentTrackIndex: number;
@@ -13,7 +13,7 @@ interface IState {
 };
 
 type TGetters = {
-    currentTrack: (state: IState) => Track | undefined;
+    currentTrackId: (state: IState) => string | undefined;
 }
 
 interface IActions {
@@ -35,8 +35,18 @@ const usePlayer = defineStore<"player", IState, TGetters, IActions>("player", {
         repeat: 0,
         shuffle: false,
     }),
+    persist: {
+        key: "player",
+        paths: [
+            "queue",
+            "currentTrackIndex",
+            "volume",
+            "repeat",
+            "shuffle",
+        ],
+    },
     getters: {
-        currentTrack: (state) => state.queue[state.currentTrackIndex] || {},
+        currentTrackId: (state) => state.queue[state.currentTrackIndex] || undefined,
     },
     actions: {
         play() {

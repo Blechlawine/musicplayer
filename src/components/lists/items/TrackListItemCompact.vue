@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed, PropType } from "vue";
 import usePlayer from "../../../stores/playerStore";
+import useTracks from "../../../stores/trackStore";
 import { Track } from "../../../types/database";
 import { formatTime } from "../../../utils/utils";
 
 const emit = defineEmits(["click", "shiftClick", "ctrlClick", "doubleClick"]);
 
 const playerStore = usePlayer();
+const TrackStore = useTracks();
 
 const props = defineProps({
     track: {
@@ -21,7 +23,7 @@ const props = defineProps({
 
 const playing = computed(() => playerStore.playing && isCurrentTrack.value);
 const time = computed(() => formatTime(props.track.hours, props.track.minutes, props.track.seconds));
-const isCurrentTrack = computed(() => playerStore.currentTrack?.path === props.track.path);
+const isCurrentTrack = computed(() => TrackStore.getTrackById(playerStore.currentTrackId)?.path === props.track.path);
 const selectedClasses = computed(() => ({
     "rounded-lg": props.selected,
     "bg-highlight": props.selected,

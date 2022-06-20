@@ -5,7 +5,10 @@ interface IState {
     tracks: Array<Track>;
 }
 
-type TGetters = {}
+type TGetters = {
+    getTrackById: (state: IState) => (id: string | undefined) => Track | undefined;
+    getTracksByIds: (state: IState) => (ids: string[]) => Track[];
+};
 
 interface IActions {
     fetchAllTracks: () => Promise<void>;
@@ -17,6 +20,18 @@ const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
     state: () => ({
         tracks: [],
     }),
+    getters: {
+        getTrackById: (state) => (id) => {
+            if (id) {
+                return state.tracks.find((track) => track.id === id)
+            } else {
+                return undefined;
+            }
+        },
+        getTracksByIds: (state) => (ids) => {
+            return state.tracks.filter((track) => ids.includes(track.id));
+        },
+    },
     actions: {
         async fetchAllTracks() {
             this.tracks = await window.api.getTracks();

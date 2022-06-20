@@ -69,7 +69,7 @@ const ctrlClickTrack = (track: Track) => {
 };
 
 const playTracks = (tracks: Track[]) => {
-    playerStore.queue = tracks;
+    playerStore.queue = tracks.map((t) => t.id);
     playerStore.currentTrackIndex = currentTrackIndex.value;
     nextTick(() => {
         playerStore.play();

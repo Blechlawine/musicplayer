@@ -6,6 +6,7 @@ import "./styles/index.css";
 import { IAudioMetadata } from "music-metadata";
 import routes from "./router/index";
 import { createRouter, createWebHistory } from "vue-router";
+import persistedStatePlugin from "pinia-plugin-persistedstate";
 
 declare global {
     interface Window {
@@ -27,11 +28,12 @@ declare global {
     }
 }
 
-const store = createPinia();
+const pinia = createPinia();
+pinia.use(persistedStatePlugin);
 
 const router = createRouter({
     routes,
     history: createWebHistory(),
 });
 
-createApp(App).use(store).use(router).mount("#app");
+createApp(App).use(pinia).use(router).mount("#app");

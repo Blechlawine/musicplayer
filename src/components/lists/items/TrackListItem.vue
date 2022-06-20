@@ -3,11 +3,13 @@ import { PropType, computed } from "vue";
 import { Track } from "../../../types/database";
 import { TrackListColumn as Column } from "../../../types/ui";
 import usePlayer from "../../../stores/playerStore";
+import useTracks from "../../../stores/trackStore";
 import { formatTime } from "../../../utils/utils";
 
 const emit = defineEmits(["click", "shiftClick", "doubleClick", "ctrlClick", "contextMenu"]);
 
 const playerStore = usePlayer();
+const TrackStore = useTracks();
 
 const props = defineProps({
     track: {
@@ -25,7 +27,7 @@ const props = defineProps({
 });
 
 const playing = computed(() => playerStore.playing && isCurrentTrack.value);
-const isCurrentTrack = computed(() => playerStore.currentTrack?.path === props.track.path);
+const isCurrentTrack = computed(() => TrackStore.getTrackById(playerStore.currentTrackId)?.path === props.track.path);
 const time = computed(() => formatTime(props.track.hours, props.track.minutes, props.track.seconds));
 const selectedClasses = computed(() => ({
     "rounded-lg": props.selected,
