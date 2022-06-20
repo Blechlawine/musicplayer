@@ -1,6 +1,11 @@
 <template>
-    <button class="flex flex-row items-center justify-center py-2 px-4 transition-colors h-min w-max" :class="classes" @click="click">
+    <button
+        class="flex flex-row items-center py-2 gap-2 justify-center transition-colors h-min w-max"
+        :class="classes"
+        @click="click"
+    >
         <slot></slot>
+        <span class="material-icons" v-if="props.icon">{{ props.icon }}</span>
     </button>
 </template>
 <script setup lang="ts">
@@ -22,9 +27,15 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    icon: {
+        type: String as PropType<string | undefined>,
+    },
 });
 
 const classes = computed(() => ({
+    "px-4": !props.icon,
+    "pl-4": props.icon,
+    "pr-2": props.icon,
     "rounded-full": props.rounded,
     "rounded-lg": !props.rounded,
     outlined: props.outlined,

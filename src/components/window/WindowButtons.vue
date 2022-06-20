@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import useSettings from "../../stores/settingsStore";
 
-const props = defineProps({
-    design: {
-        type: String,
-        default: "trafficlight",
-        validator: (value: string) => ["icons", "trafficlight"].includes(value),
-    },
-});
+const SettingsStore = useSettings();
+const design = computed(() => SettingsStore.window.windowBar.buttonStyle);
 
 const minimize = () => {
     window.api.minimizeWindow();
@@ -22,23 +18,36 @@ const close = () => {
 };
 
 const buttonClasses = computed(() => ({
-    "w-4": true,
-    "h-4": true,
+    "w-4": design.value === "trafficLights",
+    "h-4": design.value === "trafficLights",
+    "w-6": design.value === "icons",
+    "h-6": design.value === "icons",
     flex: true,
+    "items-center": true,
+    "justify-center": true,
     "rounded-full": true,
     "p-0.5": true,
+    "hover:bg-highlight": design.value === "icons",
+}));
+
+const iconClasses = computed(() => ({
+    "opacity-0": design.value === "trafficLights",
+    "hover:opacity-75": design.value === "trafficLights",
+    "opacity-75": design.value === "icons",
+    "text-white": design.value === "icons",
 }));
 
 const minimizeClasses = computed(() => ({
-    "bg-amber-500": props.design === "trafficlight",
+    "bg-amber-500": design.value === "trafficLights",
     ...buttonClasses.value,
 }));
 const maximizeClasses = computed(() => ({
-    "bg-green-500": props.design === "trafficlight",
+    "bg-green-500": design.value === "trafficLights",
     ...buttonClasses.value,
 }));
 const closeClasses = computed(() => ({
-    "bg-red-500": props.design === "trafficlight",
+    "bg-red-500": design.value === "trafficLights",
+    "hover:bg-red-500": design.value === "icons",
     ...buttonClasses.value,
 }));
 </script>
@@ -46,13 +55,13 @@ const closeClasses = computed(() => ({
 <template>
     <div class="flex flex-row gap-2 region-no-drag text-bg">
         <button @click="minimize" :class="minimizeClasses">
-            <span class="material-icons text-[12px] opacity-0 hover:opacity-75">minimize</span>
+            <span class="material-icons text-[12px]" :class="iconClasses">minimize</span>
         </button>
         <button @click="maximize" :class="maximizeClasses">
-            <span class="material-icons text-[12px] opacity-0 hover:opacity-75">maximize</span>
+            <span class="material-icons text-[12px]" :class="iconClasses">maximize</span>
         </button>
         <button @click="close" :class="closeClasses">
-            <span class="material-icons text-[12px] opacity-0 hover:opacity-75">close</span>
+            <span class="material-icons text-[12px]" :class="iconClasses">close</span>
         </button>
     </div>
 </template>

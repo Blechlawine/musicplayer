@@ -20,7 +20,7 @@ const useSidebar = defineStore<"sidebar", IState, TGetters, IActions>("sidebar",
             },
             {
                 label: "Window",
-                icon: "window",
+                icon: "web_asset",
                 link: "/settings/window",
             },
             {
