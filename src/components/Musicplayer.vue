@@ -4,7 +4,6 @@ import IconButton from "./buttons/IconButton.vue";
 import Slider from "./inputs/Slider.vue";
 import TrackListCompact from "./lists/TrackListCompact.vue";
 import { ref, onMounted, watch, computed, nextTick } from "vue";
-import { Artist, Track } from "../types/database";
 import { splitTime } from "../../electron/utils/utils";
 import { formatTime } from "../utils/utils";
 import useTracks from "../stores/trackStore";
@@ -18,7 +17,7 @@ const playPosition = ref(0);
 const queueOpen = ref(false); // TODO: move this into a store, to save it in settings
 const currentTrack = computed(() => TrackStore.getTrackById(playerStore.currentTrackId));
 const queue = computed(() => TrackStore.getTracksByIds(playerStore.queue));
-const displayArtists = computed(() => currentTrack.value?.artists?.map((a: Artist) => a.name).join(", "));
+const displayArtists = computed(() => currentTrack.value?.artists?.map((a: IArtist) => a.name).join(", "));
 const currentTime = computed(() => formatTime(...splitTime(playPosition.value)));
 const trackLength = computed(() =>
     formatTime(
@@ -43,7 +42,7 @@ onMounted(() => {
 
 watch(
     () => currentTrack.value!,
-    async (track: Track) => {
+    async (track: ITrack) => {
         if (track) {
             const metadata = await window.api.readMetadata(track.path);
             const covers = metadata.common.picture;
