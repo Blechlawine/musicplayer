@@ -1,8 +1,7 @@
 import { defineStore, StoreDefinition } from "pinia";
-import { LibraryPath } from "../types/database";
 
 interface IState {
-    libraryPaths: Array<LibraryPath>;
+    libraryPaths: Array<ILibraryPath>;
 };
 
 type TGetters = {};

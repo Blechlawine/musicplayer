@@ -1,5 +1,4 @@
-import { defineStore, StoreDefinition } from "pinia";
-import { Track } from "../types/database";
+import { defineStore } from "pinia";
 import { nextTick } from "vue";
 
 interface IState {

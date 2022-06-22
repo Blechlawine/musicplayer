@@ -1,14 +1,13 @@
 import { defineStore } from "pinia";
-import { Track } from "../types/database";
 
 interface IState {
-    tracks: Array<Track>;
+    tracks: Array<ITrack>;
 }
 
 type TGetters = {
-    getTrackById: (state: IState) => (id: string | undefined) => Track | undefined;
-    getTracksByIds: (state: IState) => (ids: string[]) => Track[];
-    favourites: (state: IState) => Track[];
+    getTrackById: (state: IState) => (id: string | undefined) => ITrack | undefined;
+    getTracksByIds: (state: IState) => (ids: string[]) => ITrack[];
+    favourites: (state: IState) => ITrack[];
 };
 
 interface IActions {
