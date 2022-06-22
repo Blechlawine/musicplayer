@@ -158,7 +158,7 @@ const previous = () => {
         </div>
         <p class="trackLength">{{ trackLength }}</p>
         <div class="dividerVert"></div>
-        <div class="volumeWrapper flex items-center flex-row max-w-[180px] min-w-[100px] w-full">
+        <div class="volumeWrapper grid items-center">
             <span class="material-icons">volume_up</span>
             <div class="volume w-full">
                 <Slider
@@ -212,4 +212,7 @@ const previous = () => {
 
 .queue
     max-height: calc(100vh - 200px)
+
+.volumeWrapper
+    grid-template-columns: 24px 156px
 </style>

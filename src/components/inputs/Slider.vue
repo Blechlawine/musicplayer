@@ -99,6 +99,7 @@ const setHandlePosition = (x: number) => {
     emit("update:value", calculated);
 };
 const resize = () => {
+    console.log(sliderRef.value?.clientWidth);
     maxX.value = sliderRef.value!.clientWidth;
 };
 const scale = (valueIn: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
