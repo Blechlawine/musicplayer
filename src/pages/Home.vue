@@ -2,21 +2,31 @@
     <div class="home w-full h-full relative">
         <Sidebar class="sidebar" :highlightPosition="highlightPosition" :highlightExpanded="highlightExpanded">
             <div
-                class="sidebarSection relative flex flex-col gap-3"
+                ref="sections"
+                class="sidebarSection flex flex-col gap-3"
                 v-for="section in SidebarStore.main"
                 :key="section.title"
+                :data-active="section.entries.some((e) => e.link === router.currentRoute.value.path)"
+                :data-open="section.open"
             >
                 <div class="sidebarSectionHeader w-full flex flex-row justify-between pl-3 h-6">
                     <div class="title">{{ section.title }}</div>
-                    <IconButton class="toggle" @click="(e) => {toggleSection(e.target, section)}">
+                    <IconButton
+                        class="toggle"
+                        @click="
+                            (e) => {
+                                toggleSection(e.target, section);
+                            }
+                        "
+                    >
                         {{ section.open ? "expand_less" : "expand_more" }}
                     </IconButton>
                 </div>
-                <div v-if="section.open" class="entries">
+                <div v-show="section.open" class="entries">
                     <SidebarLink
                         ref="entries"
-                        :entry="entry"
                         v-for="entry in section.entries"
+                        :entry="entry"
                         :key="entry.label"
                         :data-active="entry.link === router.currentRoute.value.path"
                         @activeChanged="moveHighlight"
@@ -43,7 +53,9 @@ const router = useRouter();
 const highlightPosition = ref(0);
 const highlightExpanded = ref(true);
 const entries = ref([]) as Ref<any>;
-const activeEntry = computed(() => entries.value.find((entry: any) => entry.$el.dataset.active));
+const sections = ref([]) as Ref<any>;
+const activeEntry = ref({}) as Ref<any>;
+const activeSection = ref({}) as Ref<any>;
 
 onMounted(() => {
     TrackStore.fetchAllTracks();
@@ -51,15 +63,21 @@ onMounted(() => {
 
 const toggleSection = (element: any, section: ISidebarSection) => {
     section.open = !section.open;
-    if (!section.open && section.entries.some(e => e.link === router.currentRoute.value.path)) {
-        moveHighlight(true, element.offsetTop);
-        highlightExpanded.value = false;
-    } else if (section.open && section.entries.some(e => e.link === router.currentRoute.value.path)) {
-        nextTick(() => {
-            moveHighlight(true, activeEntry.value.$el.offsetTop);
+    nextTick(() => {
+        activeEntry.value = entries.value.find((entry: any) => entry.$el.dataset.active == "true");
+        activeSection.value = sections.value.find((section: any) => section.dataset.active == "true");
+        moveHighlight(
+            true,
+            activeSection.value.dataset.open === "true"
+                ? activeEntry.value.$el.offsetTop
+                : activeSection.value.offsetTop
+        );
+        if (activeSection.value.dataset.open === "true") {
             highlightExpanded.value = true;
-        });
-    }
+        } else {
+            highlightExpanded.value = false;
+        }
+    });
 };
 
 const moveHighlight = (active: boolean, yPos: number) => {

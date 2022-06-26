@@ -4,12 +4,12 @@
     >
         <slot></slot>
         <div
-            class="sidebarHighlight absolute transition-transform bg-accent top-0 mt-4 left-0 w-1 rounded-r"
+            class="sidebarHighlight absolute transition-transform bg-accent top-0 mt-2 left-0 w-1 rounded-r"
             :class="highlightClasses"
             :style="highlightStyle"
         ></div>
         <div
-            class="sidebarHighlight absolute transition-transform bg-accent top-0 mt-4 -left-3 w-4 rounded-r blur-md"
+            class="sidebarHighlight absolute transition-transform bg-accent top-0 mt-2 -left-3 w-4 rounded-r blur-md"
             :class="highlightClasses"
             :style="highlightStyle"
         ></div>
