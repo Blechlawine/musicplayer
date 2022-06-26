@@ -1,11 +1,15 @@
 <template>
     <div class="landing">
-        <TrackList :tracks="TrackStore.tracks"></TrackList>
+        {{ ArtistStore.artists }}
     </div>
 </template>
 <script setup lang="ts">
-import TrackList from "../../components/lists/TrackList.vue";
-import useTracks from "../../stores/trackStore";
+import { onMounted } from "vue";
+import useArtists from "../../stores/artistStore";
 
-const TrackStore = useTracks();
+const ArtistStore = useArtists();
+
+onMounted(() => {
+    ArtistStore.fetchAllArtists();
+});
 </script>

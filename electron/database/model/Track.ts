@@ -60,14 +60,10 @@ class Track extends BaseEntity {
     @OneToMany(() => PlaylistTrack, (playlistTrack) => playlistTrack.track)
     playlistTrack: PlaylistTrack;
 
-    @ManyToOne(() => Album, (album) => album.tracks, {
-        eager: true,
-    })
+    @ManyToOne(() => Album, (album) => album.tracks)
     album: Album;
 
-    @ManyToMany(() => Artist, (artist) => artist.tracks, {
-        eager: true,
-    })
+    @ManyToMany(() => Artist, (artist) => artist.tracks)
     @JoinTable()
     artists: Artist[];
 

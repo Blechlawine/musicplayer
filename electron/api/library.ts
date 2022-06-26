@@ -128,7 +128,27 @@ export default () => [
     {
         event: "getTracks",
         handler: async (): Promise<Track[]> => {
-            return await Track.find();
+            return await Track.find({
+                relations: {
+                    album: {
+                        artists: true,
+                    },
+                    artists: true,
+                }
+            });
+        },
+    },
+    {
+        event: "getArtists",
+        handler: async (): Promise<Artist[]> => {
+            return await Artist.find({
+                relations: {
+                    albums: {
+                        tracks: true,
+                    },
+                    tracks: true,
+                },
+            });
         },
     },
     {
