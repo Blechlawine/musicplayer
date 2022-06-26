@@ -41,6 +41,32 @@ const useSidebar = defineStore<"sidebar", IState, TGetters, IActions>("sidebar",
                     },
                 ],
             },
+            {
+                title: "Library",
+                open: true,
+                entries: [
+                    {
+                        label: "Tracks",
+                        icon: "music_note",
+                        link: "/tracks",
+                    },
+                    {
+                        label: "Artists",
+                        icon: "account_circle",
+                        link: "/artists",
+                    },
+                    {
+                        label: "Albums",
+                        icon: "image",
+                        link: "/albums",
+                    },
+                    {
+                        label: "Genres",
+                        icon: "star",
+                        link: "/genres",
+                    },
+                ],
+            },
         ],
     }),
     actions: {},

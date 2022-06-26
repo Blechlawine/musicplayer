@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TrackList from "../components/lists/TrackList.vue";
-import useTracks from "../stores/trackStore";
+import TrackList from "../../components/lists/TrackList.vue";
+import useTracks from "../../stores/trackStore";
 
 const TrackStore = useTracks();
 </script>

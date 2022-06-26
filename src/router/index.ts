@@ -1,4 +1,4 @@
-import Landing from "../pages/Landing.vue";
+import Landing from "../pages/home/Landing.vue";
 import Home from "../pages/Home.vue";
 
 const routes = [
@@ -19,7 +19,27 @@ const routes = [
             {
                 path: "/favourites",
                 name: "favourites",
-                component: () => import("../pages/Favourites.vue"),
+                component: () => import("../pages/home/Favourites.vue"),
+            },
+            {
+                path: "/tracks",
+                name: "Tracks",
+                component: () => import("../pages/home/Tracks.vue"),
+            },
+            {
+                path: "/artists",
+                name: "Artists",
+                component: () => import("../pages/home/Artists.vue"),
+            },
+            {
+                path: "/albums",
+                name: "Albums",
+                component: () => import("../pages/home/Albums.vue"),
+            },
+            {
+                path: "/genres",
+                name: "Genres",
+                component: () => import("../pages/home/Genres.vue"),
             },
         ],
     },
@@ -41,8 +61,8 @@ const routes = [
                 path: "/settings/window",
                 name: "window",
                 component: () => import("../pages/settings/Window.vue"),
-            }
-        ]
+            },
+        ],
     },
 ];
 
