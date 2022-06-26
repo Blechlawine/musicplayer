@@ -13,6 +13,7 @@ type TGetters = {
 interface IActions {
     fetchAllTracks: () => Promise<void>;
     switchFavourite: (trackId: string) => void;
+    increasePlayCountForTrack: (trackId: string | undefined) => void;
 }
 
 const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
@@ -22,7 +23,7 @@ const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
     getters: {
         getTrackById: (state) => (id) => {
             if (id) {
-                return state.tracks.find((track) => track.id === id)
+                return state.tracks.find((track) => track.id === id);
             } else {
                 return undefined;
             }
@@ -45,6 +46,17 @@ const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
                 window.api.saveFavouriteForTrack(trackId, track.favourite);
             } else {
                 console.error("Track not found");
+            }
+        },
+        increasePlayCountForTrack(trackId) {
+            if (trackId) {
+                let track = this.tracks.find((track) => track.id === trackId);
+                if (track) {
+                    track.timesPlayed++;
+                    window.api.increasePlayCountForTrack(trackId, track.timesPlayed);
+                } else {
+                    console.error("Track not found");
+                }
             }
         },
     },

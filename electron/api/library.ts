@@ -149,4 +149,16 @@ export default () => [
             }
         },
     },
+    {
+        event: "increasePlayCountForTrack",
+        handler: async (event: any, trackId: string, timesPlayed: number): Promise<Track | null> => {
+            const trackInDatabase = await Track.findOne({ where: { id: trackId } });
+            if (trackInDatabase) {
+                trackInDatabase.timesPlayed = timesPlayed;
+                return await trackInDatabase.save();
+            } else {
+                return null;
+            }
+        },
+    },
 ];

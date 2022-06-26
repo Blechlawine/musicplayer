@@ -32,6 +32,9 @@ contextBridge.exposeInMainWorld("api", {
     saveFavouriteForTrack: (trackId: string, favourite: boolean) => {
         return ipcRenderer.invoke("saveFavouriteForTrack", trackId, favourite);
     },
+    increasePlayCountForTrack: (trackId: string, timesPlayed: number) => {
+        return ipcRenderer.invoke("increasePlayCountForTrack", trackId, timesPlayed);
+    },
 });
 
 contextBridge.exposeInMainWorld("events", {

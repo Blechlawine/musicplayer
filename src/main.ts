@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { createPinia } from "pinia";
-import { LibraryPath, Track } from "./types/database";
 import "./styles/index.css";
 import { IAudioMetadata } from "music-metadata";
 import routes from "./router/index";
@@ -15,12 +14,13 @@ declare global {
             minimizeWindow: () => void;
             maximizeWindow: () => void;
             scanLibrary: () => Promise<void>;
-            addLibraryPath: ({}: { path: string; name: string }) => Promise<LibraryPath>;
-            getLibraryPaths: () => Promise<LibraryPath[]>;
-            getTracks: () => Promise<Track[]>;
-            getFavourites: () => Promise<Track[]>;
+            addLibraryPath: ({}: { path: string; name: string }) => Promise<ILibraryPath>;
+            getLibraryPaths: () => Promise<ILibraryPath[]>;
+            getTracks: () => Promise<ITrack[]>;
+            getFavourites: () => Promise<ITrack[]>;
             readMetadata: (path: string) => Promise<IAudioMetadata>;
-            saveFavouriteForTrack: (trackId: string, favourite: boolean) => Promise<Track | null>;
+            saveFavouriteForTrack: (trackId: string, favourite: boolean) => Promise<ITrack | null>;
+            increasePlayCountForTrack: (trackId: string, timesPlayed: number) => Promise<ITrack | null>;
         };
         events: {
             subscribe: (event: string, handler: (...args: any[]) => void) => void;
