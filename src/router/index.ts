@@ -41,6 +41,20 @@ const routes = [
                 name: "Genres",
                 component: () => import("../pages/home/Genres.vue"),
             },
+            {
+                path: "/artist/:id",
+                name: "Artist",
+                component: () => import("../pages/home/artist/index.vue"),
+                props: true,
+                children: [
+                    {
+                        path: "/artist/:id/tracks",
+                        name: "Artisttracks",
+                        component: () => import("../pages/home/artist/Tracks.vue"),
+                        props: true,
+                    },
+                ],
+            },
         ],
     },
     {

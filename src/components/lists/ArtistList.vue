@@ -1,7 +1,15 @@
 <template>
     <CardList>
         <template #items>
-            <Card v-for="artist in props.artists" :key="artist.id">
+            <Card
+                v-for="artist in props.artists"
+                :key="artist.id"
+                @click="
+                    () => {
+                        artistClick(artist);
+                    }
+                "
+            >
                 <template #title>
                     {{ artist.name }}
                 </template>
@@ -14,8 +22,11 @@
 </template>
 <script setup lang="ts">
 import { PropType } from "vue";
+import { useRouter } from "vue-router";
 import CardList from "./CardList.vue";
 import Card from "./items/Card.vue";
+
+const router = useRouter();
 
 const props = defineProps({
     artists: {
@@ -23,4 +34,8 @@ const props = defineProps({
         required: true,
     },
 });
+
+const artistClick = (artist: IArtist) => {
+    router.push(`/artist/${artist.id}/tracks`);
+};
 </script>
