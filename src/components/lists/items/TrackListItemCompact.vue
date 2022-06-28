@@ -2,7 +2,6 @@
 import { computed, PropType } from "vue";
 import usePlayer from "../../../stores/playerStore";
 import useTracks from "../../../stores/trackStore";
-import { Track } from "../../../types/database";
 import { formatTime } from "../../../utils/utils";
 
 const emit = defineEmits(["click", "shiftClick", "ctrlClick", "doubleClick"]);
@@ -12,7 +11,7 @@ const TrackStore = useTracks();
 
 const props = defineProps({
     track: {
-        type: Object as PropType<Track>,
+        type: Object as PropType<ITrack>,
         required: true,
     },
     selected: {

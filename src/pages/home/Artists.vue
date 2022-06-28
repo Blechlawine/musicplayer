@@ -1,9 +1,10 @@
 <template>
     <div class="landing">
-        {{ ArtistStore.artists }}
+        <ArtistList :artists="ArtistStore.artists" />
     </div>
 </template>
 <script setup lang="ts">
+import ArtistList from "../../components/lists/ArtistList.vue";
 import { onMounted } from "vue";
 import useArtists from "../../stores/artistStore";
 

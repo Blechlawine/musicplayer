@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { PropType, computed } from "vue";
-import { Track } from "../../../types/database";
-import { TrackListColumn as Column } from "../../../types/ui";
 import usePlayer from "../../../stores/playerStore";
 import useTracks from "../../../stores/trackStore";
 import { formatTime } from "../../../utils/utils";
@@ -13,11 +11,11 @@ const TrackStore = useTracks();
 
 const props = defineProps({
     track: {
-        type: Object as PropType<Track>,
+        type: Object as PropType<ITrack>,
         required: true,
     },
     columns: {
-        type: Array as PropType<Column[]>,
+        type: Array as PropType<IColumn[]>,
         required: true,
     },
     selected: {

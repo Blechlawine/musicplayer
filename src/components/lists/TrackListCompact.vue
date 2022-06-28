@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, PropType, Ref, nextTick } from "vue";
-import { Track } from "../../types/database";
 import TrackListItemCompact from "./items/TrackListItemCompact.vue";
 import usePlayer from "../../stores/playerStore";
 
@@ -8,7 +7,7 @@ const playerStore = usePlayer();
 
 const props = defineProps({
     tracks: {
-        type: Array as PropType<Track[]>,
+        type: Array as PropType<ITrack[]>,
         default: [],
     },
     isQueue: {
@@ -26,22 +25,22 @@ const props = defineProps({
 });
 
 const firstSelectedIndex = ref(0);
-const selection = ref([]) as Ref<Track[]>;
+const selection = ref([]) as Ref<ITrack[]>;
 const currentTrackIndex = ref(0);
 
-const addTrackToSelection = (track: Track) => {
+const addTrackToSelection = (track: ITrack) => {
     if (!selection.value.includes(track)) {
         selection.value.push(track);
     }
 };
 
-const selectTrack = (track: Track) => {
+const selectTrack = (track: ITrack) => {
     selection.value = [];
     firstSelectedIndex.value = props.tracks.indexOf(track);
     addTrackToSelection(track);
 };
 
-const playTrack = (track: Track) => {
+const playTrack = (track: ITrack) => {
     if (selection.value.length === 0) {
         selection.value.push(track);
     }
@@ -49,7 +48,7 @@ const playTrack = (track: Track) => {
     playTracks(props.selectable ? selection.value : props.tracks);
 };
 
-const shiftClickTrack = (track: Track) => {
+const shiftClickTrack = (track: ITrack) => {
     const selectionEndIndex = props.tracks.indexOf(track);
     if (firstSelectedIndex.value == -1) firstSelectedIndex.value = 0;
     if (selectionEndIndex > firstSelectedIndex.value) {
@@ -63,12 +62,12 @@ const shiftClickTrack = (track: Track) => {
     }
 };
 
-const ctrlClickTrack = (track: Track) => {
+const ctrlClickTrack = (track: ITrack) => {
     addTrackToSelection(track);
     firstSelectedIndex.value = props.tracks.indexOf(track);
 };
 
-const playTracks = (tracks: Track[]) => {
+const playTracks = (tracks: ITrack[]) => {
     playerStore.queue = tracks.map((t) => t.id);
     playerStore.currentTrackIndex = currentTrackIndex.value;
     nextTick(() => {
