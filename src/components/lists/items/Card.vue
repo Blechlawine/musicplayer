@@ -1,6 +1,6 @@
 <template>
     <div class="card p-2 rounded-lg bg-overlay w-full h-max flex flex-col gap-1" :class="computedClasses">
-        <p class="text-lg font-medium text-ellipsis w-full">
+        <p class="text-lg font-medium text-ellipsis w-full whitespace-nowrap overflow-hidden">
             <slot name="title"></slot>
         </p>
         <p class="text-xs">
