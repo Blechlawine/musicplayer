@@ -1,6 +1,6 @@
 <template>
     <div class="settings">
-        <Sidebar class="sidebar">
+        <Sidebar class="sidebar" :highlightPosition="0" :highlightExpanded="false">
             <SidebarLink :entry="entry" v-for="entry in SidebarStore.settings" :key="entry.label"></SidebarLink>
         </Sidebar>
         <router-view class="routerView overflow-y-auto pb-20"></router-view>

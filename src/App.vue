@@ -5,11 +5,15 @@ import ContextMenu from "./components/window/ContextMenu.vue";
 import useContextMenu from "./stores/contextMenuStore";
 
 const contextMenu = useContextMenu();
+
+const closeContextMenu = () => {
+    contextMenu.isOpen = false;
+}
 </script>
 
 <template>
     <div class="app text-white bg-bg h-full relative">
-        <ContextMenu class="absolute" @close="(e) => (contextMenu.isOpen = false)"></ContextMenu>
+        <ContextMenu class="absolute" @close="closeContextMenu"></ContextMenu>
         <WindowHeader class="windowHeader"></WindowHeader>
         <router-view></router-view>
         <Musicplayer></Musicplayer>

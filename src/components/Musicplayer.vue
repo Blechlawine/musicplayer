@@ -15,7 +15,7 @@ const cover = ref("/album.svg");
 const audioElement = ref(null);
 const playPosition = ref(0);
 const queueOpen = ref(false); // TODO: move this into a store, to save it in settings
-const currentTrack = computed(() => TrackStore.getTrackById(playerStore.currentTrackId));
+const currentTrack = computed(() => TrackStore.getTrackById(playerStore.getCurrentTrackId));
 const queue = computed(() => TrackStore.getTracksByIds(playerStore.queue));
 const displayArtists = computed(() => currentTrack.value?.artists?.map((a: IArtist) => a.name).join(", "));
 const currentTime = computed(() => formatTime(...splitTime(playPosition.value)));
@@ -89,8 +89,8 @@ const switchShuffle = () => {
     playerStore.shuffle = !playerStore.shuffle;
 };
 const switchFavourite = () => {
-    if (playerStore.currentTrackId) {
-        TrackStore.switchFavourite(playerStore.currentTrackId);
+    if (playerStore.getCurrentTrackId) {
+        TrackStore.switchFavourite(playerStore.getCurrentTrackId);
     }
 };
 const toggleQueue = () => {

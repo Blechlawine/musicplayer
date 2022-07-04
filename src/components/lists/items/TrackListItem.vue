@@ -25,7 +25,7 @@ const props = defineProps({
 });
 
 const playing = computed(() => playerStore.playing && isCurrentTrack.value);
-const isCurrentTrack = computed(() => TrackStore.getTrackById(playerStore.currentTrackId)?.path === props.track.path);
+const isCurrentTrack = computed(() => TrackStore.getTrackById(playerStore.getCurrentTrackId)?.path === props.track.path);
 const time = computed(() => formatTime(props.track.hours, props.track.minutes, props.track.seconds));
 const selectedClasses = computed(() => ({
     "rounded-lg": props.selected,

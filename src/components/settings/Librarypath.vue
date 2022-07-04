@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { LibraryPath as LibraryPathType } from "../../../shared/types/database";
-
 const { LibraryPath } = defineProps<{
-    LibraryPath: LibraryPathType;
+    LibraryPath: ILibraryPath;
 }>();
 </script>
 

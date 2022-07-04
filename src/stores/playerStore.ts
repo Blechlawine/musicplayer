@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { nextTick } from "vue";
+import { nextTick, UnwrapRef } from "vue";
 import useTracks from "./trackStore";
 
 interface IState {
@@ -13,7 +13,7 @@ interface IState {
 }
 
 type TGetters = {
-    currentTrackId: (state: IState) => string | undefined;
+    getCurrentTrackId: (state: UnwrapRef<IState>) => string | undefined;
 };
 
 interface IActions {
@@ -40,7 +40,9 @@ const usePlayer = defineStore<"player", IState, TGetters, IActions>("player", {
         paths: ["queue", "currentTrackIndex", "volume", "repeat", "shuffle"],
     },
     getters: {
-        currentTrackId: (state) => state.queue[state.currentTrackIndex] || undefined,
+        getCurrentTrackId: (state) => {
+            return state.queue[state.currentTrackIndex] || undefined;
+        },
     },
     actions: {
         play() {
@@ -48,7 +50,7 @@ const usePlayer = defineStore<"player", IState, TGetters, IActions>("player", {
                 this.audioElement.play().then(() => {
                     this.playing = true;
                     const TrackStore = useTracks();
-                    TrackStore.increasePlayCountForTrack(this.currentTrackId);
+                    TrackStore.increasePlayCountForTrack(this.getCurrentTrackId);
                 });
             }
         },
