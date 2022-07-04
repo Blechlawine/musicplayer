@@ -71,38 +71,40 @@ export default () => [
             if (libraryPaths.length > 0) {
                 const pathIterator = walkIterator(libraryPaths.map((lp: LibraryPath) => lp.path));
                 for (const path of pathIterator) {
-                    const track = (await Track.findOne({ where: { path } })) ?? new Track();
-                    const meta = await mm.parseFile(path);
-                    const time = splitTime(meta.format.duration ?? 0);
-                    track.path = path;
-                    track.title = meta.common.title;
-                    track.duration = meta.format.duration ?? 0;
-                    track.seconds = time[2];
-                    track.minutes = time[1];
-                    track.hours = time[0];
-                    track.trackNumber = meta.common.track.no;
-                    track.diskNumber = meta.common.disk.no;
-                    track.exists = true;
-                    await track.save();
-                    let metaArtists = meta.common.artists;
-                    let metaAlbum = meta.common.album;
-                    let metaGenres = meta.common.genre;
-                    let artists: Artist[];
-                    if (metaArtists === undefined) {
-                        artists = [];
-                    } else {
-                        artists = await saveArtists(metaArtists);
+                    if (/\.(mp3|wav|ogg)$/.test(path)) {
+                        const track = (await Track.findOne({ where: { path } })) ?? new Track();
+                        const meta = await mm.parseFile(path);
+                        const time = splitTime(meta.format.duration ?? 0);
+                        track.path = path;
+                        track.title = meta.common.title;
+                        track.duration = meta.format.duration ?? 0;
+                        track.seconds = time[2];
+                        track.minutes = time[1];
+                        track.hours = time[0];
+                        track.trackNumber = meta.common.track.no;
+                        track.diskNumber = meta.common.disk.no;
+                        track.exists = true;
+                        await track.save();
+                        let metaArtists = meta.common.artists;
+                        let metaAlbum = meta.common.album;
+                        let metaGenres = meta.common.genre;
+                        let artists: Artist[];
+                        if (metaArtists === undefined) {
+                            artists = [];
+                        } else {
+                            artists = await saveArtists(metaArtists);
+                        }
+                        track.artists = artists;
+                        if (metaGenres === undefined) {
+                            track.genres = [];
+                        } else if (metaGenres.length > 0) {
+                            track.genres = await saveGenres(metaGenres);
+                        }
+                        if (metaAlbum) {
+                            track.album = await saveAlbumWithArtists(artists, metaAlbum);
+                        }
+                        await track.save();
                     }
-                    track.artists = artists;
-                    if (metaGenres === undefined) {
-                        track.genres = [];
-                    } else if (metaGenres.length > 0) {
-                        track.genres = await saveGenres(metaGenres);
-                    }
-                    if (metaAlbum) {
-                        track.album = await saveAlbumWithArtists(artists, metaAlbum);
-                    }
-                    await track.save();
                 }
             }
             // TODO: remove albums and artists without tracks from the database
@@ -134,7 +136,7 @@ export default () => [
                         artists: true,
                     },
                     artists: true,
-                }
+                },
             });
         },
     },
