@@ -57,7 +57,7 @@ const useSidebar = defineStore<"sidebar", IState, TGetters, IActions>("sidebar",
                     },
                     {
                         label: "Albums",
-                        icon: "image",
+                        icon: "album",
                         link: "/albums",
                     },
                     {

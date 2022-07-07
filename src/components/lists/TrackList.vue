@@ -16,6 +16,10 @@ const props = defineProps({
         type: Array as PropType<ITrack[]>,
         required: true,
     },
+    maxAmount: {
+        type: Number,
+        default: -1,
+    },
 });
 
 const columns = reactive([
@@ -92,6 +96,14 @@ const firstSelectedIndex = ref(0);
 const selection = ref([]) as Ref<ITrack[]>;
 const currentTrackIndex = ref(0);
 
+const shownTracks = computed(() => {
+    if (props.maxAmount <= 0) {
+        return props.tracks;
+    } else {
+        return props.tracks.slice(0, props.maxAmount);
+    }
+});
+
 const addTrackToSelection = (track: ITrack) => {
     if (!selection.value.includes(track)) {
         selection.value.push(track);
@@ -159,7 +171,7 @@ const openTrackContextMenu = (track: ITrack) => {
     <List :columns="columns" @columnHeaderClick="columnHeaderClick">
         <template #items>
             <TrackListItem
-                v-for="track in props.tracks"
+                v-for="track in shownTracks"
                 :key="track.id"
                 :track="track"
                 :columns="columns"

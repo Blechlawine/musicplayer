@@ -30,18 +30,27 @@ const props = defineProps({
     icon: {
         type: String as PropType<string | undefined>,
     },
+    dense: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const classes = computed(() => ({
     "px-4": !props.icon,
-    "pl-4": props.icon,
+    "pl-4": props.icon && !props.dense,
+    "pl-3": props.icon && props.dense,
     "pr-2": props.icon,
+    "py-2": !props.dense,
+    "py-1": props.dense,
     "rounded-full": props.rounded,
     "rounded-lg": !props.rounded,
     outlined: props.outlined,
     filled: !props.outlined,
     primary: props.color === "primary",
     plain: props.color === "plain",
+    "text-sm": props.dense,
+    "text-md": !props.dense,
 }));
 
 const click = (e: any) => {
