@@ -39,4 +39,8 @@ const router = createRouter({
     history: createWebHistory(),
 });
 
+router.beforeEach((to, from) => {
+    console.log("route changed from: ", from.fullPath," to:", to.fullPath);
+});
+
 createApp(App).use(pinia).use(router).mount("#app");
