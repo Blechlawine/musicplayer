@@ -1,5 +1,5 @@
 <template>
-    <div class="landing">
+    <div class="albums">
         <AlbumCardList :albums="AlbumStore.albums"></AlbumCardList>
     </div>
 </template>

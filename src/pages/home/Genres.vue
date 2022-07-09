@@ -1,5 +1,5 @@
 <template>
-    <div class="landing">
+    <div class="genres">
         <GenreCardList :genres="GenreStore.genres"></GenreCardList>
     </div>
 </template>

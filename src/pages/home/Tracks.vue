@@ -1,5 +1,5 @@
 <template>
-    <div class="landing">
+    <div class="tracks">
         <TrackList :tracks="TrackStore.tracks"></TrackList>
     </div>
 </template>

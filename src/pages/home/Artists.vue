@@ -1,5 +1,5 @@
 <template>
-    <div class="landing">
+    <div class="artists">
         <ArtistList :artists="ArtistStore.artists" />
     </div>
 </template>

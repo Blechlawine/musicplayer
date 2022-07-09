@@ -1,5 +1,5 @@
 <template>
-    <div class="artist" v-if="genre">
+    <div class="genre" v-if="genre">
         <Hero :title="genre!.name"></Hero>
         <router-view></router-view>
     </div>
