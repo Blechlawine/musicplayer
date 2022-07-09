@@ -1,5 +1,20 @@
 import Landing from "../pages/home/Landing.vue";
 import Home from "../pages/Home.vue";
+import Favourites from "../pages/home/Favourites.vue";
+import Tracks from "../pages/home/Tracks.vue";
+import Artists from "../pages/home/Artists.vue";
+import Artist from "../pages/home/artist/index.vue";
+import ArtistTracks from "../pages/home/artist/Tracks.vue";
+import ArtistAlbums from "../pages/home/artist/Albums.vue";
+import Albums from "../pages/home/Albums.vue";
+import Album from "../pages/home/album/index.vue";
+import AlbumTracks from "../pages/home/album/Tracks.vue";
+import Genres from "../pages/home/Genres.vue";
+import Genre from "../pages/home/genre/index.vue";
+import GenreTracks from "../pages/home/genre/Tracks.vue";
+import Settings from "../pages/Settings.vue";
+import SettingsLibrary from "../pages/settings/Library.vue";
+import SettingsWindow from "../pages/settings/Window.vue";
 
 const routes = [
     {
@@ -19,44 +34,44 @@ const routes = [
             {
                 path: "/favourites",
                 name: "favourites",
-                component: () => import("../pages/home/Favourites.vue"),
+                component: Favourites,
             },
             {
                 path: "/tracks",
                 name: "Tracks",
-                component: () => import("../pages/home/Tracks.vue"),
+                component: Tracks,
             },
             {
                 path: "/artists",
                 name: "Artists",
-                component: () => import("../pages/home/Artists.vue"),
+                component: Artists,
             },
             {
                 path: "/albums",
                 name: "Albums",
-                component: () => import("../pages/home/Albums.vue"),
+                component: Albums,
             },
             {
                 path: "/genres",
                 name: "Genres",
-                component: () => import("../pages/home/Genres.vue"),
+                component: Genres,
             },
             {
                 path: "/artist/:id",
                 name: "Artist",
-                component: () => import("../pages/home/artist/index.vue"),
+                component: Artist,
                 props: true,
                 children: [
                     {
                         path: "/artist/:id/tracks",
                         name: "Artisttracks",
-                        component: () => import("../pages/home/artist/Tracks.vue"),
+                        component: ArtistTracks,
                         props: true,
                     },
                     {
                         path: "/artist/:id/albums",
                         name: "Artistalbums",
-                        component: () => import("../pages/home/artist/Albums.vue"),
+                        component: ArtistAlbums,
                         props: true,
                     },
                 ],
@@ -64,13 +79,13 @@ const routes = [
             {
                 path: "/album/:id",
                 name: "Album",
-                component: () => import("../pages/home/album/index.vue"),
+                component: Album,
                 props: true,
                 children: [
                     {
                         path: "/album/:id/tracks",
                         name: "Albumtracks",
-                        component: () => import("../pages/home/album/Tracks.vue"),
+                        component: AlbumTracks,
                         props: true,
                     },
                 ],
@@ -78,13 +93,13 @@ const routes = [
             {
                 path: "/genre/:id",
                 name: "Genre",
-                component: () => import("../pages/home/genre/index.vue"),
+                component: Genre,
                 props: true,
                 children: [
                     {
                         path: "/genre/:id/tracks",
                         name: "Genretracks",
-                        component: () => import("../pages/home/genre/Tracks.vue"),
+                        component: GenreTracks,
                         props: true,
                     },
                 ],
@@ -94,7 +109,7 @@ const routes = [
     {
         path: "/settings",
         name: "settings",
-        component: () => import("../pages/Settings.vue"),
+        component: Settings,
         children: [
             {
                 path: "/settings",
@@ -103,12 +118,12 @@ const routes = [
             {
                 path: "/settings/library",
                 name: "library",
-                component: () => import("../pages/settings/Library.vue"),
+                component: SettingsLibrary,
             },
             {
                 path: "/settings/window",
                 name: "window",
-                component: () => import("../pages/settings/Window.vue"),
+                component: SettingsWindow,
             },
         ],
     },
