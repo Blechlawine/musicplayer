@@ -61,7 +61,8 @@
         },
         "files": [
             "dist/**/*",
-            "electronCompiled/**/*"
+            "electronCompiled/**/*",
+            "assets/**/*"
         ],
         "directories": {
             "buildResources": "assets",
