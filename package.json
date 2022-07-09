@@ -47,6 +47,9 @@
         "mac": {
             "category": "public.app-category.music"
         },
+        "linux": {
+            "category": "Audio"
+        },
         "nsis": {
             "oneClick": false,
             "allowToChangeInstallationDirectory": true
