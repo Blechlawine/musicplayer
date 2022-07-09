@@ -1,8 +1,11 @@
 <template>
-    <div class="hero h-1/6 p-4 flex flex-row items-end justify-start gap-4">
-        <IconButton @click="back">arrow_back</IconButton>
-        <h1 class="headline">{{ props.title }}</h1>
-        <p>{{ props.subTitle }}</p>
+    <div class="hero h-1/6 p-4 flex flex-row items-end justify-start">
+        <div class="flex flex-row items-center gap-4">
+            <IconButton @click="back">arrow_back</IconButton>
+            <h1 class="headline">{{ props.title }}</h1>
+            <p>{{ props.subTitle }}</p>
+            <slot></slot>
+        </div>
     </div>
 </template>
 <script setup lang="ts">

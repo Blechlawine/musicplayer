@@ -6,6 +6,7 @@ interface IState {
 
 type TGetters = {
     getAlbum: (state: IState) => (id: string) => IAlbum | undefined;
+    getAlbumsFromArtist: (state: IState) => (id: string) => IAlbum[];
 };
 
 interface IActions {
@@ -18,6 +19,9 @@ const useAlbums = defineStore<"albums", IState, TGetters, IActions>("albums", {
     }),
     getters: {
         getAlbum: (state) => (id) => state.albums.find((a) => a.id === id),
+        getAlbumsFromArtist: (state) => (id) => {
+            return state.albums.filter((a) => a.artists.some((a) => a.id === id));
+        },
     },
     actions: {
         async fetchAllAlbums() {

@@ -53,6 +53,12 @@ const routes = [
                         component: () => import("../pages/home/artist/Tracks.vue"),
                         props: true,
                     },
+                    {
+                        path: "/artist/:id/albums",
+                        name: "Artistalbums",
+                        component: () => import("../pages/home/artist/Albums.vue"),
+                        props: true,
+                    },
                 ],
             },
             {
