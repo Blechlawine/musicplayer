@@ -10,6 +10,7 @@ type TGetters = {
     favourites: (state: IState) => ITrack[];
     getTracksFromArtist: (state: IState) => (artistId: string) => ITrack[];
     getTracksFromAlbum: (state: IState) => (albumId: string) => ITrack[];
+    getTracksFromGenre: (state: IState) => (genreId: string) => ITrack[];
     getMostListened: (state: IState) => ITrack[];
 };
 
@@ -42,6 +43,9 @@ const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
         },
         getTracksFromAlbum: (state) => (albumId: string) => {
             return state.tracks.filter((track) => track.album?.id === albumId);
+        },
+        getTracksFromGenre: (state) => (genreId: string) => {
+            return state.tracks.filter((track) => track.genres.some((genre) => genre.id === genreId));
         },
         getMostListened: (state) => {
             return Array.from(state.tracks).sort((t1, t2) => t2.timesPlayed - t1.timesPlayed);

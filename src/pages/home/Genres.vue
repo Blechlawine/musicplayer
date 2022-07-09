@@ -1,11 +1,16 @@
 <template>
     <div class="landing">
-        <TrackList :tracks="TrackStore.tracks"></TrackList>
+        <GenreCardList :genres="GenreStore.genres"></GenreCardList>
     </div>
 </template>
 <script setup lang="ts">
-import TrackList from "../../components/lists/TrackList.vue";
-import useTracks from "../../stores/trackStore";
+import { onMounted } from "vue";
+import GenreCardList from "../../components/lists/GenreCardList.vue";
+import useGenres from "../../stores/genreStore";
 
-const TrackStore = useTracks();
+const GenreStore = useGenres();
+
+onMounted(() => {
+    GenreStore.fetchAllGenres();
+});
 </script>

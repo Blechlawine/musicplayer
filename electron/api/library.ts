@@ -165,6 +165,16 @@ export default () => [
         },
     },
     {
+        event: "getGenres",
+        handler: async (): Promise<Genre[]> => {
+            return await Genre.find({
+                relations: {
+                    tracks: true,
+                },
+            });
+        },
+    },
+    {
         event: "getFavourites",
         handler: async (): Promise<Track[]> => {
             return await Track.find({ where: { favourite: true } });

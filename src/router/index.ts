@@ -69,6 +69,20 @@ const routes = [
                     },
                 ],
             },
+            {
+                path: "/genre/:id",
+                name: "Genre",
+                component: () => import("../pages/home/genre/index.vue"),
+                props: true,
+                children: [
+                    {
+                        path: "/genre/:id/tracks",
+                        name: "Genretracks",
+                        component: () => import("../pages/home/genre/Tracks.vue"),
+                        props: true,
+                    },
+                ],
+            },
         ],
     },
     {
