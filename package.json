@@ -60,9 +60,9 @@
             "icon": "icon.png"
         },
         "files": [
-            "dist/**/*",
-            "electronCompiled/**/*",
-            "assets/**/*"
+            "dist/",
+            "electronCompiled/",
+            "assets/"
         ],
         "directories": {
             "buildResources": "assets",
