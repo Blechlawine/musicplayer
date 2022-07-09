@@ -55,6 +55,20 @@ const routes = [
                     },
                 ],
             },
+            {
+                path: "/album/:id",
+                name: "Album",
+                component: () => import("../pages/home/album/index.vue"),
+                props: true,
+                children: [
+                    {
+                        path: "/album/:id/tracks",
+                        name: "Albumtracks",
+                        component: () => import("../pages/home/album/Tracks.vue"),
+                        props: true,
+                    },
+                ],
+            },
         ],
     },
     {

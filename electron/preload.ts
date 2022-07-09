@@ -26,6 +26,9 @@ contextBridge.exposeInMainWorld("api", {
     getArtists: () => {
         return ipcRenderer.invoke("getArtists");
     },
+    getAlbums: () => {
+        return ipcRenderer.invoke("getAlbums");
+    },
     getFavourites: () => {
         return ipcRenderer.invoke("getFavourites");
     },

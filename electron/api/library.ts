@@ -154,6 +154,17 @@ export default () => [
         },
     },
     {
+        event: "getAlbums",
+        handler: async (): Promise<Album[]> => {
+            return await Album.find({
+                relations: {
+                    artists: true,
+                    tracks: true,
+                },
+            });
+        },
+    },
+    {
         event: "getFavourites",
         handler: async (): Promise<Track[]> => {
             return await Track.find({ where: { favourite: true } });

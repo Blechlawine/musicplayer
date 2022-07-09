@@ -2,6 +2,7 @@
     <div class="hero h-1/6 p-4 flex flex-row items-end justify-start gap-4">
         <IconButton @click="back">arrow_back</IconButton>
         <h1 class="headline">{{ props.title }}</h1>
+        <p>{{ props.subTitle }}</p>
     </div>
 </template>
 <script setup lang="ts">
@@ -14,6 +15,9 @@ const props = defineProps({
     title: {
         type: String,
         required: true,
+    },
+    subTitle: {
+        type: String,
     },
 });
 

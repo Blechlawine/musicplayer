@@ -1,11 +1,17 @@
 <template>
     <div class="landing">
-        <TrackList :tracks="TrackStore.tracks"></TrackList>
+        <AlbumCardList :albums="AlbumStore.albums"></AlbumCardList>
     </div>
 </template>
 <script setup lang="ts">
-import TrackList from "../../components/lists/TrackList.vue";
-import useTracks from "../../stores/trackStore";
+import { onMounted } from "vue";
+import AlbumCardList from "../../components/lists/AlbumCardList.vue";
 
-const TrackStore = useTracks();
+import useAlbums from "../../stores/albumStore";
+
+const AlbumStore = useAlbums();
+
+onMounted(() => {
+    AlbumStore.fetchAllAlbums();
+});
 </script>

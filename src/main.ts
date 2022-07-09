@@ -18,6 +18,7 @@ declare global {
             getLibraryPaths: () => Promise<ILibraryPath[]>;
             getTracks: () => Promise<ITrack[]>;
             getArtists: () => Promise<IArtist[]>;
+            getAlbums: () => Promise<IAlbum[]>;
             getFavourites: () => Promise<ITrack[]>;
             readMetadata: (path: string) => Promise<IAudioMetadata>;
             saveFavouriteForTrack: (trackId: string, favourite: boolean) => Promise<ITrack | null>;
