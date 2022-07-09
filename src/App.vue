@@ -1,14 +1,22 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import WindowHeader from "./components/window/WindowHeader.vue";
 import Musicplayer from "./components/Musicplayer.vue";
 import ContextMenu from "./components/window/ContextMenu.vue";
 import useContextMenu from "./stores/contextMenuStore";
+import { useRouter } from "vue-router";
+
+const Router = useRouter();
+
+onMounted(() => {
+    Router.push("/landing");
+});
 
 const contextMenu = useContextMenu();
 
 const closeContextMenu = () => {
     contextMenu.isOpen = false;
-}
+};
 </script>
 
 <template>
