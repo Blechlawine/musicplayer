@@ -54,7 +54,9 @@
         },
         "nsis": {
             "oneClick": false,
-            "allowToChangeInstallationDirectory": true,
+            "allowToChangeInstallationDirectory": true
+        },
+        "win": {
             "icon": "icon.png"
         },
         "files": [
