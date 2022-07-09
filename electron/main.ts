@@ -2,7 +2,6 @@ import { BrowserWindow } from "electron";
 import path from "path";
 import datasource from "./database/database";
 import { registerIpcHandlers } from "./ipc";
-import fs from "fs";
 import windowStateKeeper from "electron-window-state";
 export default class Main {
     static mainWindow: BrowserWindow | null;
@@ -29,6 +28,7 @@ export default class Main {
         });
 
         Main.mainWindow = new Main.BrowserWindow({
+            icon: path.join(__dirname, "../assets/icon.png"),
             width: mainWindowState.width,
             height: mainWindowState.height,
             x: mainWindowState.x,
