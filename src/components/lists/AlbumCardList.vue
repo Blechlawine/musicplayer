@@ -1,22 +1,16 @@
 <template>
     <CardList>
         <template #items>
-            <Card
+            <AlbumCard
                 v-for="album in props.albums"
                 :key="album.id"
+                :album="album"
                 @click="
                     () => {
                         albumClick(album);
                     }
                 "
-            >
-                <template #title>
-                    {{ album.title }}
-                </template>
-                <template #details>
-                    {{ album.artists.map((a) => a.name).join(" ,") }}
-                </template>
-            </Card>
+            ></AlbumCard>
         </template>
     </CardList>
 </template>
@@ -25,7 +19,7 @@
 import { PropType } from "vue";
 import { useRouter } from "vue-router";
 import CardList from "./CardList.vue";
-import Card from "./items/Card.vue";
+import AlbumCard from "./items/AlbumCard.vue";
 
 const Router = useRouter();
 

@@ -22,11 +22,11 @@ const classes = computed(() => ({
 
 <style lang="sass">
 .cardList
-    grid-template-columns: repeat(auto-fit, minmax(160px, 250px))
+    grid-template-columns: repeat(auto-fit, minmax(160px, 200px))
     grid-auto-flow: row
 
 .cardListSingleRow
     grid-template-rows: 1fr
-    grid-auto-columns: minmax(200px, 250px)
+    grid-auto-columns: 200px
     grid-auto-flow: column
 </style>
