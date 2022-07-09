@@ -7,11 +7,12 @@ import { ref, onMounted, watch, computed, nextTick } from "vue";
 import { splitTime } from "../../electron/utils/utils";
 import { formatTime } from "../utils/utils";
 import useTracks from "../stores/trackStore";
+import albumIcon from "../assets/album.svg";
 
 const playerStore = usePlayer();
 const TrackStore = useTracks();
 
-const cover = ref("/album.svg");
+const cover = ref(albumIcon);
 const audioElement = ref(null);
 const playPosition = ref(0);
 const queueOpen = ref(false); // TODO: move this into a store, to save it in settings
@@ -49,7 +50,7 @@ watch(
             if (covers && covers.length > 0) {
                 cover.value = `data:${covers[0].format};base64,${covers[0].data.toString("base64")}`;
             } else {
-                cover.value = "/album.svg";
+                cover.value = albumIcon;
             }
         }
     }

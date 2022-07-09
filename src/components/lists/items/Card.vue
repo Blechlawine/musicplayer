@@ -6,7 +6,7 @@
                 class="rounded-md absolute left-0 top-0 blur-lg w-full aspect-square"
                 v-if="props.image !== ''"
             />
-            <img :src="props.image || '/album.svg'" class="rounded-md absolute left-0 top-0 w-full aspect-square" />
+            <img :src="props.image || albumIcon" class="rounded-md absolute left-0 top-0 w-full aspect-square" />
         </div>
         <div class="p-2" :class="{ 'pt-3': props.image !== undefined }">
             <p class="text-lg font-medium text-ellipsis w-full whitespace-nowrap overflow-hidden">
@@ -20,6 +20,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
+import albumIcon from "../../../assets/album.svg";
 
 const props = defineProps({
     clickable: {
