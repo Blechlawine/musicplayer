@@ -40,7 +40,7 @@ const addLibraryPath = () => {
 };
 
 const scanLibrary = async () => {
-    await window.api.scanLibrary();
+    LibraryStore.scanLibrary();
 };
 </script>
 <style scoped lang="sass">

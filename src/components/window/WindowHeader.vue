@@ -30,6 +30,7 @@
                     </div>
                 </DropdownMenu>
             </div>
+            <p v-if="LibraryStore.loading">Loading...</p>
         </div>
         <WindowButtons v-if="SettingsStore.window.windowBar.buttonLocation === 'right'"></WindowButtons>
     </div>
@@ -42,12 +43,14 @@ import MenuItem from "../menus/MenuItem.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import useSettings from "../../stores/settingsStore";
+import useLibary from "../../stores/libraryStore";
 
 const appMenuOpen = ref(false);
 const openSubMenu = ref("");
 
 const router = useRouter();
 const SettingsStore = useSettings();
+const LibraryStore = useLibary();
 
 const toggleAppMenu = () => {
     appMenuOpen.value = !appMenuOpen.value;
@@ -64,7 +67,7 @@ const openSettings = () => {
 };
 
 const rescanLibrary = () => {
-    window.api.scanLibrary();
+    LibraryStore.scanLibrary();
     closeAppMenu();
 };
 </script>
