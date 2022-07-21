@@ -4,6 +4,7 @@ import useSettings from "../../stores/settingsStore";
 
 const SettingsStore = useSettings();
 const design = computed(() => SettingsStore.window.windowBar.buttonStyle);
+const location = computed(() => SettingsStore.window.windowBar.buttonLocation);
 
 const minimize = () => {
     window.api.minimizeWindow();
@@ -39,15 +40,21 @@ const iconClasses = computed(() => ({
 
 const minimizeClasses = computed(() => ({
     "bg-amber-500": design.value === "trafficLights",
+    "order-1": location.value === "right",
+    "order-2": location.value === "left",
     ...buttonClasses.value,
 }));
 const maximizeClasses = computed(() => ({
     "bg-green-500": design.value === "trafficLights",
+    "order-2": location.value === "right",
+    "order-3": location.value === "left",
     ...buttonClasses.value,
 }));
 const closeClasses = computed(() => ({
     "bg-red-500": design.value === "trafficLights",
     "hover:bg-red-500": design.value === "icons",
+    "order-3": location.value === "right",
+    "order-1": location.value === "left",
     ...buttonClasses.value,
 }));
 </script>
