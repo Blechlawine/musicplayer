@@ -15,6 +15,8 @@ declare global {
             maximizeWindow: () => void;
             scanLibrary: () => Promise<void>;
             addLibraryPath: ({}: { path: string; name: string }) => Promise<ILibraryPath>;
+            deleteLibraryPath: (id: string) => Promise<void>;
+            updateLibraryPath: (libraryPath: ILibraryPath) => Promise<ILibraryPath>;
             getLibraryPaths: () => Promise<ILibraryPath[]>;
             getTracks: () => Promise<ITrack[]>;
             getArtists: () => Promise<IArtist[]>;
@@ -40,7 +42,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-    console.log("route changed from: ", from.fullPath," to:", to.fullPath);
+    console.log("route changed from: ", from.fullPath, " to:", to.fullPath);
 });
 
 createApp(App).use(pinia).use(router).mount("#app");

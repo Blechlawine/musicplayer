@@ -122,6 +122,31 @@ export default () => [
         },
     },
     {
+        event: "deleteLibraryPath",
+        handler: async (_: any, id: string): Promise<void> => {
+            LibraryPath.delete({
+                id,
+            });
+        },
+    },
+    {
+        event: "updateLibraryPath",
+        handler: async (_: any, libraryPath: LibraryPath) => {
+            let found = await LibraryPath.findOne({
+                where: {
+                    id: libraryPath.id,
+                },
+            });
+            if (found) {
+                found.name = libraryPath.name;
+                found.path = libraryPath.path;
+                found.save();
+                return found;
+            }
+            return null;
+        },
+    },
+    {
         event: "getLibraryPaths",
         handler: async (): Promise<LibraryPath[]> => {
             return await LibraryPath.find();

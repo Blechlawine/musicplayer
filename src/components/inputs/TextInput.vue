@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-start">
         <label class="">{{props.label}}</label>
-        <input class="bg-overlay py-2 px-4 outline-none focus:border-accent border-2 border-divider rounded-lg" type="text" @input="onInput" :value="props.modelValue" @focus="activate" @blur="deactivate" />
+        <input class="bg-overlay py-2 px-4 outline-none focus:border-accent border-2 border-divider rounded-lg w-full" type="text" @input="onInput" :value="props.modelValue" @focus="activate" @blur="deactivate" />
     </div>
 </template>
 <script setup lang="ts">

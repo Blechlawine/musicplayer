@@ -14,6 +14,12 @@ contextBridge.exposeInMainWorld("api", {
     addLibraryPath: (data: { path: string; name: string }) => {
         return ipcRenderer.invoke("addLibraryPath", data);
     },
+    deleteLibraryPath: (id: string) => {
+        return ipcRenderer.invoke("deleteLibraryPath", id);
+    },
+    updateLibraryPath: (libraryPath: { id: string; name: string; path: string }) => {
+        return ipcRenderer.invoke("updateLibraryPath", libraryPath);
+    },
     getLibraryPaths: () => {
         return ipcRenderer.invoke("getLibraryPaths");
     },

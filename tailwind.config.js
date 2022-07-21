@@ -9,6 +9,7 @@ module.exports = {
             divider: "rgba(255, 255, 255, 0.08)",
             highlight: "rgba(255, 255, 255, 0.08)",
             overlay: "rgba(0, 0, 0, 0.2)",
+            darker: "rgba(0, 0, 0, 0.2)",
             accent: {
                 light: material.colors["green-100"],
                 DEFAULT: material.colors["green-500"],

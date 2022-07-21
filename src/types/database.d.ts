@@ -2,6 +2,9 @@ interface ILibraryPath {
     id: string;
     name: string;
     path: string;
+    tracks?: any; // TODO: needs to be tracks, when relation between tracks and library path is made
+    updatedAt: Date;
+    createdAt: Date;
 }
 
 interface ITrack {
