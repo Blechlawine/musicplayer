@@ -64,6 +64,7 @@ const openSettings = () => {
 };
 
 const rescanLibrary = () => {
+    window.api.scanLibrary();
     closeAppMenu();
 };
 </script>
