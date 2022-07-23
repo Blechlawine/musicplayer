@@ -1,4 +1,26 @@
 <template>
+    <ContextMenu :open="contextMenuOpen" @close="contextMenuOpen = false">
+        <MenuItem @click="() => playTracks(selection)"> Play selected Tracks </MenuItem>
+        <MenuItem @click="() => favouriteTracks(selection)"> Favourite </MenuItem>
+        <!-- TODO: playlist stuff -->
+        <!-- <div class="flex flex-row">
+            <MenuItem @mousein="() => (contextSubMenuOpen = 'playlist')"> Add to playlist </MenuItem>
+            <DropdownMenu
+                :open="contextSubMenuOpen == 'playlist'"
+                :clickAway="false"
+                @close="() => (contextSubMenuOpen = '')"
+            >
+                <MenuItem @click="() => openNewPlaylistModal()"> Create new </MenuItem>
+                <MenuItem
+                    v-for="playlist in PlaylistStore.playlists"
+                    :key="playlist.id"
+                    @click="() => addSelectionToPlaylist(playlist)"
+                >
+                    {{ playlist.title }}
+                </MenuItem>
+            </DropdownMenu>
+        </div> -->
+    </ContextMenu>
     <CardList :singleRow="props.singleRow">
         <template #items>
             <TrackCard
@@ -20,15 +42,18 @@
 <script setup lang="ts">
 import { PropType, ref, Ref, nextTick, onMounted } from "vue";
 import CardList from "./CardList.vue";
+import ContextMenu from "../window/ContextMenu.vue";
+import MenuItem from "../menus/MenuItem.vue";
 import TrackCard from "./items/TrackCard.vue";
 import usePlayer from "../../stores/playerStore";
 import useTracks from "../../stores/trackStore";
-import useContextMenu from "../../stores/contextMenuStore";
+import usePlaylist from "../../stores/playlistStore";
 
 const PlayerStore = usePlayer();
 const TrackStore = useTracks();
-const contextMenu = useContextMenu();
-const contextMenuContent = ref([]) as Ref<IContextMenuEntry[]>;
+const PlaylistStore = usePlaylist();
+const contextMenuOpen = ref(false);
+const contextSubMenuOpen = ref("");
 
 const props = defineProps({
     tracks: {
@@ -42,16 +67,16 @@ const props = defineProps({
 });
 
 onMounted(() => {
-    contextMenuContent.value = [
-        {
-            label: "Play selected tracks",
-            action: () => playTracks(selection.value),
-        },
-        {
-            label: "Favourite",
-            action: () => favouriteTracks(selection.value),
-        },
-    ];
+    // contextMenuContent.value = [
+    //     {
+    //         label: "Play selected tracks",
+    //         action: () => playTracks(selection.value),
+    //     },
+    //     {
+    //         label: "Favourite",
+    //         action: () => favouriteTracks(selection.value),
+    //     },
+    // ];
 });
 
 const firstSelectedIndex = ref(0);
@@ -117,6 +142,6 @@ const openTrackContextMenu = (track: ITrack) => {
         selection.value.push(track);
     }
     currentTrackIndex.value = selection.value.indexOf(track);
-    contextMenu.open(contextMenuContent.value);
+    // contextMenu.open(contextMenuContent.value);
 };
 </script>

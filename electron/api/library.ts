@@ -264,19 +264,17 @@ export default () => [
     {
         event: "addTracksToPlaylist",
         handler: async (_: any, id: string, trackIds: string[]): Promise<Playlist | null> => {
-            let playlist = await Playlist.findOne({ where: { id } });
+            let playlist = await Playlist.findOne({ where: { id }, relations: { playlistTracks: true } });
             if (playlist) {
-                playlist.playlistTracks = await Promise.all(
-                    trackIds.map(async (tid, index) => {
-                        const track = await Track.findOne({ where: { id: tid } });
-                        let plt = new PlaylistTrack();
-                        plt.track = track!;
-                        plt.index = index;
-                        plt.playlist = playlist!;
-                        await plt.save();
-                        return plt;
-                    })
-                );
+                trackIds.forEach(async (tid) => {
+                    const track = await Track.findOne({ where: { id: tid } });
+                    let plt = new PlaylistTrack();
+                    plt.track = track!;
+                    plt.index = playlist!.playlistTracks?.length || 0;
+                    plt.playlist = playlist!;
+                    await plt.save();
+                    playlist!.playlistTracks.push(plt);
+                });
                 await playlist.save();
                 return playlist;
             }

@@ -19,10 +19,9 @@ class PlaylistTrack extends BaseEntity {
     @Column({ type: "int" })
     index: number;
 
-    @ManyToOne(() => Track, (track) => track.playlistTrack, {
+    @ManyToOne(() => Track, (track) => track.playlistTracks, {
         eager: true,
     })
-    @JoinColumn()
     track: Track;
 
     @ManyToOne(() => Playlist, (playlist) => playlist.playlistTracks)

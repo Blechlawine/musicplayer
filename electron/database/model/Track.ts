@@ -58,7 +58,7 @@ class Track extends BaseEntity {
     libraryPath: LibraryPath;
 
     @OneToMany(() => PlaylistTrack, (playlistTrack) => playlistTrack.track)
-    playlistTrack: PlaylistTrack;
+    playlistTracks: PlaylistTrack[];
 
     @ManyToOne(() => Album, (album) => album.tracks)
     album: Album;

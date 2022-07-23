@@ -1,42 +1,25 @@
 <script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
-import useContextMenu from "../../stores/contextMenuStore";
+import { ref } from "vue";
 import useLibary from "../../stores/libraryStore";
 import IconButton from "../buttons/IconButton.vue";
+import MenuItem from "../menus/MenuItem.vue";
+import ContextMenu from "../window/ContextMenu.vue";
 import EditModal from "../modals/EditModal.vue";
 import TextInput from "../inputs/TextInput.vue";
 
-const ContextMenu = useContextMenu();
 const LibraryStore = useLibary();
 
 const { LibraryPath } = defineProps<{
     LibraryPath: ILibraryPath;
 }>();
 
-const contextMenuContent = ref([]) as Ref<IContextMenuEntry[]>;
 const editModalOpen = ref(false);
+const contextMenuOpen = ref(false);
 const path = ref(LibraryPath.path);
 const name = ref(LibraryPath.name);
 
-onMounted(() => {
-    contextMenuContent.value = [
-        {
-            label: "Edit",
-            action: () => {
-                editModalOpen.value = true;
-            },
-        },
-        {
-            label: "Delete",
-            action: () => {
-                deleteMe();
-            },
-        },
-    ];
-});
-
 const openRightClickMenu = () => {
-    ContextMenu.open(contextMenuContent.value);
+    contextMenuOpen.value = true;
 };
 
 const deleteMe = () => {
@@ -49,6 +32,18 @@ const updateMe = () => {
 </script>
 
 <template>
+    <ContextMenu :open="contextMenuOpen" @close="() => contextMenuOpen = false">
+        <MenuItem
+            @click="
+                () => {
+                    editModalOpen = true;
+                }
+            "
+        >
+            Edit
+        </MenuItem>
+        <MenuItem @click="() => deleteMe()"> Delete </MenuItem>
+    </ContextMenu>
     <div
         class="libraryPath flex flex-row gap-2 px-3 py-2 rounded cursor-default hover:bg-highlight"
         @contextmenu="openRightClickMenu"

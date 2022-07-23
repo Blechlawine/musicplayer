@@ -2,8 +2,6 @@
 import { onMounted } from "vue";
 import WindowHeader from "./components/window/WindowHeader.vue";
 import Musicplayer from "./components/Musicplayer.vue";
-import ContextMenu from "./components/window/ContextMenu.vue";
-import useContextMenu from "./stores/contextMenuStore";
 import { useRouter } from "vue-router";
 
 const Router = useRouter();
@@ -12,16 +10,10 @@ onMounted(() => {
     Router.push("/landing");
 });
 
-const contextMenu = useContextMenu();
-
-const closeContextMenu = () => {
-    contextMenu.isOpen = false;
-};
 </script>
 
 <template>
-    <div class="app text-white bg-bg h-full relative">
-        <ContextMenu class="absolute" @close="closeContextMenu"></ContextMenu>
+    <div class="app text-white bg-bg h-full relative" id="mainFrame">
         <WindowHeader class="windowHeader"></WindowHeader>
         <router-view></router-view>
         <Musicplayer></Musicplayer>

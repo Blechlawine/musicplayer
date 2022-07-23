@@ -28,9 +28,17 @@ const menuStyle = computed(() => ({
 </script>
 <template>
     <div class="wrapper" v-if="props.open">
-        <div class="menu absolute min-w-[100px] min-h-[25px] py-1 flex flex-col rounded bg-bg border-divider border-2 z-30" :style="menuStyle">
+        <div
+            class="menu absolute min-w-[100px] min-h-[25px] py-1 flex flex-col rounded bg-bg border-divider border-2 z-30"
+            :style="menuStyle"
+            @click="() => emit('close')"
+        >
             <slot></slot>
         </div>
-        <div v-if="props.clickAway" class="clickAway absolute left-0 top-0 right-0 bottom-0 w-screen h-screen z-20" @click="(e) => emit('close')"></div>
+        <div
+            v-if="props.clickAway"
+            class="clickAway absolute left-0 top-0 right-0 bottom-0 w-screen h-screen z-20"
+            @click="() => emit('close')"
+        ></div>
     </div>
 </template>

@@ -2,20 +2,21 @@
 import { reactive, onMounted, PropType, ref, nextTick, Ref, computed } from "vue";
 import List from "./List.vue";
 import TrackListItem from "./items/TrackListItem.vue";
+import MenuItem from "../menus/MenuItem.vue";
+import ContextMenu from "../window/ContextMenu.vue";
+import DropdownMenu from "../menus/DropdownMenu.vue";
 import EditModal from "../modals/EditModal.vue";
 import TextInput from "../inputs/TextInput.vue";
 import usePlayer from "../../stores/playerStore";
-import useContextMenu from "../../stores/contextMenuStore";
 import useTracks from "../../stores/trackStore";
 import usePlaylist from "../../stores/playlistStore";
 
 const playerStore = usePlayer();
-const contextMenu = useContextMenu();
 const TrackStore = useTracks();
 const PlaylistStore = usePlaylist();
-const contextMenuContent = ref([]) as Ref<IContextMenuEntry[]>;
 const isAddToPlaylistMenuOpen = ref(false);
-
+const contextMenuOpen = ref(false);
+const contextSubMenuOpen = ref("");
 const isNewPlaylistModalOpen = ref(false);
 const newPlaylistTitle = ref("");
 
@@ -72,30 +73,6 @@ const columns = reactive([
 onMounted(() => {
     const sortedColumn = columns.find((c) => c.sorted != 0) ?? columns[0];
     sortTracks(sortedColumn, sortedColumn?.sorted === 1);
-    contextMenuContent.value = [
-        {
-            label: "Play selected tracks",
-            action: () => playTracks(selection.value),
-        },
-        {
-            label: "Favourite",
-            action: () => favouriteTracks(selection.value),
-        },
-        {
-            label: "Add to playlist",
-            action: () => {},
-            children: [
-                {
-                    label: "Create new",
-                    action: () => openNewPlaylistModal(),
-                },
-                ...PlaylistStore.playlists.map((pl) => ({
-                    label: pl.title,
-                    action: () => addSelectionToPlaylist(pl),
-                })),
-            ],
-        },
-    ];
 });
 
 const sortTracks = (column: IColumn, ascending: boolean) => {
@@ -180,10 +157,6 @@ const favouriteTracks = (tracks: ITrack[]) => {
     });
 };
 
-const openAddToPlaylistMenu = () => {
-    isAddToPlaylistMenuOpen.value = true;
-};
-
 const addSelectionToPlaylist = (playlist: IPlaylist) => {
     PlaylistStore.addTracksToPlaylist(
         playlist.id,
@@ -196,7 +169,7 @@ const openTrackContextMenu = (track: ITrack) => {
         selection.value.push(track);
     }
     currentTrackIndex.value = selection.value.indexOf(track);
-    contextMenu.open(contextMenuContent.value);
+    contextMenuOpen.value = true;
 };
 
 const openNewPlaylistModal = () => {
@@ -206,12 +179,29 @@ const openNewPlaylistModal = () => {
 
 const createNewPlaylistAndAddSelection = async () => {
     const playlist = await PlaylistStore.createPlaylist(newPlaylistTitle.value);
-    isNewPlaylistModalOpen.value = false;
     addSelectionToPlaylist(playlist);
+    isNewPlaylistModalOpen.value = false;
 };
 </script>
 
 <template>
+    <ContextMenu :open="contextMenuOpen" @close="() => contextMenuOpen = false">
+        <MenuItem @click="() => playTracks(selection)"> Play selected Tracks </MenuItem>
+        <MenuItem @click="() => favouriteTracks(selection)"> Favourite </MenuItem>
+        <div class="flex flex-row">
+            <MenuItem @mousein="() => (contextSubMenuOpen = 'playlist')"> Add to playlist </MenuItem>
+            <DropdownMenu
+                :open="contextSubMenuOpen == 'playlist'"
+                :clickAway="false"
+                @close="() => (contextSubMenuOpen = '')"
+            >
+                <MenuItem @click="() => openNewPlaylistModal()"> Create new </MenuItem>
+                <MenuItem v-for="playlist in PlaylistStore.playlists" :key="playlist.id" @click="() => addSelectionToPlaylist(playlist)">
+                    {{ playlist.title }}
+                </MenuItem>
+            </DropdownMenu>
+        </div>
+    </ContextMenu>
     <List :columns="columns" @columnHeaderClick="columnHeaderClick">
         <template #items>
             <TrackListItem

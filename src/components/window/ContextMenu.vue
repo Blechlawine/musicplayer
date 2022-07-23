@@ -1,63 +1,46 @@
 <script setup lang="ts">
 import { onMounted, nextTick, computed, ref } from "vue";
-import useContextMenu from "../../stores/contextMenuStore";
 import DropdownMenu from "../menus/DropdownMenu.vue";
-import MenuItem from "../menus/MenuItem.vue";
 
-const contextMenu = useContextMenu();
+const props = defineProps({
+    open: {
+        type: Boolean,
+        required: true,
+    },
+});
+const emit = defineEmits(["close"]);
 
-const subMenuOpen = ref("");
+const x = ref(0);
+const y = ref(0);
 
 onMounted(() => {
-    nextTick(() => window.addEventListener("mousemove", updatePos));
+    nextTick(() => {
+        window.addEventListener("mousemove", updatePos);
+        window.addEventListener("keydown", (event) => {
+            if (event.code === "Escape") {
+                emit("close");
+            }
+        });
+    });
 });
 
 const updatePos = (e: MouseEvent) => {
-    if (!contextMenu.isOpen) {
-        contextMenu.pos.x = e.clientX;
-        contextMenu.pos.y = e.clientY;
+    if (!props.open) {
+        x.value = e.clientX;
+        y.value = e.clientY;
     }
 };
 
 const position = computed(() => ({
-    left: contextMenu.pos.x,
-    top: contextMenu.pos.y,
+    left: x.value,
+    top: y.value,
 }));
 </script>
 
 <template>
-    <DropdownMenu :open="contextMenu.isOpen" :offset="position" @close="() => (contextMenu.isOpen = false)">
-        <div class="flex flex-row" v-for="item in contextMenu.content" :key="item.label">
-            <MenuItem
-                @click="
-                    (e) => {
-                        item.action();
-                        if (!item.children) contextMenu.isOpen = false;
-                        else subMenuOpen = item.label;
-                    }
-                "
-                @mousein="
-                    () => {
-                        if (item.children) subMenuOpen = item.label;
-                    }
-                "
-            >
-                {{ item.label }}
-            </MenuItem>
-            <DropdownMenu v-if="item.children" :open="subMenuOpen == item.label" :clickAway="false">
-                <MenuItem
-                    v-for="child in item.children"
-                    :key="child.label"
-                    @click="
-                        (e) => {
-                            child.action();
-                            contextMenu.isOpen = false;
-                        }
-                    "
-                >
-                    {{ child.label }}
-                </MenuItem>
-            </DropdownMenu>
-        </div>
-    </DropdownMenu>
+    <Teleport to="#mainFrame">
+        <DropdownMenu class="absolute" :open="props.open" :offset="position" @close="() => emit('close')">
+            <slot></slot>
+        </DropdownMenu>
+    </Teleport>
 </template>
