@@ -46,10 +46,12 @@ import useTracks from "../stores/trackStore";
 import IconButton from "../components/buttons/IconButton.vue";
 import { useRouter } from "vue-router";
 import useAlbums from "../stores/albumStore";
+import usePlaylist from "../stores/playlistStore";
 
 const SidebarStore = useSidebar();
 const TrackStore = useTracks();
 const AlbumStore = useAlbums();
+const PlaylistStore = usePlaylist();
 const router = useRouter();
 
 const highlightPosition = ref(0);
@@ -62,6 +64,7 @@ const activeSection = ref({}) as Ref<any>;
 onMounted(() => {
     TrackStore.fetchAllTracks();
     AlbumStore.fetchAllAlbums();
+    PlaylistStore.fetchAllPlaylists();
 });
 
 const toggleSection = (element: any, section: ISidebarSection) => {

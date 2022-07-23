@@ -38,6 +38,12 @@ contextBridge.exposeInMainWorld("api", {
     getGenres: () => {
         return ipcRenderer.invoke("getGenres");
     },
+    getPlaylists: () => {
+        return ipcRenderer.invoke("getPlaylists");
+    },
+    getPlaylist: (id: string) => {
+        return ipcRenderer.invoke("getPlaylist", id);
+    },
     getFavourites: () => {
         return ipcRenderer.invoke("getFavourites");
     },
@@ -49,6 +55,12 @@ contextBridge.exposeInMainWorld("api", {
     },
     increasePlayCountForTrack: (trackId: string, timesPlayed: number) => {
         return ipcRenderer.invoke("increasePlayCountForTrack", trackId, timesPlayed);
+    },
+    createPlaylist: (title: string) => {
+        return ipcRenderer.invoke("createPlaylist", title);
+    },
+    addTracksToPlaylist: (id: string, tracksIds: string[]) => {
+        return ipcRenderer.invoke("addTracksToPlaylist", id, tracksIds);
     },
 });
 

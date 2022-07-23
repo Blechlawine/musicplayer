@@ -15,6 +15,9 @@ import GenreTracks from "../pages/home/genre/Tracks.vue";
 import Settings from "../pages/Settings.vue";
 import SettingsLibrary from "../pages/settings/Library.vue";
 import SettingsWindow from "../pages/settings/Window.vue";
+import Playlists from "../pages/home/Playlists.vue";
+import Playlist from "../pages/home/playlist/index.vue";
+import PlaylistTracks from "../pages/home/playlist/Tracks.vue";
 
 const routes = [
     {
@@ -55,6 +58,11 @@ const routes = [
                 path: "/genres",
                 name: "Genres",
                 component: Genres,
+            },
+            {
+                path: "/playlists",
+                name: "Playlists",
+                component: Playlists,
             },
             {
                 path: "/artist/:id",
@@ -104,6 +112,20 @@ const routes = [
                     },
                 ],
             },
+            {
+                path: "/playlist/:id",
+                name: "Playlist",
+                component: Playlist,
+                props: true,
+                children: [
+                    {
+                        path: "/playlist/:id/tracks",
+                        name: "Playlisttracks",
+                        component: PlaylistTracks,
+                        props: true,
+                    }
+                ]
+            }
         ],
     },
     {

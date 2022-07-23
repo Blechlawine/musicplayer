@@ -2,14 +2,22 @@
 import { reactive, onMounted, PropType, ref, nextTick, Ref, computed } from "vue";
 import List from "./List.vue";
 import TrackListItem from "./items/TrackListItem.vue";
+import EditModal from "../modals/EditModal.vue";
+import TextInput from "../inputs/TextInput.vue";
 import usePlayer from "../../stores/playerStore";
 import useContextMenu from "../../stores/contextMenuStore";
 import useTracks from "../../stores/trackStore";
+import usePlaylist from "../../stores/playlistStore";
 
 const playerStore = usePlayer();
 const contextMenu = useContextMenu();
 const TrackStore = useTracks();
+const PlaylistStore = usePlaylist();
 const contextMenuContent = ref([]) as Ref<IContextMenuEntry[]>;
+const isAddToPlaylistMenuOpen = ref(false);
+
+const isNewPlaylistModalOpen = ref(false);
+const newPlaylistTitle = ref("");
 
 const props = defineProps({
     tracks: {
@@ -72,6 +80,20 @@ onMounted(() => {
         {
             label: "Favourite",
             action: () => favouriteTracks(selection.value),
+        },
+        {
+            label: "Add to playlist",
+            action: () => {},
+            children: [
+                {
+                    label: "Create new",
+                    action: () => openNewPlaylistModal(),
+                },
+                ...PlaylistStore.playlists.map((pl) => ({
+                    label: pl.title,
+                    action: () => addSelectionToPlaylist(pl),
+                })),
+            ],
         },
     ];
 });
@@ -158,12 +180,34 @@ const favouriteTracks = (tracks: ITrack[]) => {
     });
 };
 
+const openAddToPlaylistMenu = () => {
+    isAddToPlaylistMenuOpen.value = true;
+};
+
+const addSelectionToPlaylist = (playlist: IPlaylist) => {
+    PlaylistStore.addTracksToPlaylist(
+        playlist.id,
+        selection.value.map((t) => t.id)
+    );
+};
+
 const openTrackContextMenu = (track: ITrack) => {
     if (selection.value.length === 0) {
         selection.value.push(track);
     }
     currentTrackIndex.value = selection.value.indexOf(track);
     contextMenu.open(contextMenuContent.value);
+};
+
+const openNewPlaylistModal = () => {
+    isNewPlaylistModalOpen.value = true;
+    isAddToPlaylistMenuOpen.value = false;
+};
+
+const createNewPlaylistAndAddSelection = async () => {
+    const playlist = await PlaylistStore.createPlaylist(newPlaylistTitle.value);
+    isNewPlaylistModalOpen.value = false;
+    addSelectionToPlaylist(playlist);
 };
 </script>
 
@@ -185,4 +229,16 @@ const openTrackContextMenu = (track: ITrack) => {
             </TrackListItem>
         </template>
     </List>
+    <EditModal
+        :open="isNewPlaylistModalOpen"
+        @close="
+            () => {
+                isNewPlaylistModalOpen = false;
+            }
+        "
+        @save="createNewPlaylistAndAddSelection"
+        title="Create new playlist"
+    >
+        <TextInput label="Title" v-model="newPlaylistTitle"></TextInput>
+    </EditModal>
 </template>

@@ -7,6 +7,8 @@ import dataSource from "../database/database";
 import mm from "music-metadata";
 import { walkIterator } from "../utils/utils";
 import { splitTime } from "../utils/utils";
+import Playlist from "../database/model/Playlist";
+import PlaylistTrack from "../database/model/PlaylistTrack";
 
 async function saveArtists(metaArtists: string[]): Promise<Artist[]> {
     const artists = await Promise.all(
@@ -200,6 +202,26 @@ export default () => [
         },
     },
     {
+        event: "getPlaylists",
+        handler: async (): Promise<Playlist[]> => {
+            return await Playlist.find({
+                relations: {
+                    playlistTracks: true,
+                },
+            });
+        },
+    },
+    {
+        event: "getPlaylist",
+        handler: async (_: any, id: string): Promise<Playlist | null> => {
+            return await Playlist.findOne({
+                where: {
+                    id,
+                },
+            });
+        },
+    },
+    {
         event: "getFavourites",
         handler: async (): Promise<Track[]> => {
             return await Track.find({ where: { favourite: true } });
@@ -227,6 +249,38 @@ export default () => [
             } else {
                 return null;
             }
+        },
+    },
+    {
+        event: "createPlaylist",
+        handler: async (_: any, title: string): Promise<Playlist> => {
+            let playlist = new Playlist();
+            playlist.title = title;
+            await playlist.save();
+            console.log("createPlaylist", playlist);
+            return playlist;
+        },
+    },
+    {
+        event: "addTracksToPlaylist",
+        handler: async (_: any, id: string, trackIds: string[]): Promise<Playlist | null> => {
+            let playlist = await Playlist.findOne({ where: { id } });
+            if (playlist) {
+                playlist.playlistTracks = await Promise.all(
+                    trackIds.map(async (tid, index) => {
+                        const track = await Track.findOne({ where: { id: tid } });
+                        let plt = new PlaylistTrack();
+                        plt.track = track!;
+                        plt.index = index;
+                        plt.playlist = playlist!;
+                        await plt.save();
+                        return plt;
+                    })
+                );
+                await playlist.save();
+                return playlist;
+            }
+            return null;
         },
     },
 ];

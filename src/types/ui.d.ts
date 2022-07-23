@@ -8,6 +8,7 @@ interface IColumn {
 interface IContextMenuEntry {
     label: string;
     action: () => void;
+    children?: IContextMenuEntry[];
 }
 
 interface ISidebarSection {

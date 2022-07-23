@@ -52,3 +52,20 @@ interface IGenre {
     createdAt: Date;
     updatedAt: Date;
 }
+
+interface IPlaylist {
+    id: string;
+    title: string;
+    playlistTracks: IPlaylistTrack[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+interface IPlaylistTrack {
+    id: string;
+    index: number;
+    track: ITrack;
+    playlist: IPlaylist;
+    createdAt: Date;
+    updatedAt: Date;
+}

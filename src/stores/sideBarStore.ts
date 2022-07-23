@@ -7,7 +7,9 @@ interface IState {
 
 type TGetters = {};
 
-interface IActions {}
+interface IActions {
+    setPlaylistEntries: (entries: Array<ISidebarLink>) => void;
+}
 
 const useSidebar = defineStore<"sidebar", IState, TGetters, IActions>("sidebar", {
     state: () => ({
@@ -65,11 +67,26 @@ const useSidebar = defineStore<"sidebar", IState, TGetters, IActions>("sidebar",
                         icon: "star",
                         link: "/genres",
                     },
+                    {
+                        label: "Playlists",
+                        icon: "queue_music",
+                        link: "/playlists",
+                    },
                 ],
+            },
+            {
+                title: "Playlists",
+                open: true,
+                entries: [], // this gets filled with an entry for each playlist
             },
         ],
     }),
-    actions: {},
+    actions: {
+        setPlaylistEntries(entries) {
+            let section = this.main.find(s => s.title === "Playlists");
+            if (section) section.entries = entries;
+        },
+    },
 });
 
 export default useSidebar;

@@ -11,6 +11,7 @@ type TGetters = {
     getTracksFromArtist: (state: IState) => (artistId: string) => ITrack[];
     getTracksFromAlbum: (state: IState) => (albumId: string) => ITrack[];
     getTracksFromGenre: (state: IState) => (genreId: string) => ITrack[];
+    getTracksFromPlaylist: (state: IState) => (playlist: IPlaylist) => ITrack[];
     getMostListened: (state: IState) => ITrack[];
 };
 
@@ -38,14 +39,18 @@ const useTracks = defineStore<"tracks", IState, TGetters, IActions>("tracks", {
         favourites: (state) => {
             return state.tracks.filter((track) => track.favourite);
         },
-        getTracksFromArtist: (state) => (artistId: string) => {
+        getTracksFromArtist: (state) => (artistId) => {
             return state.tracks.filter((track) => track.artists.some((artist) => artist.id === artistId));
         },
-        getTracksFromAlbum: (state) => (albumId: string) => {
+        getTracksFromAlbum: (state) => (albumId) => {
             return state.tracks.filter((track) => track.album?.id === albumId);
         },
-        getTracksFromGenre: (state) => (genreId: string) => {
+        getTracksFromGenre: (state) => (genreId) => {
             return state.tracks.filter((track) => track.genres.some((genre) => genre.id === genreId));
+        },
+        getTracksFromPlaylist: (state) => (playlist) => {
+            const trackIds = playlist.playlistTracks.map((plt) => plt.track.id);
+            return state.tracks.filter((track) => trackIds.includes(track.id));
         },
         getMostListened: (state) => {
             return Array.from(state.tracks).sort((t1, t2) => t2.timesPlayed - t1.timesPlayed);

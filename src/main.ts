@@ -22,10 +22,14 @@ declare global {
             getArtists: () => Promise<IArtist[]>;
             getAlbums: () => Promise<IAlbum[]>;
             getGenres: () => Promise<IGenre[]>;
+            getPlaylists: () => Promise<IPlaylist[]>;
+            getPlaylist: (id: string) => Promise<IPlaylist>;
             getFavourites: () => Promise<ITrack[]>;
             readMetadata: (path: string) => Promise<IAudioMetadata>;
             saveFavouriteForTrack: (trackId: string, favourite: boolean) => Promise<ITrack | null>;
             increasePlayCountForTrack: (trackId: string, timesPlayed: number) => Promise<ITrack | null>;
+            createPlaylist: (title: string) => Promise<IPlaylist>;
+            addTracksToPlaylist: (id: string, trackIds: string[]) => Promise<IPlaylist | null>;
         };
         events: {
             subscribe: (event: string, handler: (...args: any[]) => void) => void;

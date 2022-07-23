@@ -26,7 +26,7 @@ class PlaylistTrack extends BaseEntity {
     track: Track;
 
     @ManyToOne(() => Playlist, (playlist) => playlist.playlistTracks)
-    playlist: Playlist[];
+    playlist: Playlist;
 
     @CreateDateColumn()
     createdAt: Date;
