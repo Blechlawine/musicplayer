@@ -1,16 +1,14 @@
 <template>
     <div class="playlist">
-        <TrackList :tracks="playlistTracks" />
+        <PlaylistTrackList :playlistTracks="playlistTracks" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import TrackList from "../../../components/lists/TrackList.vue";
 import usePlaylist from "../../../stores/playlistStore";
-import useTracks from "../../../stores/trackStore";
+import PlaylistTrackList from "../../../components/lists/PlaylistTrackList.vue";
 
-const TrackStore = useTracks();
 const PlaylistStore = usePlaylist();
 
 const props = defineProps({
@@ -23,9 +21,7 @@ const props = defineProps({
 const playlistTracks = computed(() => {
     const playlist = PlaylistStore.getPlaylist(props.id);
     if (playlist)
-        return playlist.playlistTracks.map((plt) => {
-            return TrackStore.getTrackById(plt.track.id);
-        });
+        return playlist.playlistTracks;
     else return [];
 });
 </script>

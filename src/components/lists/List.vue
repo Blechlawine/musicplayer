@@ -24,9 +24,11 @@ import { PropType, computed } from "vue";
 
 const emit = defineEmits(["columnHeaderClick"]);
 
+type TColumn = IColumn<ITrack> | IColumn<IAlbum> | IColumn<IArtist> | IColumn<IPlaylistTrack>;
+
 const props = defineProps({
     columns: {
-        type: Array as PropType<IColumn[]>,
+        type: Array as PropType<TColumn[]>,
         required: true,
     },
 });
@@ -40,7 +42,7 @@ const listItemStyles = computed(() => ({
     "grid-template-columns": gridTemplateColumns.value,
 }));
 
-const columnHeaderClick = (column: IColumn) => {
+const columnHeaderClick = (column: TColumn) => {
     emit("columnHeaderClick", column);
 };
 </script>

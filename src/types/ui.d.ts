@@ -1,8 +1,8 @@
-interface IColumn {
+interface IColumn<T extends ITrack | IArtist | IAlbum | IPlaylistTrack> {
     name: string;
     width: number;
     sorted: -1 | 0 | 1;
-    field: (item: ITrack | IArtist | IAlbum) => string | number;
+    field: (item: T) => string | number;
 }
 
 interface IContextMenuEntry {

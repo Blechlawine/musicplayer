@@ -10,6 +10,8 @@ import TextInput from "../inputs/TextInput.vue";
 import usePlayer from "../../stores/playerStore";
 import useTracks from "../../stores/trackStore";
 import usePlaylist from "../../stores/playlistStore";
+import useSelection from "../../composables/useSelection";
+import useListColumns from "../../composables/useListColumns";
 
 const playerStore = usePlayer();
 const TrackStore = useTracks();
@@ -31,68 +33,51 @@ const props = defineProps({
     },
 });
 
-const columns = reactive([
+const columns = useListColumns(reactive<IColumn<ITrack>[]>([
     {
         name: "track",
         width: 1,
         sorted: 1,
-        field: (track: ITrack) => track.trackNumber,
+        field: (track) => track.trackNumber ?? 0,
     },
     {
         name: "title",
         width: 20,
         sorted: 0,
-        field: (track: ITrack) => track.title,
+        field: (track) => track.title,
     },
     {
         name: "album",
         width: 10,
         sorted: 0,
-        field: (track: ITrack) => track.album?.title ?? "",
+        field: (track) => track.album?.title ?? "",
     },
     {
         name: "artists",
         width: 10,
         sorted: 0,
-        field: (track: ITrack) => track.artists?.map((a: IArtist) => a.name).join(", ") ?? "",
+        field: (track) => track.artists?.map((a: IArtist) => a.name).join(", ") ?? "",
     },
     {
         name: "duration",
         width: 2,
         sorted: 0,
-        field: (track: ITrack) => track.duration,
+        field: (track) => track.duration ?? 0,
     },
     {
         name: "path",
         width: 10,
         sorted: 0,
-        field: (track: ITrack) => track.path,
+        field: (track) => track.path,
     },
-]) as IColumn[];
+]));
 
 onMounted(() => {
-    const sortedColumn = columns.find((c) => c.sorted != 0) ?? columns[0];
-    sortTracks(sortedColumn, sortedColumn?.sorted === 1);
+    const sortedColumn = columns.columns.find((c) => c.sorted != 0) ?? columns.columns[0];
+    columns.sortBy(sortedColumn, sortedColumn?.sorted === 1, props.tracks);
 });
 
-const sortTracks = (column: IColumn, ascending: boolean) => {
-    columns.forEach((c) => (c.sorted = 0));
-    column.sorted = ascending ? 1 : -1;
-    props.tracks.sort((a, b) => {
-        const fieldA = column.field(a);
-        const fieldB = column.field(b);
-        if (fieldA < fieldB) return ascending ? -1 : 1;
-        if (fieldA > fieldB) return ascending ? 1 : -1;
-        return 0;
-    });
-};
-
-const columnHeaderClick = (column: IColumn) => {
-    sortTracks(column, column.sorted !== 1);
-};
-
-const firstSelectedIndex = ref(0);
-const selection = ref([]) as Ref<ITrack[]>;
+const selection = useSelection(computed(() => props.tracks));
 const currentTrackIndex = ref(0);
 
 const shownTracks = computed(() => {
@@ -103,43 +88,12 @@ const shownTracks = computed(() => {
     }
 });
 
-const addTrackToSelection = (track: ITrack) => {
-    if (!selection.value.includes(track)) {
-        selection.value.push(track);
-    }
-};
-
-const selectTrack = (track: ITrack) => {
-    selection.value = [];
-    firstSelectedIndex.value = props.tracks.indexOf(track);
-    addTrackToSelection(track);
-};
-
 const playTrack = (track: ITrack) => {
-    if (selection.value.length === 0) {
-        selection.value.push(track);
+    if (selection.data.value.length === 0) {
+        selection.click(track);
     }
-    currentTrackIndex.value = selection.value.indexOf(track);
-    playTracks(selection.value);
-};
-
-const shiftClickTrack = (track: ITrack) => {
-    const selectionEndIndex = props.tracks.indexOf(track);
-    if (firstSelectedIndex.value == -1) firstSelectedIndex.value = 0;
-    if (selectionEndIndex > firstSelectedIndex.value) {
-        for (let i = firstSelectedIndex.value; i <= selectionEndIndex; i++) {
-            addTrackToSelection(props.tracks[i]);
-        }
-    } else {
-        for (let i = firstSelectedIndex.value; i >= selectionEndIndex; i--) {
-            addTrackToSelection(props.tracks[i]);
-        }
-    }
-};
-
-const ctrlClickTrack = (track: ITrack) => {
-    addTrackToSelection(track);
-    firstSelectedIndex.value = props.tracks.indexOf(track);
+    currentTrackIndex.value = selection.data.value.indexOf(track);
+    playTracks(selection.data.value);
 };
 
 const playTracks = (tracks: ITrack[]) => {
@@ -160,15 +114,15 @@ const favouriteTracks = (tracks: ITrack[]) => {
 const addSelectionToPlaylist = (playlist: IPlaylist) => {
     PlaylistStore.addTracksToPlaylist(
         playlist.id,
-        selection.value.map((t) => t.id)
+        selection.data.value.map((t) => t.id)
     );
 };
 
 const openTrackContextMenu = (track: ITrack) => {
-    if (selection.value.length === 0) {
-        selection.value.push(track);
+    if (selection.data.value.length === 0) {
+        selection.data.value.push(track);
     }
-    currentTrackIndex.value = selection.value.indexOf(track);
+    currentTrackIndex.value = selection.data.value.indexOf(track);
     contextMenuOpen.value = true;
 };
 
@@ -185,9 +139,9 @@ const createNewPlaylistAndAddSelection = async () => {
 </script>
 
 <template>
-    <ContextMenu :open="contextMenuOpen" @close="() => contextMenuOpen = false">
-        <MenuItem @click="() => playTracks(selection)"> Play selected Tracks </MenuItem>
-        <MenuItem @click="() => favouriteTracks(selection)"> Favourite </MenuItem>
+    <ContextMenu :open="contextMenuOpen" @close="() => (contextMenuOpen = false)">
+        <MenuItem @click="() => playTracks(selection.data.value)"> Play selected Tracks </MenuItem>
+        <MenuItem @click="() => favouriteTracks(selection.data.value)"> Favourite </MenuItem>
         <div class="flex flex-row">
             <MenuItem @mousein="() => (contextSubMenuOpen = 'playlist')"> Add to playlist </MenuItem>
             <DropdownMenu
@@ -196,24 +150,28 @@ const createNewPlaylistAndAddSelection = async () => {
                 @close="() => (contextSubMenuOpen = '')"
             >
                 <MenuItem @click="() => openNewPlaylistModal()"> Create new </MenuItem>
-                <MenuItem v-for="playlist in PlaylistStore.playlists" :key="playlist.id" @click="() => addSelectionToPlaylist(playlist)">
+                <MenuItem
+                    v-for="playlist in PlaylistStore.playlists"
+                    :key="playlist.id"
+                    @click="() => addSelectionToPlaylist(playlist)"
+                >
                     {{ playlist.title }}
                 </MenuItem>
             </DropdownMenu>
         </div>
     </ContextMenu>
-    <List :columns="columns" @columnHeaderClick="columnHeaderClick">
+    <List :columns="columns.columns" @columnHeaderClick="columns.columnHeaderClick">
         <template #items>
             <TrackListItem
                 v-for="track in shownTracks"
                 :key="track.id"
                 :track="track"
-                :columns="columns"
-                :selected="selection.includes(track)"
-                @click="selectTrack"
+                :columns="columns.columns"
+                :selected="selection.data.value.includes(track)"
+                @click="selection.click"
                 @doubleClick="playTrack"
-                @shiftClick="shiftClickTrack"
-                @ctrlClick="ctrlClickTrack"
+                @shiftClick="selection.shiftClick"
+                @ctrlClick="selection.ctrlClick"
                 @contextMenu="openTrackContextMenu"
             >
             </TrackListItem>

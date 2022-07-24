@@ -266,14 +266,18 @@ export default () => [
         handler: async (_: any, id: string, trackIds: string[]): Promise<Playlist | null> => {
             let playlist = await Playlist.findOne({ where: { id }, relations: { playlistTracks: true } });
             if (playlist) {
-                trackIds.forEach(async (tid) => {
+                trackIds.forEach(async (tid, index) => {
                     const track = await Track.findOne({ where: { id: tid } });
-                    let plt = new PlaylistTrack();
-                    plt.track = track!;
-                    plt.index = playlist!.playlistTracks?.length || 0;
-                    plt.playlist = playlist!;
-                    await plt.save();
-                    playlist!.playlistTracks.push(plt);
+                    const existingPlt = playlist!.playlistTracks.find((plt) => plt.track.id === tid);
+                    console.log(playlist!.playlistTracks, existingPlt);
+                    if (!existingPlt) {
+                        let plt = new PlaylistTrack();
+                        plt.track = track!;
+                        plt.index = playlist!.playlistTracks?.length || index;
+                        plt.playlist = playlist!;
+                        await plt.save();
+                        playlist!.playlistTracks.push(plt);
+                    }
                 });
                 await playlist.save();
                 return playlist;
