@@ -69,6 +69,9 @@ contextBridge.exposeInMainWorld("api", {
     updatePlaylist: (id: string, data: Playlist) => {
         return ipcRenderer.invoke("updatePlaylist", id, data);
     },
+    deletePlaylist: (id: string) => {
+        return ipcRenderer.invoke("deletePlaylist", id);
+    },
 });
 
 contextBridge.exposeInMainWorld("events", {

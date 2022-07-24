@@ -304,13 +304,24 @@ export default () => [
     {
         event: "updatePlaylist",
         handler: async (_: any, id: string, data: Playlist) => {
-            const playlist = await Playlist.findOne({ where: { id }});
+            const playlist = await Playlist.findOne({ where: { id } });
             if (playlist) {
                 playlist.title = data.title;
                 await playlist.save();
                 return playlist;
             }
             return null;
+        },
+    },
+    {
+        event: "deletePlaylist",
+        handler: async (_: any, id: string) => {
+            await dataSource
+                .getRepository(Playlist)
+                .createQueryBuilder()
+                .delete()
+                .where("id = (:id)", { id })
+                .execute();
         },
     },
 ];
