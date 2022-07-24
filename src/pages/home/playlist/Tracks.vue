@@ -22,7 +22,10 @@ const props = defineProps({
 
 const playlistTracks = computed(() => {
     const playlist = PlaylistStore.getPlaylist(props.id);
-    if (playlist) return TrackStore.getTracksFromPlaylist(playlist);
+    if (playlist)
+        return playlist.playlistTracks.map((plt) => {
+            return TrackStore.getTrackById(plt.track.id);
+        });
     else return [];
 });
 </script>
