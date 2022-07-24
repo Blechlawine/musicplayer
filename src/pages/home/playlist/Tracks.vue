@@ -1,6 +1,6 @@
 <template>
     <div class="playlist">
-        <PlaylistTrackList :playlistTracks="playlistTracks" />
+        <PlaylistTrackList :playlist="playlist!" :playlistTracks="playlistTracks" />
     </div>
 </template>
 
@@ -18,10 +18,6 @@ const props = defineProps({
     },
 });
 
-const playlistTracks = computed(() => {
-    const playlist = PlaylistStore.getPlaylist(props.id);
-    if (playlist)
-        return playlist.playlistTracks;
-    else return [];
-});
+const playlist = computed(() => PlaylistStore.getPlaylist(props.id));
+const playlistTracks = computed(() => playlist.value?.playlistTracks ?? []);
 </script>

@@ -15,7 +15,7 @@ const props = defineProps({
         required: true,
     },
     columns: {
-        type: Array as PropType<IColumn[]>,
+        type: Array as PropType<IColumn<ITrack>[]>,
         required: true,
     },
     selected: {

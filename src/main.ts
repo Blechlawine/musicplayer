@@ -30,6 +30,7 @@ declare global {
             increasePlayCountForTrack: (trackId: string, timesPlayed: number) => Promise<ITrack | null>;
             createPlaylist: (title: string) => Promise<IPlaylist>;
             addTracksToPlaylist: (id: string, trackIds: string[]) => Promise<IPlaylist | null>;
+            removeTracksFromPlaylist: (id: string, trackIds: string[]) => Promise<IPlaylist | null>;
         };
         events: {
             subscribe: (event: string, handler: (...args: any[]) => void) => void;

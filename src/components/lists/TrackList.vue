@@ -120,7 +120,7 @@ const addSelectionToPlaylist = (playlist: IPlaylist) => {
 
 const openTrackContextMenu = (track: ITrack) => {
     if (selection.data.value.length === 0) {
-        selection.data.value.push(track);
+        selection.click(track);
     }
     currentTrackIndex.value = selection.data.value.indexOf(track);
     contextMenuOpen.value = true;

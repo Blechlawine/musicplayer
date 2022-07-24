@@ -15,6 +15,7 @@ interface IActions {
     fetchAllPlaylists: () => Promise<void>;
     addTracksToPlaylist: (id: string, trackIds: string[]) => Promise<void>;
     createPlaylist: (title: string) => Promise<IPlaylist>;
+    removeTracksFromPlaylist: (id: string, trackIds: string[]) => Promise<void>;
 }
 
 const usePlaylist = defineStore<"playlist", IState, TGetters, IActions>("playlist", {
@@ -52,6 +53,10 @@ const usePlaylist = defineStore<"playlist", IState, TGetters, IActions>("playlis
             this.addPlaylist(playlist);
             this.updatePlaylistsInSidebar();
             return playlist;
+        },
+        async removeTracksFromPlaylist(id, pltIds) {
+            await window.api.removeTracksFromPlaylist(id, pltIds);
+            this.fetchAllPlaylists();
         },
     },
 });

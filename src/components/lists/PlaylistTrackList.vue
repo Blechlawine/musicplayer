@@ -11,7 +11,7 @@
                 :key="plt.id"
                 :playlistTrack="plt"
                 :columns="columns.columns"
-                :selected="selection.data.value.includes(plt)"
+                :selected="selection.data.value.findIndex((it) => it.id === plt.id) !== -1"
                 @click="selection.click"
                 @doubleClick="playTrack"
                 @shiftClick="selection.shiftClick"
@@ -33,13 +33,19 @@ import usePlayer from "../../stores/playerStore";
 import useTracks from "../../stores/trackStore";
 import useSelection from "../../composables/useSelection";
 import useListColumns from "../../composables/useListColumns";
+import usePlaylist from "../../stores/playlistStore";
 
 const PlayerStore = usePlayer();
 const TrackStore = useTracks();
+const PlaylistStore = usePlaylist();
 
 const props = defineProps({
     playlistTracks: {
         type: Array as PropType<IPlaylistTrack[]>,
+        required: true,
+    },
+    playlist: {
+        type: Object as PropType<IPlaylist>,
         required: true,
     },
 });
@@ -130,12 +136,18 @@ const favouriteTracks = (tracks: IPlaylistTrack[]) => {
 };
 
 const openTrackContextMenu = (track: IPlaylistTrack) => {
-    if (selection.data.value.length === 0) {
-        selection.data.value.push(track);
+    if (selection.data.value.length <= 1) {
+        selection.click(track);
     }
     currentTrackIndex.value = selection.data.value.indexOf(track);
     contextMenuOpen.value = true;
 };
 
-const removeFromPlaylist = (playlistTracks: IPlaylistTrack[]) => {};
+const removeFromPlaylist = (playlistTracks: IPlaylistTrack[]) => {
+    PlaylistStore.removeTracksFromPlaylist(
+        props.playlist.id,
+        playlistTracks.map((plt) => plt.id)
+    );
+    selection.data.value = [];
+};
 </script>

@@ -264,22 +264,38 @@ export default () => [
     {
         event: "addTracksToPlaylist",
         handler: async (_: any, id: string, trackIds: string[]): Promise<Playlist | null> => {
-            let playlist = await Playlist.findOne({ where: { id }, relations: { playlistTracks: true } });
+            const playlist = await Playlist.findOne({ where: { id }, relations: { playlistTracks: true } });
             if (playlist) {
                 trackIds.forEach(async (tid, index) => {
                     const track = await Track.findOne({ where: { id: tid } });
-                    const existingPlt = playlist!.playlistTracks.find((plt) => plt.track.id === tid);
-                    console.log(playlist!.playlistTracks, existingPlt);
+                    const existingPlt = playlist.playlistTracks.find((plt) => plt.track.id === tid);
+                    console.log(playlist.playlistTracks, existingPlt);
                     if (!existingPlt) {
                         let plt = new PlaylistTrack();
                         plt.track = track!;
-                        plt.index = playlist!.playlistTracks?.length || index;
-                        plt.playlist = playlist!;
+                        plt.index = playlist.playlistTracks?.length || index;
+                        plt.playlist = playlist;
                         await plt.save();
-                        playlist!.playlistTracks.push(plt);
+                        playlist.playlistTracks.push(plt);
                     }
                 });
                 await playlist.save();
+                return playlist;
+            }
+            return null;
+        },
+    },
+    {
+        event: "removeTracksFromPlaylist",
+        handler: async (_: any, id: string, pltIds: string[]) => {
+            const playlist = await Playlist.findOne({ where: { id }, relations: { playlistTracks: true } });
+            if (playlist) {
+                await dataSource
+                    .getRepository(PlaylistTrack)
+                    .createQueryBuilder()
+                    .delete()
+                    .where("id IN (:ids)", { ids: pltIds })
+                    .execute();
                 return playlist;
             }
             return null;

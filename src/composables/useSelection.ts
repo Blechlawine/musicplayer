@@ -5,7 +5,7 @@ export default function useSelection<T extends { id: string }>(list: ComputedRef
     const lastIndex = ref(0);
 
     const _addToSelection = (item: T) => {
-        if (!selection.value.includes(item)) {
+        if (selection.value.findIndex((it) => it.id === item.id) === -1) {
             selection.value.push(item);
         }
     };
@@ -13,11 +13,12 @@ export default function useSelection<T extends { id: string }>(list: ComputedRef
     const click = (item: T) => {
         selection.value = [];
         _addToSelection(item);
-        lastIndex.value = list.value.indexOf(item);
+        lastIndex.value = list.value.findIndex((it) => it.id === item.id);
     };
 
     const shiftClick = (item: T) => {
         const selectionEndIndex = list.value.findIndex((it) => it.id === item.id);
+        if (lastIndex.value === -1) lastIndex.value = 0;
         if (selectionEndIndex > lastIndex.value) {
             for (let i = lastIndex.value; i <= selectionEndIndex; i++) {
                 _addToSelection(list.value[i]);
@@ -31,7 +32,7 @@ export default function useSelection<T extends { id: string }>(list: ComputedRef
 
     const ctrlClick = (item: T) => {
         _addToSelection(item);
-        lastIndex.value = list.value.indexOf(item);
+        lastIndex.value = list.value.findIndex((it) => it.id === item.id);
     };
 
     return {
