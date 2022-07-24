@@ -17,7 +17,9 @@ class Playlist extends BaseEntity {
     @Column({ type: "text" })
     title: string;
 
-    @OneToMany(() => PlaylistTrack, (playlistTrack) => playlistTrack.playlist)
+    @OneToMany(() => PlaylistTrack, (playlistTrack) => playlistTrack.playlist, {
+        cascade: true,
+    })
     playlistTracks: PlaylistTrack[];
 
     @CreateDateColumn()

@@ -21,10 +21,14 @@ class PlaylistTrack extends BaseEntity {
 
     @ManyToOne(() => Track, (track) => track.playlistTracks, {
         eager: true,
+        onDelete: "CASCADE",
     })
     track: Track;
 
-    @ManyToOne(() => Playlist, (playlist) => playlist.playlistTracks)
+    @ManyToOne(() => Playlist, (playlist) => playlist.playlistTracks, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    })
     playlist: Playlist;
 
     @CreateDateColumn()
