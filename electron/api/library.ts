@@ -301,4 +301,16 @@ export default () => [
             return null;
         },
     },
+    {
+        event: "updatePlaylist",
+        handler: async (_: any, id: string, data: Playlist) => {
+            const playlist = await Playlist.findOne({ where: { id }});
+            if (playlist) {
+                playlist.title = data.title;
+                await playlist.save();
+                return playlist;
+            }
+            return null;
+        },
+    },
 ];

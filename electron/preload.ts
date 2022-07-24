@@ -1,5 +1,6 @@
 // Render context
 import { contextBridge, ipcRenderer } from "electron";
+import type Playlist from "./database/model/Playlist"; 
 
 contextBridge.exposeInMainWorld("api", {
     closeWindow: () => {
@@ -64,6 +65,9 @@ contextBridge.exposeInMainWorld("api", {
     },
     removeTracksFromPlaylist: (id: string, trackIds: string[]) => {
         return ipcRenderer.invoke("removeTracksFromPlaylist", id, trackIds);
+    },
+    updatePlaylist: (id: string, data: Playlist) => {
+        return ipcRenderer.invoke("updatePlaylist", id, data);
     },
 });
 

@@ -31,6 +31,7 @@ declare global {
             createPlaylist: (title: string) => Promise<IPlaylist>;
             addTracksToPlaylist: (id: string, trackIds: string[]) => Promise<IPlaylist | null>;
             removeTracksFromPlaylist: (id: string, trackIds: string[]) => Promise<IPlaylist | null>;
+            updatePlaylist: (id: string, data: TMakeOptional<IPlaylist>) => Promise<IPlaylist | null>;
         };
         events: {
             subscribe: (event: string, handler: (...args: any[]) => void) => void;
