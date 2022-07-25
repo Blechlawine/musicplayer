@@ -296,6 +296,27 @@ export default () => [
                     .delete()
                     .where("id IN (:ids)", { ids: pltIds })
                     .execute();
+                let highestIndex = -1;
+                const plts = await PlaylistTrack.find({
+                    where: {
+                        playlist: {
+                            id,
+                        },
+                    },
+                    relations: {
+                        playlist: true,
+                    },
+                    order: {
+                        index: "ASC",
+                    },
+                });
+                for (let plt of plts) {
+                    if (plt.index >= highestIndex + 1) {
+                        plt.index = highestIndex + 1;
+                        await plt.save();
+                    }
+                    highestIndex = plt.index;
+                }
                 return playlist;
             }
             return null;
