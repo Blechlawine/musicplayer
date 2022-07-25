@@ -58,7 +58,7 @@ const listItemStyles = computed(() => ({
         @contextmenu="(e) => emit('contextMenu', props.playlistTrack)"
     >
         <p class="index">{{ props.playlistTrack.index }}</p>
-        <p class="title">
+        <p class="title flex flex-row items-center gap-1">
             <span class="material-icons small" v-if="playing">volume_up</span>
             {{ track.title }}
         </p>

@@ -57,7 +57,7 @@ const listItemStyles = computed(() => ({
         @contextmenu="(e) => emit('contextMenu', props.track)"
     >
         <p class="track">{{ props.track.trackNumber }}</p>
-        <p class="title">
+        <p class="title flex flex-row items-center gap-1">
             <span class="material-icons small" v-if="playing">volume_up</span>
             {{ props.track.title }}
         </p>

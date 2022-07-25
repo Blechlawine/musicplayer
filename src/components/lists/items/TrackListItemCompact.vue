@@ -34,7 +34,7 @@ const listItemClasses = computed(() => ({
 
 <template>
     <div
-        class="listItem grid items-start relative gap-x-0 gap-y-2 w-full cursor-pointer px-3 py-2 border-b border-bg hover:rounded-lg hover:bg-highlight"
+        class="listItem grid items-start relative gap-x-0 gap-y-4 w-full cursor-pointer px-3 py-2 border-b border-bg hover:rounded-lg hover:bg-highlight"
         :class="[selectedClasses, listItemClasses]"
         @click.prevent.exact="(e) => emit('click', props.track)"
         @click.shift.exact="(e) => emit('shiftClick', props.track)"
@@ -44,7 +44,7 @@ const listItemClasses = computed(() => ({
         <p class="title text-ellipsis whitespace-nowrap overflow-x-hidden font-medium">
             {{ props.track.title }}
         </p>
-        <span class="playingIcon material-icons text-accent" v-if="playing"> volume_up </span>
+        <span class="playingIcon self-center material-icons text-accent" v-if="playing"> volume_up </span>
         <p class="artistsAndAlbum text-ellipsis whitespace-nowrap overflow-x-hidden font-light text-xs">
             {{
                 `${props.track.album?.title ?? "Unknown Album"} by ${props.track.artists.map((a) => a.name).join(", ")}`
@@ -58,7 +58,7 @@ const listItemClasses = computed(() => ({
 
 .listItem
     grid-template-columns: 1fr 24px min-content
-    grid-template-rows: 2fr 1fr
+    grid-template-rows: max-content 1fr
     grid-template-areas: "title playingIcon duration" "artistsAndAlbum artistsAndAlbum artistsAndAlbum"
 
     .title
