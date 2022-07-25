@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 const album = computed(() => AlbumStore.getAlbum(props.id));
-const subTitle = computed(() => album.value?.artists.map((a) => a.name).join(" ,"));
+const subTitle = computed(() => album.value?.artists.map((a) => a.name).join(", "));
 
 onMounted(() => {
     AlbumStore.fetchAllAlbums();

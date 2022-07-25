@@ -4,7 +4,7 @@
             {{ props.album.title }}
         </template>
         <template #details>
-            {{ props.album.artists.map((a) => a.name).join(" ,") }}
+            {{ props.album.artists.map((a) => a.name).join(", ") }}
         </template>
     </Card>
 </template>
