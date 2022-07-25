@@ -12,7 +12,7 @@
             <p class="text-lg font-medium text-ellipsis w-full whitespace-nowrap overflow-hidden">
                 <slot name="title"></slot>
             </p>
-            <p class="text-xs">
+            <p class="text-xs text-ellipsis w-full whitespace-nowrap overflow-hidden">
                 <slot name="details"></slot>
             </p>
         </div>
