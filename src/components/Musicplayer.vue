@@ -119,7 +119,7 @@ const previous = () => {
     >
         <div class="hidden">
             <audio
-                :src="currentTrack?.path || ''"
+                :src="`file://${currentTrack?.path || ''}`"
                 preload="auto"
                 ref="audioElement"
                 @ended="onPlaybackEnded"
