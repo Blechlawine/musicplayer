@@ -13,11 +13,16 @@
             <IconButton @click="playShuffled">shuffle</IconButton>
         </Hero>
         <router-view></router-view>
+        <EditModal
+            :open="editModalOpen"
+            title="Edit playlist"
+            @save="savePlaylist"
+            @close="() => (editModalOpen = false)"
+        >
+            <TextInput label="Title" v-model="playlistTitle"></TextInput>
+        </EditModal>
     </div>
     <div v-else>Loading...</div>
-    <EditModal :open="editModalOpen" title="Edit playlist" @save="savePlaylist" @close="() => (editModalOpen = false)">
-        <TextInput label="Title" v-model="playlistTitle"></TextInput>
-    </EditModal>
 </template>
 
 <script setup lang="ts">
