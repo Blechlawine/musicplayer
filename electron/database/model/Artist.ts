@@ -19,7 +19,10 @@ class Artist extends BaseEntity {
     @Column({ type: "text", unique: true })
     name: string;
 
-    @ManyToMany(() => Album, (album) => album.artists)
+    @ManyToMany(() => Album, (album) => album.artists, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    })
     @JoinTable()
     albums: Album[];
 

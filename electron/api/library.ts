@@ -11,18 +11,27 @@ import Playlist from "../database/model/Playlist";
 import PlaylistTrack from "../database/model/PlaylistTrack";
 
 async function saveArtists(metaArtists: string[]): Promise<Artist[]> {
-    const artists = await Promise.all(
-        metaArtists.map(async (artistName) => {
-            let artist =
-                (await Artist.findOne({ where: { name: artistName } })) ??
-                Artist.create({
-                    name: artistName,
-                    albums: [],
-                });
-            await artist.save();
-            return artist;
-        })
-    );
+    const artists = (
+        await Promise.all(
+            metaArtists.map(async (artistName) => {
+                return await Promise.all(
+                    artistName
+                        .split(/,|&|;/g)
+                        .map((a) => a.trim())
+                        .map(async (name) => {
+                            const artist =
+                                (await Artist.findOne({ where: { name } })) ??
+                                Artist.create({
+                                    name: artistName,
+                                    albums: [],
+                                });
+                            await artist.save();
+                            return artist;
+                        })
+                );
+            })
+        )
+    ).flat(2);
     return artists;
 }
 
@@ -41,11 +50,15 @@ async function saveGenres(metaGenres: string[]): Promise<Genre[]> {
 
 async function saveAlbumWithArtists(artists: Artist[], metaAlbum: string): Promise<Album> {
     let album =
-        (await Album.findOne({ where: { title: metaAlbum } })) ??
+        (await Album.findOne({
+            where: { title: metaAlbum },
+            relations: { artists: true },
+        })) ??
         Album.create({
             title: metaAlbum,
+            artists: [],
         });
-    album.artists = [];
+    album.artists = album.artists ?? [];
     await album.save();
     artists.forEach(async (artist) => {
         if (!album.artists.includes(artist)) {
@@ -109,7 +122,48 @@ export default () => [
                     }
                 }
             }
-            // TODO: remove albums and artists without tracks from the database
+            await dataSource.getRepository(Track).createQueryBuilder().delete().where("exists = false").execute();
+            (
+                await Artist.find({
+                    relations: {
+                        albums: {
+                            tracks: true,
+                        },
+                        tracks: true,
+                    },
+                })
+            ).forEach((artist) => {
+                artist.albums.forEach((album) => {
+                    if (album.tracks.length === 0) {
+                        album.remove();
+                    }
+                });
+                if (artist.tracks.length === 0 && artist.albums.length === 0) {
+                    artist.remove();
+                }
+            });
+            (
+                await Album.find({
+                    relations: {
+                        tracks: true,
+                    },
+                })
+            ).forEach((album) => {
+                if (album.tracks.length === 0) {
+                    album.remove();
+                }
+            });
+            (
+                await Genre.find({
+                    relations: {
+                        tracks: true,
+                    },
+                })
+            ).forEach((genre) => {
+                if (genre.tracks.length === 0) {
+                    genre.remove();
+                }
+            });
             console.log("Scanning done.");
         },
     },
