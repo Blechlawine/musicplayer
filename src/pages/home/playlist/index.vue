@@ -3,7 +3,7 @@
         <Hero :title="playlist!.title">
             <div class="flex flex-col">
                 <IconButton @click="openMoreMenu">more_vert</IconButton>
-                <DropdownMenu :open="moreMenuOpen">
+                <DropdownMenu :open="moreMenuOpen" @close="() => moreMenuOpen = false">
                     <MenuItem @click="openEditModal">Edit</MenuItem>
                     <MenuItem @click="deleteMe">Delete</MenuItem>
                 </DropdownMenu>

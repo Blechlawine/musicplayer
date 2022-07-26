@@ -1,6 +1,6 @@
 <template>
     <div
-        class="region-drag flex flex-row justify-between p-2 px-4 w-full items-center border-b-2 border-b-divider z-50 bg-bg"
+        class="region-drag flex flex-row justify-between p-2 px-4 w-full items-center border-b-2 border-b-divider z-[1000] bg-bg"
     >
         <div class="flex flex-row gap-4 items-center">
             <WindowButtons v-if="SettingsStore.window.windowBar.buttonLocation === 'left'"></WindowButtons>

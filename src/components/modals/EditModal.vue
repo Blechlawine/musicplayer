@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute flex items-center z-10 justify-center w-full h-screen top-0 left-0 bg-darker backdrop-blur-md" v-if="open">
+    <div class="absolute flex items-center z-50 justify-center w-full h-screen top-0 left-0 bg-darker backdrop-blur-md" v-if="open">
         <div class="modal flex flex-col gap-2 p-3 bg-overlay border-divider border-2 rounded-lg">
             <p>{{ props.title }}</p>
             <slot></slot>
