@@ -328,7 +328,7 @@ export default () => [
                     if (!existingPlt) {
                         let plt = new PlaylistTrack();
                         plt.track = track!;
-                        plt.index = playlist.playlistTracks?.length || index;
+                        plt.index = playlist.playlistTracks?.length + index;
                         plt.playlist = playlist;
                         await plt.save();
                         playlist.playlistTracks.push(plt);
