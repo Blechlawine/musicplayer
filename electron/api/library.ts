@@ -19,10 +19,11 @@ async function saveArtists(metaArtists: string[]): Promise<Artist[]> {
                         .split(/,|&|;/g)
                         .map((a) => a.trim())
                         .map(async (name) => {
+                            console.log("Scanning/Creating Artist: " + name);
                             const artist =
                                 (await Artist.findOne({ where: { name } })) ??
                                 Artist.create({
-                                    name: artistName,
+                                    name,
                                     albums: [],
                                 });
                             await artist.save();
@@ -138,7 +139,7 @@ export default () => [
                         album.remove();
                     }
                 });
-                if (artist.tracks.length === 0 && artist.albums.length === 0) {
+                if (artist.tracks.length === 0) {
                     artist.remove();
                 }
             });
