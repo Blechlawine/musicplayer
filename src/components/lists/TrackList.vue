@@ -44,7 +44,7 @@ const columns = useListColumns(reactive<IColumn<ITrack>[]>([
         name: "title",
         width: 20,
         sorted: 0,
-        field: (track) => track.title,
+        field: (track) => track.title ?? "",
     },
     {
         name: "album",

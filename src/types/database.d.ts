@@ -9,10 +9,10 @@ interface ILibraryPath {
 
 interface ITrack {
     id: string;
-    title: string;
+    title?: string;
     path: string;
     timesPlayed: number;
-    duration: number | null;
+    duration?: number;
     seconds: number;
     minutes: number;
     hours: number;

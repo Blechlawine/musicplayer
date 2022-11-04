@@ -1,28 +1,24 @@
 import { BrowserWindow } from "electron";
 
-export default (win: BrowserWindow) => [
-    {
-        event: "closeWindow",
-        handler: () => {
-            if (win) {
-                win.close();
-            }
-        },
+const windowApi = (win: BrowserWindow) => ({
+    closeWindow: () => {
+        if (win) {
+            win.close();
+        }
     },
-    {
-        event: "minimizeWindow",
-        handler: () => {
-            if (win) {
-                win.minimize();
-            }
-        },
+    minimizeWindow: () => {
+        if (win) {
+            win.minimize();
+        }
     },
-    {
-        event: "maximizeWindow",
-        handler: () => {
-            if (win) {
-                win.maximize();
-            }
-        },
+    maximizeWindow: () => {
+        if (win) {
+            win.maximize();
+        }
     },
-];
+});
+
+export default windowApi;
+
+export type TWindowApi = ReturnType<typeof windowApi>;
+export type InferWindowApiOutput<T extends keyof TWindowApi> = ReturnType<TWindowApi[T]>;

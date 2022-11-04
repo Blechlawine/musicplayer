@@ -39,7 +39,7 @@ const useLibary = defineStore<"library", IState, TGetters, IActions>("library", 
             window.api.deleteLibraryPath(libraryPath.id);
         },
         async updateLibraryPath(libraryPath, data) {
-            let temp = this.libraryPaths.find((lp) => lp.id === libraryPath.id);
+            const temp = this.libraryPaths.find((lp) => lp.id === libraryPath.id);
             if (temp) {
                 Object.entries(data).forEach((e) => {
                     temp![e[0] as keyof ILibraryPath] = e[1];

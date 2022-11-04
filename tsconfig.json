@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
         "target": "esnext",
         "useDefineForClassFields": true,
         "module": "esnext",
@@ -11,7 +12,8 @@
         "isolatedModules": false,
         "esModuleInterop": true,
         "lib": ["esnext", "dom"],
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "strictPropertyInitialization": false
     },
     "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
     "references": [{ "path": "./tsconfig.node.json" }]

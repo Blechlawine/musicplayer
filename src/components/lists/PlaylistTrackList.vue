@@ -68,7 +68,7 @@ const columns = useListColumns(
             name: "title",
             width: 20,
             sorted: 0,
-            field: (plt) => plt.track.title,
+            field: (plt) => plt.track.title ?? "",
         },
         {
             name: "album",

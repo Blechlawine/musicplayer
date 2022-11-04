@@ -16,7 +16,7 @@ interface IActions {
     addTracksToPlaylist: (id: string, trackIds: string[]) => Promise<void>;
     createPlaylist: (title: string) => Promise<IPlaylist>;
     removeTracksFromPlaylist: (id: string, trackIds: string[]) => Promise<void>;
-    updatePlaylist: (id: string, data: TMakeOptional<IPlaylist>) => Promise<void>;
+    updatePlaylist: (id: string, data: Pick<IPlaylist, "title">) => Promise<void>;
     deletePlaylist: (id: string) => Promise<void>;
 }
 

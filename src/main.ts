@@ -6,33 +6,18 @@ import { IAudioMetadata } from "music-metadata";
 import routes from "./router/index";
 import { createRouter, createWebHistory } from "vue-router";
 import persistedStatePlugin from "pinia-plugin-persistedstate";
+import type { InferLibraryApiOutput, InferLibraryApiInput, TLibraryApi } from "../electron/api/library";
+import type { InferWindowApiOutput, TWindowApi } from "../electron/api/window";
+import type { InferFilesApiInput, InferFilesApiOutput, TFilesApi } from "../electron/api/files";
 
 declare global {
     interface Window {
         api: {
-            closeWindow: () => void;
-            minimizeWindow: () => void;
-            maximizeWindow: () => void;
-            scanLibrary: () => Promise<void>;
-            addLibraryPath: ({}: { path: string; name: string }) => Promise<ILibraryPath>;
-            deleteLibraryPath: (id: string) => Promise<void>;
-            updateLibraryPath: (libraryPath: ILibraryPath) => Promise<ILibraryPath>;
-            getLibraryPaths: () => Promise<ILibraryPath[]>;
-            getTracks: () => Promise<ITrack[]>;
-            getArtists: () => Promise<IArtist[]>;
-            getAlbums: () => Promise<IAlbum[]>;
-            getGenres: () => Promise<IGenre[]>;
-            getPlaylists: () => Promise<IPlaylist[]>;
-            getPlaylist: (id: string) => Promise<IPlaylist>;
-            getFavourites: () => Promise<ITrack[]>;
-            readMetadata: (path: string) => Promise<IAudioMetadata>;
-            saveFavouriteForTrack: (trackId: string, favourite: boolean) => Promise<ITrack | null>;
-            increasePlayCountForTrack: (trackId: string, timesPlayed: number) => Promise<ITrack | null>;
-            createPlaylist: (title: string) => Promise<IPlaylist>;
-            addTracksToPlaylist: (id: string, trackIds: string[]) => Promise<IPlaylist | null>;
-            removeTracksFromPlaylist: (id: string, trackIds: string[]) => Promise<IPlaylist | null>;
-            updatePlaylist: (id: string, data: TMakeOptional<IPlaylist>) => Promise<IPlaylist | null>;
-            deletePlaylist: (id: string) => Promise<void>;
+            [K in keyof TLibraryApi]: (...value: InferLibraryApiInput<K>) => InferLibraryApiOutput<K>;
+        } & {
+            [K in keyof TWindowApi]: () => InferWindowApiOutput<K>;
+        } & {
+            [K in keyof TFilesApi]: (...value: InferFilesApiInput<K>) => InferFilesApiOutput<K>;
         };
         events: {
             subscribe: (event: string, handler: (...args: any[]) => void) => void;

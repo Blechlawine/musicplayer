@@ -6,15 +6,15 @@ import filesApi from "./api/files";
 
 export const registerIpcHandlers = (win: BrowserWindow) => {
     const windowEventHandlers = windowApi(win);
-    windowEventHandlers.forEach(({ event, handler }) => {
+    Object.entries(windowEventHandlers).forEach(([event, handler]) => {
         ipcMain.on(event, handler);
     });
     const libraryEventHandlers = libraryApi();
-    libraryEventHandlers.forEach(({ event, handler }) => {
+    Object.entries(libraryEventHandlers).forEach(([event, handler]) => {
         ipcMain.handle(event, handler);
     });
     const filesEventHandlers = filesApi();
-    filesEventHandlers.forEach(({ event, handler }) => {
+    Object.entries(filesEventHandlers).forEach(([event, handler]) => {
         ipcMain.handle(event, handler);
     });
 };
