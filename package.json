@@ -3,15 +3,14 @@
     "private": true,
     "version": "0.0.2",
     "scripts": {
-        "dev": "vite",
-        "build": "vue-tsc --noEmit && vite build",
-        "preview": "vite preview",
-        "electron": "yarn build:typescript:electron && wait-on tcp:3000 && cross-env ENVIRONMENT=development electron .",
-        "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron\"",
-        "build:typescript:electron": "tsc --build tsconfig.electron.json",
-        "build:electron": "yarn build:typescript:electron && electron-builder -wl",
-        "build:vue": "vue-tsc --noEmit && cross-env ENVIRONMENT=production vite build",
-        "build:app": "yarn build:vue && yarn build:electron"
+        "dev": "concurrently -k \"cross-env BROWSER=none yarn vite:dev\" \"yarn electron:dev\"",
+        "build": "yarn vite:build && yarn electron:build",
+        "vite:dev": "vite",
+        "vite:build": "vue-tsc --noEmit && cross-env ENVIRONMENT=production vite build",
+        "vite:preview": "vite preview",
+        "electron:dev": "yarn electron:compile && wait-on tcp:3000 && cross-env ENVIRONMENT=development electron .",
+        "electron:compile": "tsc --build tsconfig.electron.json",
+        "electron:build": "yarn electron:compile && electron-builder -wl"
     },
     "main": "electronCompiled/electron.js",
     "dependencies": {
