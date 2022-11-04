@@ -22,7 +22,9 @@ const props = defineProps({
 
 const playing = computed(() => playerStore.playing && isCurrentTrack.value);
 const time = computed(() => formatTime(props.track.hours, props.track.minutes, props.track.seconds));
-const isCurrentTrack = computed(() => TrackStore.getTrackById(playerStore.getCurrentTrackId)?.path === props.track.path);
+const isCurrentTrack = computed(
+    () => TrackStore.getTrackById(playerStore.getCurrentTrackId)?.path === props.track.path
+);
 const selectedClasses = computed(() => ({
     "rounded-lg": props.selected,
     "bg-highlight": props.selected,
@@ -30,6 +32,10 @@ const selectedClasses = computed(() => ({
 const listItemClasses = computed(() => ({
     "text-accent": isCurrentTrack.value,
 }));
+const trackFilename = computed(() => {
+    const s = props.track.path.split(/(\/|\\)/);
+    return s[s.length - 1];
+});
 </script>
 
 <template>
@@ -42,12 +48,13 @@ const listItemClasses = computed(() => ({
         @dblclick.prevent="(e) => emit('doubleClick', props.track)"
     >
         <p class="title text-ellipsis whitespace-nowrap overflow-x-hidden font-medium">
-            {{ props.track.title }}
+            <span v-if="props.track.title">{{ props.track.title }}</span>
+            <i v-else>{{ trackFilename }}</i>
         </p>
         <span class="playingIcon self-center material-icons text-accent" v-if="playing"> volume_up </span>
         <p class="artistsAndAlbum text-ellipsis whitespace-nowrap overflow-x-hidden font-light text-xs">
             {{
-                `${props.track.album?.title ?? "Unknown Album"} by ${props.track.artists.map((a) => a.name).join(", ")}`
+                `${props.track.album?.title ?? "Unknown Album"} by ${props.track.artists.map((a) => a.name).join(", ") || "Unknown Artist"}`
             }}
         </p>
         <p class="duration">{{ time }}</p>

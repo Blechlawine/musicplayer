@@ -25,7 +25,9 @@ const props = defineProps({
 });
 
 const playing = computed(() => playerStore.playing && isCurrentTrack.value);
-const isCurrentTrack = computed(() => TrackStore.getTrackById(playerStore.getCurrentTrackId)?.path === props.track.path);
+const isCurrentTrack = computed(
+    () => TrackStore.getTrackById(playerStore.getCurrentTrackId)?.path === props.track.path
+);
 const time = computed(() => formatTime(props.track.hours, props.track.minutes, props.track.seconds));
 const selectedClasses = computed(() => ({
     "rounded-lg": props.selected,
@@ -43,6 +45,11 @@ const listItemStyles = computed(() => ({
     "grid-template-areas": `"${gridTemplateAreas.value}"`,
     "grid-template-columns": gridTemplateColumns.value,
 }));
+
+const trackFilename = computed(() => {
+    const s = props.track.path.split(/(\/|\\)/);
+    return s[s.length - 1];
+});
 </script>
 
 <template>
@@ -59,7 +66,8 @@ const listItemStyles = computed(() => ({
         <p class="track">{{ props.track.trackNumber }}</p>
         <p class="title flex flex-row items-center gap-1">
             <span class="material-icons small" v-if="playing">volume_up</span>
-            {{ props.track.title }}
+            <span v-if="props.track.title">{{ props.track.title }}</span>
+            <i v-else>{{ trackFilename }}</i>
         </p>
         <p class="album text-ellipsis whitespace-nowrap overflow-hidden">{{ props.track.album?.title ?? "" }}</p>
         <p class="artists text-ellipsis whitespace-nowrap overflow-hidden">
