@@ -21,11 +21,7 @@ const queue = computed(() => TrackStore.getTracksByIds(playerStore.queue));
 const displayArtists = computed(() => currentTrack.value?.artists?.map((a: IArtist) => a.name).join(", "));
 const currentTime = computed(() => formatTime(...splitTime(playPosition.value)));
 const trackLength = computed(() =>
-    formatTime(
-        currentTrack.value?.hours || 0,
-        currentTrack.value?.minutes || 0,
-        currentTrack.value?.seconds || 0
-    )
+    formatTime(currentTrack.value?.hours || 0, currentTrack.value?.minutes || 0, currentTrack.value?.seconds || 0)
 );
 const repeatIcon = computed(() => {
     if (playerStore.repeat === 0) {
@@ -36,6 +32,7 @@ const repeatIcon = computed(() => {
         return "repeat_on";
     }
 });
+const trackFilename = computed(() => currentTrack.value?.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 
 onMounted(() => {
     playerStore.audioElement = audioElement.value;
@@ -135,7 +132,8 @@ const previous = () => {
             </div>
             <div class="statsText">
                 <p class="title font-medium text-sm text-ellipsis whitespace-nowrap overflow-x-hidden w-full">
-                    {{ currentTrack?.title || "" }}
+                    <span v-if="currentTrack?.title">{{ currentTrack.title }}</span>
+                    <i v-else>{{ trackFilename ?? "unkown" }}</i>
                 </p>
                 <p class="artists text-xs w-full max-w-[200px]">{{ displayArtists }}</p>
             </div>

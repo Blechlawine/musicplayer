@@ -32,10 +32,7 @@ const selectedClasses = computed(() => ({
 const listItemClasses = computed(() => ({
     "text-accent": isCurrentTrack.value,
 }));
-const trackFilename = computed(() => {
-    const s = props.track.path.split(/(\/|\\)/);
-    return s[s.length - 1];
-});
+const trackFilename = computed(() => props.track.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 </script>
 
 <template>
@@ -49,12 +46,14 @@ const trackFilename = computed(() => {
     >
         <p class="title text-ellipsis whitespace-nowrap overflow-x-hidden font-medium">
             <span v-if="props.track.title">{{ props.track.title }}</span>
-            <i v-else>{{ trackFilename }}</i>
+            <i v-else>{{ trackFilename ?? "unkown" }}</i>
         </p>
         <span class="playingIcon self-center material-icons text-accent" v-if="playing"> volume_up </span>
         <p class="artistsAndAlbum text-ellipsis whitespace-nowrap overflow-x-hidden font-light text-xs">
             {{
-                `${props.track.album?.title ?? "Unknown Album"} by ${props.track.artists.map((a) => a.name).join(", ") || "Unknown Artist"}`
+                `${props.track.album?.title ?? "Unknown Album"} by ${
+                    props.track.artists.map((a) => a.name).join(", ") || "Unknown Artist"
+                }`
             }}
         </p>
         <p class="duration">{{ time }}</p>

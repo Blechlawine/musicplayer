@@ -11,7 +11,8 @@
     >
         <template #title>
             <span class="material-icons small" v-if="playing">volume_up</span>
-            {{ props.track.title || (props.track.path.match(/[\w\.-]*\.(mp3|wav|ogg)$/gm)?.[0] ?? "unknown") }}
+            <span v-if="props.track.title">{{ props.track.title }}</span>
+            <i v-else>{{ trackFilename ?? "unknown" }}</i>
         </template>
         <template #details>
             {{ props.track.artists.map((a) => a.name).join(" ,") }}
@@ -47,6 +48,7 @@ const playing = computed(() => PlayerStore.playing && isCurrentTrack.value);
 const isCurrentTrack = computed(
     () => TrackStore.getTrackById(PlayerStore.getCurrentTrackId)?.path === props.track.path
 );
+const trackFilename = computed(() => props.track.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 
 const computedClasses = computed(() => ({
     "bg-highlight": props.selected,

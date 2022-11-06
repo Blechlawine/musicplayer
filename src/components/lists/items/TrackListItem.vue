@@ -46,10 +46,7 @@ const listItemStyles = computed(() => ({
     "grid-template-columns": gridTemplateColumns.value,
 }));
 
-const trackFilename = computed(() => {
-    const s = props.track.path.split(/(\/|\\)/);
-    return s[s.length - 1];
-});
+const trackFilename = computed(() => props.track.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 </script>
 
 <template>
@@ -67,7 +64,7 @@ const trackFilename = computed(() => {
         <p class="title flex flex-row items-center gap-1">
             <span class="material-icons small" v-if="playing">volume_up</span>
             <span v-if="props.track.title">{{ props.track.title }}</span>
-            <i v-else>{{ trackFilename }}</i>
+            <i v-else>{{ trackFilename ?? "unknown" }}</i>
         </p>
         <p class="album text-ellipsis whitespace-nowrap overflow-hidden">{{ props.track.album?.title ?? "" }}</p>
         <p class="artists text-ellipsis whitespace-nowrap overflow-hidden">
