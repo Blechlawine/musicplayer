@@ -28,6 +28,7 @@ export default class Main {
         });
 
         Main.mainWindow = new Main.BrowserWindow({
+            title: "Musicplayer",
             icon: path.join(__dirname, "../assets/icon.png"),
             width: mainWindowState.width,
             height: mainWindowState.height,
