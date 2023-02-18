@@ -47,7 +47,7 @@ const listItemStyles = computed(() => ({
     "grid-template-columns": gridTemplateColumns.value,
 }));
 
-const trackFilename = computed(() => track.value.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
+const trackFilename = computed(() => track.value.path.match(/[\w\.,\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 </script>
 
 <template>

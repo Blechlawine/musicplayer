@@ -18,7 +18,9 @@ const playPosition = ref(0);
 const queueOpen = ref(false); // TODO: move this into a store, to save it in settings
 const currentTrack = computed(() => TrackStore.getTrackById(playerStore.getCurrentTrackId));
 const queue = computed(() => TrackStore.getTracksByIds(playerStore.queue));
-const displayArtists = computed(() => currentTrack.value?.artists?.map((a: IArtist) => a.name).join(", "));
+const displayArtists = computed(
+    () => currentTrack.value?.artists?.map((a: IArtist) => a.name).join(", ") || "Unkown artist"
+);
 const currentTime = computed(() => formatTime(...splitTime(playPosition.value)));
 const trackLength = computed(() =>
     formatTime(currentTrack.value?.hours || 0, currentTrack.value?.minutes || 0, currentTrack.value?.seconds || 0)
@@ -32,7 +34,7 @@ const repeatIcon = computed(() => {
         return "repeat_on";
     }
 });
-const trackFilename = computed(() => currentTrack.value?.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
+const trackFilename = computed(() => currentTrack.value?.path.match(/[\w\.,\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 
 onMounted(() => {
     playerStore.audioElement = audioElement.value;
@@ -140,9 +142,9 @@ const previous = () => {
         </div>
         <div class="controls flex flex-row gap-1 items-center">
             <IconButton size="medium" @click="previous">skip_previous</IconButton>
-            <IconButton size="large" @click="playOrPause">{{
-                playerStore.playing ? "pause" : "play_arrow"
-            }}</IconButton>
+            <IconButton size="large" @click="playOrPause">
+                {{ playerStore.playing ? "pause" : "play_arrow" }}
+            </IconButton>
             <IconButton size="medium" @click="next">skip_next</IconButton>
         </div>
         <p class="currentTime">{{ currentTime }}</p>

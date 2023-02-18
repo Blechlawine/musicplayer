@@ -32,7 +32,7 @@ const selectedClasses = computed(() => ({
 const listItemClasses = computed(() => ({
     "text-accent": isCurrentTrack.value,
 }));
-const trackFilename = computed(() => props.track.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
+const trackFilename = computed(() => props.track.path.match(/[\w\.,\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 </script>
 
 <template>

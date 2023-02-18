@@ -48,7 +48,7 @@ const playing = computed(() => PlayerStore.playing && isCurrentTrack.value);
 const isCurrentTrack = computed(
     () => TrackStore.getTrackById(PlayerStore.getCurrentTrackId)?.path === props.track.path
 );
-const trackFilename = computed(() => props.track.path.match(/[\w\.\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
+const trackFilename = computed(() => props.track.path.match(/[\w\.,\-~\s]*\.(mp3|wav|ogg)$/gm)?.[0]);
 
 const computedClasses = computed(() => ({
     "bg-highlight": props.selected,
